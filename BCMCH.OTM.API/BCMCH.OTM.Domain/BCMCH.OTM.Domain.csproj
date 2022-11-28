@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BCMCH.OTM.API.Shared\BCMCH.OTM.API.Shared.csproj" />
+    <ProjectReference Include="..\BCMCH.OTM.Data.Contract\BCMCH.OTM.Data.Contract.csproj" />
+    <ProjectReference Include="..\BCMCH.OTM.Domain.Contract\BCMCH.OTM.Domain.Contract.csproj" />
+    <ProjectReference Include="..\BCMCH.OTM.Infrastucture\BCMCH.OTM.Infrastucture.csproj" />
+  </ItemGroup>
+
+</Project>

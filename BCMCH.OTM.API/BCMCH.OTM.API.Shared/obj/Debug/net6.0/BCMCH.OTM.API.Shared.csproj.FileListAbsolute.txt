@@ -1,0 +1,12 @@
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.API.Shared\bin\Debug\net6.0\BCMCH.OTM.API.Shared.deps.json
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.API.Shared\bin\Debug\net6.0\BCMCH.OTM.API.Shared.dll
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.API.Shared\bin\Debug\net6.0\BCMCH.OTM.API.Shared.pdb
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.API.Shared\obj\Debug\net6.0\BCMCH.OTM.API.Shared.csproj.AssemblyReference.cache
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.API.Shared\obj\Debug\net6.0\BCMCH.OTM.API.Shared.GeneratedMSBuildEditorConfig.editorconfig
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.API.Shared\obj\Debug\net6.0\BCMCH.OTM.API.Shared.AssemblyInfoInputs.cache
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.API.Shared\obj\Debug\net6.0\BCMCH.OTM.API.Shared.AssemblyInfo.cs
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.API.Shared\obj\Debug\net6.0\BCMCH.OTM.API.Shared.csproj.CoreCompileInputs.cache
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.API.Shared\obj\Debug\net6.0\BCMCH.OTM.API.Shared.dll
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.API.Shared\obj\Debug\net6.0\refint\BCMCH.OTM.API.Shared.dll
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.API.Shared\obj\Debug\net6.0\BCMCH.OTM.API.Shared.pdb
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.API.Shared\obj\Debug\net6.0\ref\BCMCH.OTM.API.Shared.dll
