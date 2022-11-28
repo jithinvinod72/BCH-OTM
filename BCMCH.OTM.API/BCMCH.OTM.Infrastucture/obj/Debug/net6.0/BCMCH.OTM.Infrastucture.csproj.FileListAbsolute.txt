@@ -1,0 +1,12 @@
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Infrastucture\bin\Debug\net6.0\BCMCH.OTM.Infrastucture.deps.json
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Infrastucture\bin\Debug\net6.0\BCMCH.OTM.Infrastucture.dll
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Infrastucture\bin\Debug\net6.0\BCMCH.OTM.Infrastucture.pdb
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Infrastucture\obj\Debug\net6.0\BCMCH.OTM.Infrastucture.csproj.AssemblyReference.cache
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Infrastucture\obj\Debug\net6.0\BCMCH.OTM.Infrastucture.GeneratedMSBuildEditorConfig.editorconfig
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Infrastucture\obj\Debug\net6.0\BCMCH.OTM.Infrastucture.AssemblyInfoInputs.cache
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Infrastucture\obj\Debug\net6.0\BCMCH.OTM.Infrastucture.AssemblyInfo.cs
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Infrastucture\obj\Debug\net6.0\BCMCH.OTM.Infrastucture.csproj.CoreCompileInputs.cache
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Infrastucture\obj\Debug\net6.0\BCMCH.OTM.Infrastucture.dll
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Infrastucture\obj\Debug\net6.0\refint\BCMCH.OTM.Infrastucture.dll
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Infrastucture\obj\Debug\net6.0\BCMCH.OTM.Infrastucture.pdb
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Infrastucture\obj\Debug\net6.0\ref\BCMCH.OTM.Infrastucture.dll

@@ -1,0 +1,15 @@
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Data.Contract\bin\Debug\net6.0\BCMCH.OTM.Data.Contract.deps.json
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Data.Contract\bin\Debug\net6.0\BCMCH.OTM.Data.Contract.dll
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Data.Contract\bin\Debug\net6.0\BCMCH.OTM.Data.Contract.pdb
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Data.Contract\obj\Debug\net6.0\BCMCH.OTM.Data.Contract.csproj.AssemblyReference.cache
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Data.Contract\obj\Debug\net6.0\BCMCH.OTM.Data.Contract.GeneratedMSBuildEditorConfig.editorconfig
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Data.Contract\obj\Debug\net6.0\BCMCH.OTM.Data.Contract.AssemblyInfoInputs.cache
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Data.Contract\obj\Debug\net6.0\BCMCH.OTM.Data.Contract.AssemblyInfo.cs
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Data.Contract\obj\Debug\net6.0\BCMCH.OTM.Data.Contract.csproj.CoreCompileInputs.cache
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Data.Contract\obj\Debug\net6.0\BCMCH.OTM.Data.Contract.dll
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Data.Contract\obj\Debug\net6.0\refint\BCMCH.OTM.Data.Contract.dll
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Data.Contract\obj\Debug\net6.0\BCMCH.OTM.Data.Contract.pdb
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Data.Contract\obj\Debug\net6.0\ref\BCMCH.OTM.Data.Contract.dll
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Data.Contract\bin\Debug\net6.0\BCMCH.OTM.API.Shared.dll
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Data.Contract\bin\Debug\net6.0\BCMCH.OTM.API.Shared.pdb
+E:\Jibin\BCMCH-OT\BCMCH.OTM.API\BCMCH.OTM.Data.Contract\obj\Debug\net6.0\BCMCH.OTM.Data.Contract.csproj.CopyComplete
