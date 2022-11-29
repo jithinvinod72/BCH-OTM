@@ -25,6 +25,8 @@ namespace BCMCH.OTM.Infrastucture.IOC
         {
             services.AddTransient<IMasterDomainService, MasterDomainService>();
             services.AddTransient<IMasterDataAccess, MasterDataAccess>();
+            services.AddTransient<IBookingsDomainService, BookingsDomainService>();
+            services.AddTransient<IBookingsDataAccess, BookingsDataAccess>();
             services.AddTransient<ISqlDbHelper, SqlDbHelper>();
             services.AddTransient<IConnectionStrings, ConnectionStrings>();
         }
