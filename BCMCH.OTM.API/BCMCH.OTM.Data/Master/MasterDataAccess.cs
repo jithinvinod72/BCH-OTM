@@ -32,6 +32,18 @@ namespace BCMCH.OTM.Data.Master
             var result= await _sqlHelper.QueryAsync<SpecialEquipments>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
+        public async Task<IEnumerable<Departments>> DepartmentDetails()
+        {
+            const string StoredProcedure = "[OTM].[GET_Departments]";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@Search", "");
+            SqlParameters.Add("@pageNumber", 1);
+            SqlParameters.Add("@RowsOfPage", 10);
+
+            var result= await _sqlHelper.QueryAsync<Departments>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            return result;
+        
+        }
         #endregion
     }
 }

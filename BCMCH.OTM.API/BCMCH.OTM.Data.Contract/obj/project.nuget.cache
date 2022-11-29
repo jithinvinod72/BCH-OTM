@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "4soxqH1CBrym6RRh7/cDegNycDVdYU/3saB8C8/xNj+kxVWKeZ4E2IgSTFaZOh8Nx0MlfCFAFZyh/LWXQ62cxQ==",
+  "dgSpecHash": "NTtwoOOK13kwQKbOwyBGf+zRfTG/4EaO/0Hrk0bpZgWchXjgCAKOqHRNyaWspu+JLFxBqV0EHhj+ZbVvCMmPVA==",
   "success": true,
-  "projectFilePath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Data.Contract\\BCMCH.OTM.Data.Contract.csproj",
+  "projectFilePath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data.Contract/BCMCH.OTM.Data.Contract.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

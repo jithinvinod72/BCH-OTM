@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "jPWc0viy84KXBbVHG9vnE+LAp9XJP+gwsdKaJJBZBeo5IkW1DPxWn6rmqzyQeSanyCAuT1M9CUCrOouJxheaew==",
+  "dgSpecHash": "ogTFzWnkqm7IJRQ0DrMP3MyimVDID+YgC7tLspQsfKGur7OaKO6ekEyg2hrZBkkyY8s1MicyvFvlV3ptV8ZWuA==",
   "success": true,
-  "projectFilePath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.API.Shared\\BCMCH.OTM.API.Shared.csproj",
+  "projectFilePath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.API.Shared/BCMCH.OTM.API.Shared.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
