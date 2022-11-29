@@ -1,30 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Infrastucture.IOC\\BCMCH.OTM.Infrastucture.IOC.csproj": {}
+    "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Infrastucture.IOC/BCMCH.OTM.Infrastucture.IOC.csproj": {}
   },
   "projects": {
-    "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.API.Shared\\BCMCH.OTM.API.Shared.csproj": {
+    "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.API.Shared/BCMCH.OTM.API.Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.API.Shared\\BCMCH.OTM.API.Shared.csproj",
+        "projectUniqueName": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.API.Shared/BCMCH.OTM.API.Shared.csproj",
         "projectName": "BCMCH.OTM.API.Shared",
-        "projectPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.API.Shared\\BCMCH.OTM.API.Shared.csproj",
-        "packagesPath": "C:\\Users\\nirma\\.nuget\\packages\\",
-        "outputPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.API.Shared\\obj\\",
+        "projectPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.API.Shared/BCMCH.OTM.API.Shared.csproj",
+        "packagesPath": "/home/sree/.nuget/packages/",
+        "outputPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.API.Shared/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\nirma\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/sree/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -58,39 +53,34 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.402/RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Data.Contract\\BCMCH.OTM.Data.Contract.csproj": {
+    "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data.Contract/BCMCH.OTM.Data.Contract.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Data.Contract\\BCMCH.OTM.Data.Contract.csproj",
+        "projectUniqueName": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data.Contract/BCMCH.OTM.Data.Contract.csproj",
         "projectName": "BCMCH.OTM.Data.Contract",
-        "projectPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Data.Contract\\BCMCH.OTM.Data.Contract.csproj",
-        "packagesPath": "C:\\Users\\nirma\\.nuget\\packages\\",
-        "outputPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Data.Contract\\obj\\",
+        "projectPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data.Contract/BCMCH.OTM.Data.Contract.csproj",
+        "packagesPath": "/home/sree/.nuget/packages/",
+        "outputPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data.Contract/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\nirma\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/sree/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.API.Shared\\BCMCH.OTM.API.Shared.csproj": {
-                "projectPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.API.Shared\\BCMCH.OTM.API.Shared.csproj"
+              "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.API.Shared/BCMCH.OTM.API.Shared.csproj": {
+                "projectPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.API.Shared/BCMCH.OTM.API.Shared.csproj"
               }
             }
           }
@@ -120,45 +110,40 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.402/RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Data\\BCMCH.OTM.Data.csproj": {
+    "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data/BCMCH.OTM.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Data\\BCMCH.OTM.Data.csproj",
+        "projectUniqueName": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data/BCMCH.OTM.Data.csproj",
         "projectName": "BCMCH.OTM.Data",
-        "projectPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Data\\BCMCH.OTM.Data.csproj",
-        "packagesPath": "C:\\Users\\nirma\\.nuget\\packages\\",
-        "outputPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Data\\obj\\",
+        "projectPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data/BCMCH.OTM.Data.csproj",
+        "packagesPath": "/home/sree/.nuget/packages/",
+        "outputPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\nirma\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/sree/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.API.Shared\\BCMCH.OTM.API.Shared.csproj": {
-                "projectPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.API.Shared\\BCMCH.OTM.API.Shared.csproj"
+              "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.API.Shared/BCMCH.OTM.API.Shared.csproj": {
+                "projectPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.API.Shared/BCMCH.OTM.API.Shared.csproj"
               },
-              "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Data.Contract\\BCMCH.OTM.Data.Contract.csproj": {
-                "projectPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Data.Contract\\BCMCH.OTM.Data.Contract.csproj"
+              "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data.Contract/BCMCH.OTM.Data.Contract.csproj": {
+                "projectPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data.Contract/BCMCH.OTM.Data.Contract.csproj"
               },
-              "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Infrastucture\\BCMCH.OTM.Infrastucture.csproj": {
-                "projectPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Infrastucture\\BCMCH.OTM.Infrastucture.csproj"
+              "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Infrastucture/BCMCH.OTM.Infrastucture.csproj": {
+                "projectPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Infrastucture/BCMCH.OTM.Infrastucture.csproj"
               }
             }
           }
@@ -188,39 +173,34 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.402/RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Domain.Contract\\BCMCH.OTM.Domain.Contract.csproj": {
+    "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Domain.Contract/BCMCH.OTM.Domain.Contract.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Domain.Contract\\BCMCH.OTM.Domain.Contract.csproj",
+        "projectUniqueName": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Domain.Contract/BCMCH.OTM.Domain.Contract.csproj",
         "projectName": "BCMCH.OTM.Domain.Contract",
-        "projectPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Domain.Contract\\BCMCH.OTM.Domain.Contract.csproj",
-        "packagesPath": "C:\\Users\\nirma\\.nuget\\packages\\",
-        "outputPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Domain.Contract\\obj\\",
+        "projectPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Domain.Contract/BCMCH.OTM.Domain.Contract.csproj",
+        "packagesPath": "/home/sree/.nuget/packages/",
+        "outputPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Domain.Contract/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\nirma\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/sree/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.API.Shared\\BCMCH.OTM.API.Shared.csproj": {
-                "projectPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.API.Shared\\BCMCH.OTM.API.Shared.csproj"
+              "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.API.Shared/BCMCH.OTM.API.Shared.csproj": {
+                "projectPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.API.Shared/BCMCH.OTM.API.Shared.csproj"
               }
             }
           }
@@ -250,48 +230,43 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.402/RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Domain\\BCMCH.OTM.Domain.csproj": {
+    "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Domain/BCMCH.OTM.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Domain\\BCMCH.OTM.Domain.csproj",
+        "projectUniqueName": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Domain/BCMCH.OTM.Domain.csproj",
         "projectName": "BCMCH.OTM.Domain",
-        "projectPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Domain\\BCMCH.OTM.Domain.csproj",
-        "packagesPath": "C:\\Users\\nirma\\.nuget\\packages\\",
-        "outputPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Domain\\obj\\",
+        "projectPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Domain/BCMCH.OTM.Domain.csproj",
+        "packagesPath": "/home/sree/.nuget/packages/",
+        "outputPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Domain/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\nirma\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/sree/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.API.Shared\\BCMCH.OTM.API.Shared.csproj": {
-                "projectPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.API.Shared\\BCMCH.OTM.API.Shared.csproj"
+              "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.API.Shared/BCMCH.OTM.API.Shared.csproj": {
+                "projectPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.API.Shared/BCMCH.OTM.API.Shared.csproj"
               },
-              "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Data.Contract\\BCMCH.OTM.Data.Contract.csproj": {
-                "projectPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Data.Contract\\BCMCH.OTM.Data.Contract.csproj"
+              "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data.Contract/BCMCH.OTM.Data.Contract.csproj": {
+                "projectPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data.Contract/BCMCH.OTM.Data.Contract.csproj"
               },
-              "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Domain.Contract\\BCMCH.OTM.Domain.Contract.csproj": {
-                "projectPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Domain.Contract\\BCMCH.OTM.Domain.Contract.csproj"
+              "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Domain.Contract/BCMCH.OTM.Domain.Contract.csproj": {
+                "projectPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Domain.Contract/BCMCH.OTM.Domain.Contract.csproj"
               },
-              "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Infrastucture\\BCMCH.OTM.Infrastucture.csproj": {
-                "projectPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Infrastucture\\BCMCH.OTM.Infrastucture.csproj"
+              "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Infrastucture/BCMCH.OTM.Infrastucture.csproj": {
+                "projectPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Infrastucture/BCMCH.OTM.Infrastucture.csproj"
               }
             }
           }
@@ -321,54 +296,49 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.402/RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Infrastucture.IOC\\BCMCH.OTM.Infrastucture.IOC.csproj": {
+    "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Infrastucture.IOC/BCMCH.OTM.Infrastucture.IOC.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Infrastucture.IOC\\BCMCH.OTM.Infrastucture.IOC.csproj",
+        "projectUniqueName": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Infrastucture.IOC/BCMCH.OTM.Infrastucture.IOC.csproj",
         "projectName": "BCMCH.OTM.Infrastucture.IOC",
-        "projectPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Infrastucture.IOC\\BCMCH.OTM.Infrastucture.IOC.csproj",
-        "packagesPath": "C:\\Users\\nirma\\.nuget\\packages\\",
-        "outputPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Infrastucture.IOC\\obj\\",
+        "projectPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Infrastucture.IOC/BCMCH.OTM.Infrastucture.IOC.csproj",
+        "packagesPath": "/home/sree/.nuget/packages/",
+        "outputPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Infrastucture.IOC/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\nirma\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/sree/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.API.Shared\\BCMCH.OTM.API.Shared.csproj": {
-                "projectPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.API.Shared\\BCMCH.OTM.API.Shared.csproj"
+              "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.API.Shared/BCMCH.OTM.API.Shared.csproj": {
+                "projectPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.API.Shared/BCMCH.OTM.API.Shared.csproj"
               },
-              "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Data.Contract\\BCMCH.OTM.Data.Contract.csproj": {
-                "projectPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Data.Contract\\BCMCH.OTM.Data.Contract.csproj"
+              "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data.Contract/BCMCH.OTM.Data.Contract.csproj": {
+                "projectPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data.Contract/BCMCH.OTM.Data.Contract.csproj"
               },
-              "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Data\\BCMCH.OTM.Data.csproj": {
-                "projectPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Data\\BCMCH.OTM.Data.csproj"
+              "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data/BCMCH.OTM.Data.csproj": {
+                "projectPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data/BCMCH.OTM.Data.csproj"
               },
-              "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Domain.Contract\\BCMCH.OTM.Domain.Contract.csproj": {
-                "projectPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Domain.Contract\\BCMCH.OTM.Domain.Contract.csproj"
+              "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Domain.Contract/BCMCH.OTM.Domain.Contract.csproj": {
+                "projectPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Domain.Contract/BCMCH.OTM.Domain.Contract.csproj"
               },
-              "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Domain\\BCMCH.OTM.Domain.csproj": {
-                "projectPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Domain\\BCMCH.OTM.Domain.csproj"
+              "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Domain/BCMCH.OTM.Domain.csproj": {
+                "projectPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Domain/BCMCH.OTM.Domain.csproj"
               },
-              "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Infrastucture\\BCMCH.OTM.Infrastucture.csproj": {
-                "projectPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Infrastucture\\BCMCH.OTM.Infrastucture.csproj"
+              "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Infrastucture/BCMCH.OTM.Infrastucture.csproj": {
+                "projectPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Infrastucture/BCMCH.OTM.Infrastucture.csproj"
               }
             }
           }
@@ -408,31 +378,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.402/RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Infrastucture\\BCMCH.OTM.Infrastucture.csproj": {
+    "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Infrastucture/BCMCH.OTM.Infrastucture.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Infrastucture\\BCMCH.OTM.Infrastucture.csproj",
+        "projectUniqueName": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Infrastucture/BCMCH.OTM.Infrastucture.csproj",
         "projectName": "BCMCH.OTM.Infrastucture",
-        "projectPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Infrastucture\\BCMCH.OTM.Infrastucture.csproj",
-        "packagesPath": "C:\\Users\\nirma\\.nuget\\packages\\",
-        "outputPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Infrastucture\\obj\\",
+        "projectPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Infrastucture/BCMCH.OTM.Infrastucture.csproj",
+        "packagesPath": "/home/sree/.nuget/packages/",
+        "outputPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Infrastucture/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\nirma\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/sree/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -480,7 +445,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.402/RuntimeIdentifierGraph.json"
         }
       }
     }
