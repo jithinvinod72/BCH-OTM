@@ -8,7 +8,8 @@ namespace BCMCH.OTM.API.Shared.Master
 {
     public class SpecialEquipments
     {
-        public int ID { get; set; }
-        public int Name { get; set; }
+        public int Id { get; set; }
+        public string? Name { get; set; }
+        public string? Description { get; set; }
     }
 }

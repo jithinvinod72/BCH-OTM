@@ -1,7 +1,9 @@
 ﻿using BCMCH.OTM.API.Shared.Master;
 using BCMCH.OTM.Data.Contract.Master;
 using BCMCH.OTM.Infrastucture.AppSettings.Abstracts;
+using Dapper;
 using System.Data;
+using System.Data.SqlClient;
 
 namespace BCMCH.OTM.Data.Master
 {
@@ -21,10 +23,14 @@ namespace BCMCH.OTM.Data.Master
         #region PUBLIC
         public async Task<IEnumerable<SpecialEquipments>> SpecialEquipmentsDetails()
         {
-            const string StoredProcedure = "GetAllCompanyDetails";
+            const string StoredProcedure = "[OTM].[GET_Equipments]";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@Search", "a");
+            SqlParameters.Add("@pageNumber", 1);
+            SqlParameters.Add("@RowsOfPage", 10);
 
-            return await _sqlHelper.QueryAsync<SpecialEquipments>(StoredProcedure, null, CommandType.StoredProcedure);
-
+            var result= await _sqlHelper.QueryAsync<SpecialEquipments>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            return result;
         }
         #endregion
     }

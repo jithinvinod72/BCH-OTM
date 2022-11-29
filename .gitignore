@@ -1,0 +1,6 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/BCMCH.OTM.API/BCMCH.OTM.API.Shared/obj/Release/net6.0

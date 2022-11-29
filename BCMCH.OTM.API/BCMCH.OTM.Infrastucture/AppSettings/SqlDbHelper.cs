@@ -12,7 +12,7 @@ namespace BCMCH.OTM.Infrastucture.AppSettings
         public string ConnectionString { get; set; }
         public SqlDbHelper(IConfiguration configuration, IConnectionStrings connectionStrings)
         {
-            ConnectionString = configuration["conn"].ToString();
+            ConnectionString = configuration["DefaultConnection"].ToString();
             _configuration = configuration;
         }
 
