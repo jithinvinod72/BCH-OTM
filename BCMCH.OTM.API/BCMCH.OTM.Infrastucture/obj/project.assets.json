@@ -633,30 +633,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\nirma\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "/home/sree/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Infrastucture\\BCMCH.OTM.Infrastucture.csproj",
+      "projectUniqueName": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Infrastucture/BCMCH.OTM.Infrastucture.csproj",
       "projectName": "BCMCH.OTM.Infrastucture",
-      "projectPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Infrastucture\\BCMCH.OTM.Infrastucture.csproj",
-      "packagesPath": "C:\\Users\\nirma\\.nuget\\packages\\",
-      "outputPath": "E:\\Jibin\\BCMCH-OT\\BCMCH.OTM.API\\BCMCH.OTM.Infrastucture\\obj\\",
+      "projectPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Infrastucture/BCMCH.OTM.Infrastucture.csproj",
+      "packagesPath": "/home/sree/.nuget/packages/",
+      "outputPath": "/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Infrastucture/obj/",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\nirma\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/home/sree/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -704,7 +698,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.402/RuntimeIdentifierGraph.json"
       }
     }
   }

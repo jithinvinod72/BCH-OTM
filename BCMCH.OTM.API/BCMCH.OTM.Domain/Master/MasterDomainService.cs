@@ -23,6 +23,11 @@ namespace BCMCH.OTM.Domain.Master
             var result = await _masterDataAccess.SpecialEquipmentsDetails();
             return result;
         }
+        public async Task<IEnumerable<Departments>> DepartmentDetails()
+        {
+            var result = await _masterDataAccess.DepartmentDetails();
+            return result;
+        }
         #endregion
     }
 }
