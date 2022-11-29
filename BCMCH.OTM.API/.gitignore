@@ -331,3 +331,4 @@ ASALocalRun/
 
 #remove DebugFiles by VS
 bin/Debug
+obj/Debug
