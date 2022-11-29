@@ -4,3 +4,4 @@
 
 /.vs
 /BCMCH.OTM.API/BCMCH.OTM.API.Shared/obj/Release/net6.0
+*.vsidx
