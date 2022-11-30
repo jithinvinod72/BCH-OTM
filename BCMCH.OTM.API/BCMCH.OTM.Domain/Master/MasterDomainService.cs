@@ -18,9 +18,9 @@ namespace BCMCH.OTM.Domain.Master
         #endregion
 
         #region PUBLIC
-        public async Task<IEnumerable<SpecialEquipments>> SpecialEquipmentsDetails()
+        public async Task<IEnumerable<Equipments>> EquipmentsDetails()
         {
-            var result = await _masterDataAccess.SpecialEquipmentsDetails();
+            var result = await _masterDataAccess.EquipmentsDetails();
             return result;
         }
         public async Task<IEnumerable<Departments>> DepartmentDetails()
@@ -28,6 +28,30 @@ namespace BCMCH.OTM.Domain.Master
             var result = await _masterDataAccess.DepartmentDetails();
             return result;
         }
+        
+        public async Task<IEnumerable<Anaesthesia>> GetAnaesthesiaList()
+        {
+            var result = await _masterDataAccess.GetAnaesthesiaList();
+            return result;
+        }
+        
+        public async Task<IEnumerable<Employee>> GetEmployeeList(string _searchOption , string _departmentArray)
+        {
+            var result = await _masterDataAccess.GetEmployeeList(_searchOption ,_departmentArray);
+            return result;
+        }
+        public async Task<IEnumerable<OperationTheatreAllocation>> GetOperationTheatreAllocations(int _departmentId, string? _fromDate)
+        {
+            var result = await _masterDataAccess.GetOperationTheatreAllocations(_departmentId, _fromDate);
+            return result;
+        }
+        public async Task<IEnumerable<OperationTheatre>> GetOperationTheatreList()
+        {
+            var result = await _masterDataAccess.GetOperationTheatreList();
+            return result;
+        }
         #endregion
+        
+        
     }
 }

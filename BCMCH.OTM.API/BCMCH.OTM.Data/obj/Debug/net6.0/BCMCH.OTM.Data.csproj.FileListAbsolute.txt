@@ -17,6 +17,11 @@ E:/Jibin/BCMCH-OT/BCMCH.OTM.API/BCMCH.OTM.Data/bin/Debug/net6.0/BCMCH.OTM.API.Sh
 E:/Jibin/BCMCH-OT/BCMCH.OTM.API/BCMCH.OTM.Data/bin/Debug/net6.0/BCMCH.OTM.Data.Contract.pdb
 E:/Jibin/BCMCH-OT/BCMCH.OTM.API/BCMCH.OTM.Data/bin/Debug/net6.0/BCMCH.OTM.Infrastucture.pdb
 E:/Jibin/BCMCH-OT/BCMCH.OTM.API/BCMCH.OTM.Data/obj/Debug/net6.0/BCMCH.OTM.Data.csproj.CopyComplete
+/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data/obj/Debug/net6.0/BCMCH.OTM.Data.csproj.AssemblyReference.cache
+/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data/obj/Debug/net6.0/BCMCH.OTM.Data.GeneratedMSBuildEditorConfig.editorconfig
+/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data/obj/Debug/net6.0/BCMCH.OTM.Data.AssemblyInfoInputs.cache
+/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data/obj/Debug/net6.0/BCMCH.OTM.Data.AssemblyInfo.cs
+/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data/obj/Debug/net6.0/BCMCH.OTM.Data.csproj.CoreCompileInputs.cache
 /home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data/bin/Debug/net6.0/BCMCH.OTM.Data.deps.json
 /home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data/bin/Debug/net6.0/BCMCH.OTM.Data.dll
 /home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data/bin/Debug/net6.0/BCMCH.OTM.Data.pdb
@@ -26,11 +31,6 @@ E:/Jibin/BCMCH-OT/BCMCH.OTM.API/BCMCH.OTM.Data/obj/Debug/net6.0/BCMCH.OTM.Data.c
 /home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data/bin/Debug/net6.0/BCMCH.OTM.API.Shared.pdb
 /home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data/bin/Debug/net6.0/BCMCH.OTM.Data.Contract.pdb
 /home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data/bin/Debug/net6.0/BCMCH.OTM.Infrastucture.pdb
-/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data/obj/Debug/net6.0/BCMCH.OTM.Data.csproj.AssemblyReference.cache
-/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data/obj/Debug/net6.0/BCMCH.OTM.Data.GeneratedMSBuildEditorConfig.editorconfig
-/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data/obj/Debug/net6.0/BCMCH.OTM.Data.AssemblyInfoInputs.cache
-/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data/obj/Debug/net6.0/BCMCH.OTM.Data.AssemblyInfo.cs
-/home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data/obj/Debug/net6.0/BCMCH.OTM.Data.csproj.CoreCompileInputs.cache
 /home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data/obj/Debug/net6.0/BCMCH.OTM.Data.csproj.CopyComplete
 /home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data/obj/Debug/net6.0/BCMCH.OTM.Data.dll
 /home/sree/Documents/Works/BCMCH/backend/code/BCH-OTM/BCMCH.OTM.API/BCMCH.OTM.Data/obj/Debug/net6.0/refint/BCMCH.OTM.Data.dll

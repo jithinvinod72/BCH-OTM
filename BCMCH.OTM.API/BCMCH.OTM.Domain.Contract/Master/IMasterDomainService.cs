@@ -5,6 +5,10 @@ namespace BCMCH.OTM.Domain.Contract.Master
     public interface IMasterDomainService
     {
         Task<IEnumerable<Departments>> DepartmentDetails();
-        Task<IEnumerable<SpecialEquipments>> SpecialEquipmentsDetails();
+        Task<IEnumerable<Equipments>> EquipmentsDetails();
+        Task<IEnumerable<Anaesthesia>> GetAnaesthesiaList();
+        Task<IEnumerable<Employee>> GetEmployeeList(string _searchOption , string _departmentArray);
+        Task<IEnumerable<OperationTheatreAllocation>> GetOperationTheatreAllocations(int _departmentId, string? _fromDate);
+        Task<IEnumerable<OperationTheatre>> GetOperationTheatreList();
     }
 }
