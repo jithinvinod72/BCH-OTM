@@ -82,6 +82,18 @@ namespace BCMCH.OTM.Data.Master
             var result= await _sqlHelper.QueryAsync<OperationTheatre>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
+
+        public async Task<IEnumerable<Surgery>> GetSurgeryList(int _pageNumber, int _rowsPerPage, string? _searchKeyword="")
+        {
+            const string StoredProcedure = "[OTM].[GET_SurgeryList]";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@PageNumber", _pageNumber);
+            SqlParameters.Add("@RowsOfPage", _rowsPerPage );
+            SqlParameters.Add("@Search", _searchKeyword );
+
+            var result= await _sqlHelper.QueryAsync<Surgery>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            return result;
+        }
         #endregion
         
     }

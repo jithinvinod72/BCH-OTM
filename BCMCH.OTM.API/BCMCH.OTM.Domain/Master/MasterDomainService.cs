@@ -50,6 +50,12 @@ namespace BCMCH.OTM.Domain.Master
             var result = await _masterDataAccess.GetOperationTheatreList();
             return result;
         }
+
+        public async  Task<IEnumerable<Surgery>> GetSurgeryList(int _pageNumber, int _rowsPerPage, string? _searchKeyword="")
+        {
+            var result = await _masterDataAccess.GetSurgeryList(_pageNumber, _rowsPerPage, _searchKeyword);
+            return result;
+        }
         #endregion
         
         

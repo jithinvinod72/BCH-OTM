@@ -115,6 +115,23 @@ namespace BCMCH.OTM.API.Controllers
         }
 
 
+        [HttpGet]
+        [Route("get-surgery-list")]
+        public async Task<IActionResult> GetSurgeryList(int _pageNumber=1, int _rowsPerPage=100, string? _searchKeyword="")
+        {
+            try
+            {
+                var result = await _masterService.GetSurgeryList(_pageNumber, _rowsPerPage, _searchKeyword);
+                return Ok(new ResponseVM<IEnumerable<Surgery>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+
         #endregion
     }
 }
+
