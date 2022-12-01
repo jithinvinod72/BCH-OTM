@@ -2,6 +2,7 @@
 using BCMCH.OTM.Data.Master;
 using BCMCH.OTM.Domain.Contract.Master;
 using BCMCH.OTM.Domain.Master;
+using BCMCH.OTM.Domain.Contract.Booking;
 using BCMCH.OTM.Infrastucture.AppSettings;
 using BCMCH.OTM.Infrastucture.AppSettings.Abstracts;
 using Microsoft.Extensions.Configuration;
@@ -25,6 +26,9 @@ namespace BCMCH.OTM.Infrastucture.IOC
         {
             services.AddTransient<IMasterDomainService, MasterDomainService>();
             services.AddTransient<IMasterDataAccess, MasterDataAccess>();
+            services.AddTransient<IBookingDomainService,BookingDomainService>();
+            services.AddTransient<IBookingDataAccess,BookingDataIBookingDataAccess>();
+
             services.AddTransient<ISqlDbHelper, SqlDbHelper>();
             services.AddTransient<IConnectionStrings, ConnectionStrings>();
         }

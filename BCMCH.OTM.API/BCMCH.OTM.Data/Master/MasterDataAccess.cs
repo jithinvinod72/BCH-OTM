@@ -3,7 +3,7 @@ using BCMCH.OTM.Data.Contract.Master;
 using BCMCH.OTM.Infrastucture.AppSettings.Abstracts;
 using Dapper;
 using System.Data;
-using System.Data.SqlClient;
+
 
 namespace BCMCH.OTM.Data.Master
 {
@@ -94,7 +94,24 @@ namespace BCMCH.OTM.Data.Master
             var result= await _sqlHelper.QueryAsync<Surgery>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
+        public async Task<IEnumerable<Bookings>> GetBookingList(int _pageNumber, int _rowsPerPage, string? _fromDate,string? _toDate)
+        {
+            const string StoredProcedure = "[OTM].[GET_Bookings]";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@FromDate", _fromDate);
+            SqlParameters.Add("@ToDate",   _toDate );
+            SqlParameters.Add("@PageNumber", _pageNumber );
+            SqlParameters.Add("@RowsOfPage", _rowsPerPage );
+
+            var result= await _sqlHelper.QueryAsync<Bookings>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            return result;
+        }
         #endregion
         
     }
 }
+
+// @FromDate   AS DATETIME,
+// @ToDate     AS DATETIME,
+// @PageNumber AS INT,
+// @RowsOfPage AS INT
