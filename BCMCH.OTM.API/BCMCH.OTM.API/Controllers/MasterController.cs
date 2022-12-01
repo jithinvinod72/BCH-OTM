@@ -136,6 +136,7 @@ namespace BCMCH.OTM.API.Controllers
         {
             try
             {
+                // bla
                 var result = await _masterService.GetBookingList(_pageNumber,  _rowsPerPage,  _fromDate, _toDate);
                 return Ok(new ResponseVM<IEnumerable<Bookings>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
