@@ -23,22 +23,20 @@ namespace BCMCH.OTM.API.Controllers
 
         #region PUBLIC
         [HttpGet]
-        [Route("get-special-equipments-details")]
-        public async Task<IActionResult> SpecialEquipmentsDetails()
+        [Route("get-equipments-details")]
+        public async Task<IActionResult> EquipmentsDetails()
         {
 
             try
             {
-                var result = await _masterService.SpecialEquipmentsDetails();
-                return Ok(new ResponseVM<IEnumerable<SpecialEquipments>>(true, ResponseMessages.DATA_ACCESS_SUCCESS,result));
+                var result = await _masterService.EquipmentsDetails();
+                return Ok(new ResponseVM<IEnumerable<Equipments>>(true, ResponseMessages.DATA_ACCESS_SUCCESS,result));
             }
             catch (Exception ex)
             {
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
-        
-
         
         [HttpGet]
         [Route("get-departments-details")]
@@ -55,6 +53,100 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
 
+
+        [HttpGet]
+        [Route("get-anasthesia-list")]
+        public async Task<IActionResult> GetAnaesthesiaList()
+        {
+            try
+            {
+                var result = await _masterService.GetAnaesthesiaList();                
+                return Ok(new ResponseVM<IEnumerable<Anaesthesia>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+        [HttpGet]
+        [Route("get-employee-list")]
+        public async Task<IActionResult> GetEmployeeList(string? SearchKeyword=""  , string departments="[]" )
+        {
+            try
+            {
+                var result = await _masterService.GetEmployeeList(SearchKeyword,departments);
+                return Ok(new ResponseVM<IEnumerable<Employee>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+        [HttpGet]
+        [Route("get-operationtheatre-allocation")]
+        public async Task<IActionResult> GetOperationTheatreAllocations(int _departmentId, string? _fromDate)
+        {
+            try
+            {
+                var result = await _masterService.GetOperationTheatreAllocations(_departmentId, _fromDate);
+                return Ok(new ResponseVM<IEnumerable<OperationTheatreAllocation>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+        [HttpGet]
+        [Route("get-operationtheatre-list")]
+        public async Task<IActionResult> GetOperationTheatreAllocations()
+        {
+            try
+            {
+                var result = await _masterService.GetOperationTheatreList();
+                return Ok(new ResponseVM<IEnumerable<OperationTheatre>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+
+        [HttpGet]
+        [Route("get-surgery-list")]
+        public async Task<IActionResult> GetSurgeryList(int _pageNumber=1, int _rowsPerPage=100, string? _searchKeyword="")
+        {
+            try
+            {
+                var result = await _masterService.GetSurgeryList(_pageNumber, _rowsPerPage, _searchKeyword);
+                return Ok(new ResponseVM<IEnumerable<Surgery>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+        [HttpGet]
+        [Route("get-bookings-list")]
+        public async Task<IActionResult> GetBookingsList(int _pageNumber=1, int _rowsPerPage=100, string? _fromDate="",string? _toDate="")
+        {
+            try
+            {
+                var result = await _masterService.GetBookingList(_pageNumber,  _rowsPerPage,  _fromDate, _toDate);
+                return Ok(new ResponseVM<IEnumerable<Bookings>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+
         #endregion
     }
 }
+

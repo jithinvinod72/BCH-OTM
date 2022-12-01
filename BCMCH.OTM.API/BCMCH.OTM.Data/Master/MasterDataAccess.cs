@@ -3,7 +3,7 @@ using BCMCH.OTM.Data.Contract.Master;
 using BCMCH.OTM.Infrastucture.AppSettings.Abstracts;
 using Dapper;
 using System.Data;
-using System.Data.SqlClient;
+
 
 namespace BCMCH.OTM.Data.Master
 {
@@ -21,15 +21,13 @@ namespace BCMCH.OTM.Data.Master
         #endregion
 
         #region PUBLIC
-        public async Task<IEnumerable<SpecialEquipments>> SpecialEquipmentsDetails()
+        public async Task<IEnumerable<Equipments>> EquipmentsDetails()
         {
             const string StoredProcedure = "[OTM].[GET_Equipments]";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@Search", "a");
-            SqlParameters.Add("@pageNumber", 1);
-            SqlParameters.Add("@RowsOfPage", 10);
+            SqlParameters.Add("@Search", "");
 
-            var result= await _sqlHelper.QueryAsync<SpecialEquipments>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            var result= await _sqlHelper.QueryAsync<Equipments>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
         public async Task<IEnumerable<Departments>> DepartmentDetails()
@@ -44,6 +42,76 @@ namespace BCMCH.OTM.Data.Master
             return result;
         
         }
+        public async Task<IEnumerable<Anaesthesia>> GetAnaesthesiaList()
+        {
+            const string StoredProcedure = "[OTM].[GET_AnaesthesiaTypeList]";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@Search", "");
+
+            var result= await _sqlHelper.QueryAsync<Anaesthesia>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            return result;
+        }
+        public async Task<IEnumerable<Employee>> GetEmployeeList(string _searchOption , string _departmentArray )
+        {
+            const string StoredProcedure = "[OTM].[GET_StaffsWithDepartmentsMapping]";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@Search", _searchOption);
+            SqlParameters.Add("@DepartmentsToFetchFrom", _departmentArray);
+            var result= await _sqlHelper.QueryAsync<Employee>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            return result;
+        }
+
+        public async Task<IEnumerable<OperationTheatreAllocation>> GetOperationTheatreAllocations(int _departmentId=0, string? _fromDate="")
+        {
+            // if department id is 0 fetches all department datas
+            // else fetches with department id
+            const string StoredProcedure = "[OTM].[GET_OperationTheatreAllocation]";
+            var SqlParameters = new DynamicParameters();
+            
+            SqlParameters.Add("@DepartmentId", _departmentId);
+            SqlParameters.Add("@FromDate", _fromDate );
+
+            var result= await _sqlHelper.QueryAsync<OperationTheatreAllocation>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            return result;
+        }
+
+        public async Task<IEnumerable<OperationTheatre>> GetOperationTheatreList()
+        {
+            const string StoredProcedure = "[OTM].[GET_OperationTheatreList]";
+            var SqlParameters = new DynamicParameters();
+            var result= await _sqlHelper.QueryAsync<OperationTheatre>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            return result;
+        }
+
+        public async Task<IEnumerable<Surgery>> GetSurgeryList(int _pageNumber, int _rowsPerPage, string? _searchKeyword="")
+        {
+            const string StoredProcedure = "[OTM].[GET_SurgeryList]";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@PageNumber", _pageNumber);
+            SqlParameters.Add("@RowsOfPage", _rowsPerPage );
+            SqlParameters.Add("@Search", _searchKeyword );
+
+            var result= await _sqlHelper.QueryAsync<Surgery>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            return result;
+        }
+        public async Task<IEnumerable<Bookings>> GetBookingList(int _pageNumber, int _rowsPerPage, string? _fromDate,string? _toDate)
+        {
+            const string StoredProcedure = "[OTM].[GET_Bookings]";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@FromDate", _fromDate);
+            SqlParameters.Add("@ToDate",   _toDate );
+            SqlParameters.Add("@PageNumber", _pageNumber );
+            SqlParameters.Add("@RowsOfPage", _rowsPerPage );
+
+            var result= await _sqlHelper.QueryAsync<Bookings>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            return result;
+        }
         #endregion
+        
     }
 }
+
+// @FromDate   AS DATETIME,
+// @ToDate     AS DATETIME,
+// @PageNumber AS INT,
+// @RowsOfPage AS INT
