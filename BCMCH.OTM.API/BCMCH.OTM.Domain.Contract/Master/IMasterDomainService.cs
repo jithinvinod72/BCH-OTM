@@ -11,6 +11,6 @@ namespace BCMCH.OTM.Domain.Contract.Master
         Task<IEnumerable<OperationTheatreAllocation>> GetOperationTheatreAllocations(int _departmentId, string? _fromDate);
         Task<IEnumerable<OperationTheatre>> GetOperationTheatreList();
         Task<IEnumerable<Surgery>> GetSurgeryList(int _pageNumber, int _rowsPerPage, string? _searchKeyword="");
-        Task<IEnumerable<Bookings>> GetBookingList(int _pageNumber, int _rowsPerPage, string? _fromDate,string? _toDate);
+        Task<IEnumerable<Bookings>> GetBookingList(int _operationTheatreId, string? _fromDate,string? _toDate);
     }
 }
