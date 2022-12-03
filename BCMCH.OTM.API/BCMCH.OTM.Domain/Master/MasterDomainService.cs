@@ -56,13 +56,7 @@ namespace BCMCH.OTM.Domain.Master
             var result = await _masterDataAccess.GetSurgeryList(_pageNumber, _rowsPerPage, _searchKeyword);
             return result;
         }
-        public async  Task<IEnumerable<Bookings>> GetBookingList(int _operationTheatreId, string? _fromDate,string? _toDate)
-        {
-            var result = await _masterDataAccess.GetBookingList(_operationTheatreId, _fromDate, _toDate);
-            return result;
-        }
         #endregion
-        
         
     }
 }

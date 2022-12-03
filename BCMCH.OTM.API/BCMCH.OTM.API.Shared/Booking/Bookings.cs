@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BCMCH.OTM.API.Shared.Master
+namespace BCMCH.OTM.API.Shared.Booking
 {
     public class Bookings
     {

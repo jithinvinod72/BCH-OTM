@@ -94,17 +94,7 @@ namespace BCMCH.OTM.Data.Master
             var result= await _sqlHelper.QueryAsync<Surgery>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
-        public async Task<IEnumerable<Bookings>> GetBookingList(int _operationTheatreId, string? _fromDate,string? _toDate)
-        {
-            const string StoredProcedure = "[OTM].[SelectBookings]";
-            var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@FromDate", _fromDate);
-            SqlParameters.Add("@ToDate",   _toDate );
-            SqlParameters.Add("@OperationTheatreId", _operationTheatreId );
-
-            var result= await _sqlHelper.QueryAsync<Bookings>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
-            return result;
-        }
+        
         #endregion
         
     }

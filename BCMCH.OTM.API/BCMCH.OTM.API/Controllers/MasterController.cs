@@ -130,22 +130,6 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("get-bookings-list")]
-        public async Task<IActionResult> GetBookingsList(int _operationTheatreId=1, string? _fromDate="",string? _toDate="")
-        {
-            try
-            {
-                // bla
-                var result = await _masterService.GetBookingList(_operationTheatreId ,  _fromDate, _toDate);
-                return Ok(new ResponseVM<IEnumerable<Bookings>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
-            }
-            catch (Exception ex)
-            {
-                return Ok(new ResponseVM<bool>(false, ex.Message));
-            }
-        }
-
 
         #endregion
     }
