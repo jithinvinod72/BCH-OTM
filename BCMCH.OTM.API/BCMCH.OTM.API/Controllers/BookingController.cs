@@ -26,8 +26,8 @@ namespace BCMCH.OTM.API.Controllers
         #region PUBLIC
 
         [HttpGet]
-        [Route("get-bookings-list")]
-        public async Task<IActionResult> GetBookingsList(int _operationTheatreId=1, string? _fromDate="",string? _toDate="")
+        [Route("get-bookings")]
+        public async Task<IActionResult> GetBookings(int _operationTheatreId=1, string? _fromDate="",string? _toDate="")
         {
             try
             {
@@ -40,8 +40,41 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
+
+        [HttpPost]
+        [Route("post-booking")]
+        public async Task<IActionResult> PostBooking(PostBookingModel _booking)
+        {
+            try
+            {
+                var result = await _bookingService.PostBooking(_booking);
+                return Ok(new ResponseVM<IEnumerable<PostBookingModel>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+
+        // [HttpGet]
+        // [Route("is-perationtheatre-allocated")]
+        // public async Task<IActionResult> IsOperationTheatreAllocated()
+        // {
+        //     try
+        //     {
+        //         var test = await _bookingService.IsOperationTheatreAllocated();
+        //         return Ok(new ResponseVM<int>(true, ResponseMessages.DATA_ACCESS_SUCCESS, test ));
+
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return Ok(new ResponseVM<bool>(false, ex.Message));
+        //     }
+        // }
         #endregion
 
+        
 
     }
 }
