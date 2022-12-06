@@ -10,7 +10,7 @@ namespace BCMCH.OTM.Domain.Contract.Booking
 {
     public interface IBookingDomainService
     {
-        Task<IEnumerable<Bookings>> GetBookingList(int _operationTheatreId, string? _fromDate,string? _toDate);
+        Task<IEnumerable<BookingResponse>> GetBookingList(int _operationTheatreId, string? _fromDate,string? _toDate);
         Task<IEnumerable<PostBookingModel>> PostBooking(PostBookingModel _booking);
         // Task<int> IsOperationTheatreAllocated();
     }

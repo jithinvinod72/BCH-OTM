@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// using 
+
 namespace BCMCH.OTM.API.Shared.Booking
 {
-    public class Bookings
+    public class BookingResponse
     {
         public int BookingId {get; set; }
         public int OperationTheatreId {get; set; }
@@ -42,16 +44,8 @@ namespace BCMCH.OTM.API.Shared.Booking
         public string? AnaesthesiaType {get; set; }
         public int? StatusCode  {get; set; }
         public string? StatusName  {get; set; }
-        public int? EquipmentsId  {get; set; }
-        public string? EquipmentName  {get; set; }
-        public int? EmployeesId  {get; set; }
-        public int? EmployeeId {get; set; }
-        public string? EmployeeFirstName {get; set; }
-        public string? EmployeeMiddleName {get; set; }
-        public string? EmployeeLastName {get; set; }
-        public int? EmployeeDepartmentID {get; set; }
-        public int? EmployeeCategoryId {get; set; }
-        public string? EmployeeDepartmentName {get; set; }
+        public List<Equipment?> EquipmentsMapping {get; set; }
+        public List<Employee?> EmployeesMapping {get; set; }
     }
     
 }

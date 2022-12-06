@@ -33,7 +33,7 @@ namespace BCMCH.OTM.API.Controllers
             {
                 // bla
                 var result = await _bookingService.GetBookingList(_operationTheatreId ,  _fromDate, _toDate);
-                return Ok(new ResponseVM<IEnumerable<Bookings>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+                return Ok(new ResponseVM<IEnumerable<BookingResponse>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)
             {
