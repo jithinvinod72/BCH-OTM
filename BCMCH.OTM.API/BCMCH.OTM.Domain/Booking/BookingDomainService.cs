@@ -223,6 +223,13 @@ namespace BCMCH.OTM.Domain.Booking
             var result = await _bookingDataAccess.PostBooking(_booking);
             return result;
         }
-        
+
+
+        public async Task<IEnumerable<PostBookingModel>> UpdateBooking(PostBookingModel _booking)
+        {
+            //? is validation needed here?
+            var result = await _bookingDataAccess.UpdateBooking(_booking);
+            return result;
+        }
     }
 }

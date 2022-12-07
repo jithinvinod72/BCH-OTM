@@ -57,6 +57,21 @@ namespace BCMCH.OTM.API.Controllers
         }
 
 
+        [HttpPut]
+        [Route("update-booking")]
+        public async Task<IActionResult> UpdateBooking(PostBookingModel _booking)
+        {
+            try
+            {
+                var result = await _bookingService.UpdateBooking(_booking);
+                return Ok(new ResponseVM<IEnumerable<PostBookingModel>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
         // [HttpGet]
         // [Route("is-perationtheatre-allocated")]
         // public async Task<IActionResult> IsOperationTheatreAllocated()
@@ -74,7 +89,7 @@ namespace BCMCH.OTM.API.Controllers
         // }
         #endregion
 
-        
+
 
     }
 }

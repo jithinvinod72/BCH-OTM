@@ -62,6 +62,38 @@ namespace BCMCH.OTM.Data.Booking
         }
 
 
+        public async Task<IEnumerable<PostBookingModel>> UpdateBooking(PostBookingModel _booking)
+        {
+            const string StoredProcedure = "[OTM].[UpdateBooking]";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@Id", _booking.Id);
+            SqlParameters.Add("@OperationTheatreId", _booking.OperationTheatreId);
+            SqlParameters.Add("@DoctorId", _booking.DoctorId);
+            SqlParameters.Add("@AnaesthetistId", _booking.AnaesthetistId);
+
+            SqlParameters.Add("@StatusId", _booking.StatusId);
+            SqlParameters.Add("@AnaesthesiaTypeId", _booking.AnaesthesiaTypeId);
+            SqlParameters.Add("@SurgeryId", _booking.SurgeryId);
+
+            SqlParameters.Add("@RegistrationNo", _booking.RegistrationNo);
+            SqlParameters.Add("@StartDate", _booking.StartDate);
+            SqlParameters.Add("@EndDate", _booking.EndDate);
+            SqlParameters.Add("@Duration", _booking.Duration);
+            SqlParameters.Add("@InstructionToNurse", _booking.InstructionToNurse);
+            SqlParameters.Add("@InstructionToAnaesthetist", _booking.InstructionToAnaesthetist);
+            SqlParameters.Add("@InstructionToOperationTeatrePersons", _booking.InstructionToOperationTeatrePersons);
+
+            SqlParameters.Add("@RequestForSpecialMeterial", _booking.RequestForSpecialMeterial);
+            SqlParameters.Add("@DepartmentId", _booking.DepartmentId);
+            SqlParameters.Add("@Type", _booking.Type);
+            SqlParameters.Add("@EmployeeIdArray", _booking.EmployeeIdArray);
+            SqlParameters.Add("@EquipmentsIdArray", _booking.EquipmentsIdArray);
+
+            var result = await _sqlHelper.QueryAsync<PostBookingModel>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            return result;
+        }
+
+
         public async Task<int> IsOperationTheatreAllocated(int _operationTheatreId, DateTime _startDate, DateTime _endDate)
         {
             const string StoredProcedure = "[OTM].[IsOperationTheatreAllocated]";
