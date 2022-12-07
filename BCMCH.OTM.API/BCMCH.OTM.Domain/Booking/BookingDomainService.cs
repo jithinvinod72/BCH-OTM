@@ -5,12 +5,12 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
-
 using BCMCH.OTM.API.Shared.Booking;
 using BCMCH.OTM.Data.Contract.Booking;
 using BCMCH.OTM.Domain.Contract.Booking;
 using System.Runtime.CompilerServices;
 using System.Data.Common;
+
 
 namespace BCMCH.OTM.Domain.Booking
 {
@@ -51,7 +51,6 @@ namespace BCMCH.OTM.Domain.Booking
             List<Employee> _employeesListRows  = new List<Employee>(); 
             // used to store the datas of employeeid
 
-
             //  Now we loop through each unique ids
             foreach (var _uniqueBookingId in _uniqueBookingIds)
             {   
@@ -67,7 +66,6 @@ namespace BCMCH.OTM.Domain.Booking
                     _filteredEquipment.BookingId=_uniqueBookingId;
                     _filteredEquipment.Name=_filteredItem.EquipmentName;
                     // Fetches the data of Equipment from each rows 
-
 
                     Employee _filteredEmployee = new Employee();
                     _filteredEmployee.EmployeeId = _filteredItem.EmployeeId ;
@@ -92,13 +90,9 @@ namespace BCMCH.OTM.Domain.Booking
                     if(_filteredEmployee.EmployeeId!=null){
                         _employeesListRows.Add(_filteredEmployee);
                     }
-
-
                     // Console.WriteLine("bookingId : ");
                     // Console.WriteLine(_uniqueBookingId);
                     // Console.WriteLine(" ========== "); 
-
-
                 }
 
             }
@@ -108,7 +102,6 @@ namespace BCMCH.OTM.Domain.Booking
             //  The above _equipmentsListRows and _employeesListRows may contain some of the ids repeated
             //  So we need to filter that , 
             // To do that we select the unique values from both lists.
-
 
 
 
@@ -183,7 +176,6 @@ namespace BCMCH.OTM.Domain.Booking
             // Converting the output booking list to IEnumerables and passes to the next layer as response
             //END ===== Insert into response
 
-
             return _response;
         }
         #endregion
@@ -196,6 +188,7 @@ namespace BCMCH.OTM.Domain.Booking
             if(_OTAllocationStatus<1)
             {
                 throw new InvalidOperationException("the ot "+_booking.OperationTheatreId +" is not allocated");
+                // return Ok(new ResponseVM<bool>(false, ex.Message));
             }
 
 
@@ -229,6 +222,12 @@ namespace BCMCH.OTM.Domain.Booking
         {
             //? is validation needed here?
             var result = await _bookingDataAccess.UpdateBooking(_booking);
+            return result;
+        }
+
+        public async Task<IEnumerable<Blocking>> PostBocking(Blocking _blocking)
+        {
+            var result = await _bookingDataAccess.PostBocking(_blocking);
             return result;
         }
     }

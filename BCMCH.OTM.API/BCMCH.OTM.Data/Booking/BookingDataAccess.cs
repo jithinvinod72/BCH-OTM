@@ -124,5 +124,28 @@ namespace BCMCH.OTM.Data.Booking
             var result= await _sqlHelper.ExecuteAsync(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
+        
+
+
+
+        #region BLOCKING
+        public async Task<IEnumerable<Blocking>> PostBocking(Blocking _blocking)
+        {
+            const string StoredProcedure = "[OTM].[InsertBlocking]";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@OperationTheatreId", _blocking.OperationTheatreId);
+            SqlParameters.Add("@StatusId",   3 );
+            SqlParameters.Add("@StartDate", _blocking.StartDate );
+            SqlParameters.Add("@EndDate", _blocking.EndDate);
+            SqlParameters.Add("@Duration",   _blocking.Duration );
+            SqlParameters.Add("@ModifiedBy", _blocking.ModifiedBy );
+            SqlParameters.Add("@Type", "BLOCKING" );
+
+            var result= await _sqlHelper.QueryAsync<Blocking>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            return result;
+        }
+        #endregion
+
     }
+    
 }

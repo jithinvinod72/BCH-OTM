@@ -76,5 +76,26 @@ namespace BCMCH.OTM.API.Controllers
 
 
 
+        #region OT-BLOCKING
+        [HttpPost]
+        [Route("post-blocking")]
+        public async Task<IActionResult> PostBocking(Blocking _blocking)
+        {
+            try
+            {
+                var result = await _bookingService.PostBocking(_blocking);
+                return Ok(new ResponseVM<IEnumerable<Blocking>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+        #endregion
+
+
+
+
     }
 }

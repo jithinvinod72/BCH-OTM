@@ -94,6 +94,21 @@ namespace BCMCH.OTM.Data.Master
             var result= await _sqlHelper.QueryAsync<Surgery>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
+
+        public async Task<IEnumerable<Allocation>> PostAllocation(Allocation _allocation)
+        {
+            const string StoredProcedure = "[OTM].[InsertAllocation]";
+            var SqlParameters = new DynamicParameters();
+
+            SqlParameters.Add("@OperationTheatreId"     , _allocation.OperationTheatreId );
+            SqlParameters.Add("@AssignedDepartmentId"   , _allocation.AssignedDepartmentId );
+            SqlParameters.Add("@StartDate"              , _allocation.StartDate );
+            SqlParameters.Add("@EndDate"                , _allocation.EndDate );
+            SqlParameters.Add("@ModifiedBy"             , _allocation.ModifiedBy );
+
+            var result= await _sqlHelper.QueryAsync<Allocation>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            return result;
+        }
         
         #endregion
         

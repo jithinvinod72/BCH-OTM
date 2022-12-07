@@ -131,6 +131,22 @@ namespace BCMCH.OTM.API.Controllers
         }
 
 
+        [HttpPost]
+        [Route("post-Allocation")]
+        public async Task<IActionResult> PostAllocation( Allocation _allocation)
+        {
+            try
+            {
+                var result = await _masterService.PostAllocation(_allocation);
+                return Ok(new ResponseVM<IEnumerable<Allocation>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+
         #endregion
     }
 }

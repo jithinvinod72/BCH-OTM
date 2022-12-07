@@ -20,5 +20,10 @@ namespace BCMCH.OTM.Data.Contract.Booking
         Task<int> IsOperationTheatreBloked(int _operationTheatreId, DateTime _startDate, DateTime _endDate);
         Task<int> IsOperationTheatreBooked(int _operationTheatreId, DateTime _startDate, DateTime _endDate);
         // Status Check 
+
+
+        // OT blocking
+        Task<IEnumerable<Blocking>> PostBocking(Blocking _blocking);
+        // OT blocking
     }
 }

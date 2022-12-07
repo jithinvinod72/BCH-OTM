@@ -14,6 +14,8 @@ namespace BCMCH.OTM.Domain.Contract.Booking
         Task<IEnumerable<PostBookingModel>> PostBooking(PostBookingModel _booking);
         Task<IEnumerable<PostBookingModel>> UpdateBooking(PostBookingModel _booking);
 
+        Task<IEnumerable<Blocking>> PostBocking(Blocking _blocking);
+
         // Task<int> IsOperationTheatreAllocated();
     }
 }
