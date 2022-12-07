@@ -10,7 +10,8 @@ namespace BCMCH.OTM.API.Shared.Booking
     {
         public int BookingId {get; set; }
         public int OperationTheatreId {get; set; }
-        public string? IsBookedBy {get; set; }
+        public int? BookedByEmployee{get; set; }
+        public int? BookedByDepartment{get; set; }
         public int? AnaesthetistId {get; set; }
         public int? BookingStatusId {get; set; }
         public int? AnaesthesiaTypeId {get; set; }
@@ -44,8 +45,7 @@ namespace BCMCH.OTM.API.Shared.Booking
         public string? StatusName  {get; set; }
         public int? EquipmentsId  {get; set; }
         public string? EquipmentName  {get; set; }
-        public int? EmployeesId  {get; set; }
-        public int? EmployeeId {get; set; }
+        public int? EmployeeId  {get; set; }
         public string? EmployeeFirstName {get; set; }
         public string? EmployeeMiddleName {get; set; }
         public string? EmployeeLastName {get; set; }

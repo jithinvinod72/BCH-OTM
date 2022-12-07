@@ -72,21 +72,6 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
 
-        // [HttpGet]
-        // [Route("is-perationtheatre-allocated")]
-        // public async Task<IActionResult> IsOperationTheatreAllocated()
-        // {
-        //     try
-        //     {
-        //         var test = await _bookingService.IsOperationTheatreAllocated();
-        //         return Ok(new ResponseVM<int>(true, ResponseMessages.DATA_ACCESS_SUCCESS, test ));
-
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         return Ok(new ResponseVM<bool>(false, ex.Message));
-        //     }
-        // }
         #endregion
 
 

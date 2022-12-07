@@ -69,7 +69,7 @@ namespace BCMCH.OTM.Domain.Booking
                     // Fetches the data of Equipment from each rows 
 
 
-                    Employee _filteredEmployee= new Employee();
+                    Employee _filteredEmployee = new Employee();
                     _filteredEmployee.EmployeeId = _filteredItem.EmployeeId ;
                     _filteredEmployee.BookingId = _uniqueBookingId ;
                     _filteredEmployee.EmployeeFirstName = _filteredItem.EmployeeFirstName ;
@@ -78,8 +78,8 @@ namespace BCMCH.OTM.Domain.Booking
                     _filteredEmployee.EmployeeDepartmentID = _filteredItem.EmployeeDepartmentID ;
                     _filteredEmployee.EmployeeCategoryId = _filteredItem.EmployeeCategoryId ;
                     _filteredEmployee.EmployeeDepartmentName = _filteredItem.EmployeeDepartmentName ;
-                    // Fetches the data of Employees from each rows 
-
+                    // Fetches the data of Employees from each rows
+                    
 
                     if(_filteredEquipment.Id!=null)
                     {
@@ -92,12 +92,15 @@ namespace BCMCH.OTM.Domain.Booking
                     if(_filteredEmployee.EmployeeId!=null){
                         _employeesListRows.Add(_filteredEmployee);
                     }
-                    
+
+
+                    // Console.WriteLine("bookingId : ");
+                    // Console.WriteLine(_uniqueBookingId);
+                    // Console.WriteLine(" ========== "); 
+
 
                 }
 
-
-                
             }
 
             _equipmentsList = _equipmentsListRows.Select(o => o).DistinctBy(o => o.Id).ToList();
@@ -105,10 +108,6 @@ namespace BCMCH.OTM.Domain.Booking
             //  The above _equipmentsListRows and _employeesListRows may contain some of the ids repeated
             //  So we need to filter that , 
             // To do that we select the unique values from both lists.
-
-
-
-
 
 
 
@@ -133,7 +132,8 @@ namespace BCMCH.OTM.Domain.Booking
                 BookingResponse _bookingResponse = new BookingResponse();      
                 _bookingResponse.BookingId = _datasOfId.BookingId ;
                 _bookingResponse.OperationTheatreId = _datasOfId.OperationTheatreId ;
-                _bookingResponse.IsBookedBy = _datasOfId.IsBookedBy ;
+                _bookingResponse.BookedByEmployee = _datasOfId.BookedByEmployee ;
+                _bookingResponse.BookedByDepartment = _datasOfId.BookedByDepartment ;
                 _bookingResponse.AnaesthetistId = _datasOfId.AnaesthetistId ;
                 _bookingResponse.BookingStatusId = _datasOfId.BookingStatusId ;
                 _bookingResponse.AnaesthesiaTypeId = _datasOfId.AnaesthesiaTypeId ;
