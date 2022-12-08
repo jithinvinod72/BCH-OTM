@@ -66,7 +66,7 @@ namespace BCMCH.OTM.Data.Booking
         {
             const string StoredProcedure = "[OTM].[UpdateBooking]";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@Id", _booking.Id);
+            // SqlParameters.Add("@Id", _booking.Id);
             SqlParameters.Add("@OperationTheatreId", _booking.OperationTheatreId);
             SqlParameters.Add("@DoctorId", _booking.DoctorId);
             SqlParameters.Add("@AnaesthetistId", _booking.AnaesthetistId);
@@ -94,10 +94,11 @@ namespace BCMCH.OTM.Data.Booking
         }
 
 
-        public async Task<int> IsOperationTheatreAllocated(int _operationTheatreId, DateTime _startDate, DateTime _endDate)
+        public async Task<int> IsOperationTheatreAllocated(int _operationTheatreId,int _departmentId , DateTime _startDate, DateTime _endDate)
         {
             const string StoredProcedure = "[OTM].[IsOperationTheatreAllocated]";
             var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@@departmentId",_departmentId);
             SqlParameters.Add("@operationTheatreId",_operationTheatreId);
             SqlParameters.Add("@StartDateToSearch", _startDate);
             SqlParameters.Add("@EndDateToSearch",   _endDate );
@@ -129,7 +130,7 @@ namespace BCMCH.OTM.Data.Booking
 
 
         #region BLOCKING
-        public async Task<IEnumerable<Blocking>> PostBocking(Blocking _blocking)
+        public async Task<IEnumerable<Blocking>> PostBlocking(Blocking _blocking)
         {
             const string StoredProcedure = "[OTM].[InsertBlocking]";
             var SqlParameters = new DynamicParameters();

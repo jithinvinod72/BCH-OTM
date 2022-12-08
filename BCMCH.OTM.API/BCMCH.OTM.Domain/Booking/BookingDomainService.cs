@@ -183,19 +183,26 @@ namespace BCMCH.OTM.Domain.Booking
 
         public async Task<IEnumerable<PostBookingModel>> PostBooking(PostBookingModel _booking)
         {
+
+
+
+            #region VALIDATION
             // START - VALIDATION SECTION   
-            var _OTAllocationStatus = await _bookingDataAccess.IsOperationTheatreAllocated(_booking.OperationTheatreId, _booking.StartDate, _booking.EndDate);
+            var _OTAllocationStatus = await _bookingDataAccess.IsOperationTheatreAllocated(_booking.OperationTheatreId, _booking.DepartmentId, _booking.StartDate, _booking.EndDate);
             if(_OTAllocationStatus<1)
             {
-                throw new InvalidOperationException("the ot "+_booking.OperationTheatreId +" is not allocated");
-                // return Ok(new ResponseVM<bool>(false, ex.Message));
+                throw new InvalidOperationException("the ot "
+                                                    +_booking.OperationTheatreId 
+                                                    +" is not allocated");
             }
 
 
             var _OTBlockStatus = await _bookingDataAccess.IsOperationTheatreBloked(_booking.OperationTheatreId, _booking.StartDate, _booking.EndDate);
             if(_OTBlockStatus>0)
             {
-                throw new InvalidOperationException("the ot "+_booking.OperationTheatreId +" is blocked");
+                throw new InvalidOperationException("the ot "
+                                                    +_booking.OperationTheatreId 
+                                                    +" is blocked");
             }
 
 
@@ -209,6 +216,7 @@ namespace BCMCH.OTM.Domain.Booking
             }
 
             // END - VALIDATION SECTION
+            #endregion
 
 
 
@@ -220,14 +228,16 @@ namespace BCMCH.OTM.Domain.Booking
 
         public async Task<IEnumerable<PostBookingModel>> UpdateBooking(PostBookingModel _booking)
         {
-            //? is validation needed here?
+            //? is validation needed here? 
+            // YES 
+            // isblocked, isBooked, isallocated
             var result = await _bookingDataAccess.UpdateBooking(_booking);
             return result;
         }
 
-        public async Task<IEnumerable<Blocking>> PostBocking(Blocking _blocking)
+        public async Task<IEnumerable<Blocking>> PostBlocking(Blocking _blocking)
         {
-            var result = await _bookingDataAccess.PostBocking(_blocking);
+            var result = await _bookingDataAccess.PostBlocking(_blocking);
             return result;
         }
     }

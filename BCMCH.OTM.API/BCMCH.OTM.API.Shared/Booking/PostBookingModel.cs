@@ -8,8 +8,9 @@ namespace BCMCH.OTM.API.Shared.Booking
 {
     public class PostBookingModel
     {
-        public int? Id { get; set; }
+        // public int? Id { get; set; }
         public int OperationTheatreId {get; set; }
+        public int DepartmentId {get; set; }
         public int DoctorId {get; set; }
         public int AnaesthetistId {get; set; }
         public int StatusId {get; set; }
@@ -23,7 +24,6 @@ namespace BCMCH.OTM.API.Shared.Booking
         public string? InstructionToAnaesthetist {get; set; }
         public string? InstructionToOperationTeatrePersons {get; set; }
         public string? RequestForSpecialMeterial {get; set; }
-        public int? DepartmentId {get; set; }
         public string? Type {get; set; }
         public string? EmployeeIdArray {get; set; }
         public string? EquipmentsIdArray {get; set; }
