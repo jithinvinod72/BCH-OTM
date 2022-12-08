@@ -10,7 +10,7 @@ using BCMCH.OTM.Data.Contract.Booking;
 using BCMCH.OTM.Domain.Contract.Booking;
 using System.Runtime.CompilerServices;
 using System.Data.Common;
-
+using System.Globalization;
 
 namespace BCMCH.OTM.Domain.Booking
 {
@@ -184,8 +184,7 @@ namespace BCMCH.OTM.Domain.Booking
         public async Task<IEnumerable<PostBookingModel>> PostBooking(PostBookingModel _booking)
         {
 
-
-
+            convertTimeTwelveToTwentyFour(_booking.EndDate);
             #region VALIDATION
             // START - VALIDATION SECTION   
             var _OTAllocationStatus = await _bookingDataAccess.IsOperationTheatreAllocated(_booking.OperationTheatreId, _booking.DepartmentId, _booking.StartDate, _booking.EndDate);
@@ -271,6 +270,25 @@ namespace BCMCH.OTM.Domain.Booking
         {
             var result = await _bookingDataAccess.PostBlocking(_blocking);
             return result;
+        }
+
+        private DateTime convertTimeTwelveToTwentyFour( string _datetime )
+        {
+             DateTime dateTime =  DateTime.ParseExact( _datetime,  
+                                                        "yyyy/MM/dd hh:mm:ss tt", 
+                                                        System.Globalization.CultureInfo.InvariantCulture);
+            Console.WriteLine();
+            Console.Write("12 hour datetime : ");
+            Console.Write(_datetime);
+            Console.WriteLine();
+
+            Console.WriteLine();
+            Console.Write("24 hour datetime : ");
+            Console.Write(dateTime);
+            Console.WriteLine();
+
+            
+            return dateTime;
         }
     }
 }

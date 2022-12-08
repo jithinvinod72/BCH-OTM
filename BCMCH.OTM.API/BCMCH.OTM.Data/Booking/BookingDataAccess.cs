@@ -3,6 +3,7 @@ using BCMCH.OTM.Infrastucture.AppSettings.Abstracts;
 using Dapper;
 using BCMCH.OTM.API.Shared.Booking;
 using System.Data;
+using System.Data.Common;
 
 namespace BCMCH.OTM.Data.Booking
 {
@@ -94,18 +95,50 @@ namespace BCMCH.OTM.Data.Booking
         }
 
 
-        public async Task<int> IsOperationTheatreAllocated(int _operationTheatreId,int _departmentId , DateTime _startDate, DateTime _endDate)
+        public async Task<int> IsOperationTheatreAllocated(int _operationTheatreId,int _departmentId , string _startDate, string _endDate)
         {
+            // '2022/12/09 10:00:00 am'
+            // ,'2022/12/09 01:00:00 pm'
+            
             const string StoredProcedure = "[OTM].[IsOperationTheatreAllocated]";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@@departmentId",_departmentId);
-            SqlParameters.Add("@operationTheatreId",_operationTheatreId);
             SqlParameters.Add("@StartDateToSearch", _startDate);
             SqlParameters.Add("@EndDateToSearch",   _endDate );
-            var result= await _sqlHelper.ExecuteAsync(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
-            return result;
+            SqlParameters.Add("@operationTheatreId",_operationTheatreId);
+            SqlParameters.Add("@departmentId",_departmentId);
+            // var result= await _sqlHelper.ExecuteAsync(StoredProcedure, SqlParameters, CommandType.StoredProcedure);         
+            var result = await _sqlHelper.QueryAsync<Blocking>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+
+            Console.WriteLine();
+            Console.Write("IsOperationTheatreAllocated");
+            Console.WriteLine();
+            
+            Console.Write("_departmentId : ");
+            Console.Write(_departmentId);
+            Console.WriteLine();
+            
+            Console.Write("_operationTheatreId : ");
+            Console.Write(_operationTheatreId);
+            Console.WriteLine();
+            
+            Console.Write("_startDate : ");
+            Console.Write(_startDate);
+            Console.WriteLine();
+            
+            Console.Write("_endDate : " );
+            Console.Write(_endDate);
+            Console.WriteLine();
+
+            Console.Write("result : " );
+            Console.Write(result.Count());
+            Console.WriteLine();
+
+            Console.WriteLine();
+            
+            
+            return result.Count();
         }
-        public async Task<int> IsOperationTheatreBloked(int _operationTheatreId, DateTime _startDate, DateTime _endDate)
+        public async Task<int> IsOperationTheatreBloked(int _operationTheatreId, string _startDate, string _endDate)
         {
             const string StoredProcedure = "[OTM].[IsOperationTheatreBloked]";
             var SqlParameters = new DynamicParameters();
@@ -113,9 +146,31 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@StartDateToSearch", _startDate);
             SqlParameters.Add("@EndDateToSearch",   _endDate);
             var result= await _sqlHelper.ExecuteAsync(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            Console.WriteLine();
+            Console.Write("IsOperationTheatreBloked");
+            Console.WriteLine();
+            
+            
+            Console.Write("_operationTheatreId : ");
+            Console.Write(_operationTheatreId);
+            Console.WriteLine();
+            
+            Console.Write("_startDate : ");
+            Console.Write(_startDate);
+            Console.WriteLine();
+            
+            Console.Write("_endDate : " );
+            Console.Write(_endDate);
+            Console.WriteLine();
+
+            Console.Write("result : " );
+            Console.Write(result);
+            Console.WriteLine();
+
+            Console.WriteLine();
             return result;
         }
-        public async Task<int> IsOperationTheatreBooked(int _operationTheatreId, DateTime _startDate, DateTime _endDate)
+        public async Task<int> IsOperationTheatreBooked(int _operationTheatreId, string _startDate, string _endDate)
         {
             const string StoredProcedure = "[OTM].[IsOperationTheatreBooked]";
             var SqlParameters = new DynamicParameters();
@@ -123,6 +178,29 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@StartDateToSearch", _startDate);
             SqlParameters.Add("@EndDateToSearch",   _endDate);
             var result= await _sqlHelper.ExecuteAsync(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            Console.WriteLine();
+            Console.Write("IsOperationTheatreBooked");
+            Console.WriteLine();
+            
+            
+            Console.Write("_operationTheatreId : ");
+            Console.Write(_operationTheatreId);
+            Console.WriteLine();
+            
+            Console.Write("_startDate : ");
+            Console.Write(_startDate);
+            Console.WriteLine();
+            
+            Console.Write("_endDate : " );
+            Console.Write(_endDate);
+            Console.WriteLine();
+
+            Console.Write("result : " );
+            Console.Write(result);
+            Console.WriteLine();
+
+            Console.WriteLine();
+
             return result;
         }
         
