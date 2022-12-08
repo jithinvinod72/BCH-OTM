@@ -228,9 +228,41 @@ namespace BCMCH.OTM.Domain.Booking
 
         public async Task<IEnumerable<PostBookingModel>> UpdateBooking(PostBookingModel _booking)
         {
-            //? is validation needed here? 
-            // YES 
-            // isblocked, isBooked, isallocated
+            
+            
+            #region VALIDATION
+            // START - VALIDATION SECTION   
+            var _OTAllocationStatus = await _bookingDataAccess.IsOperationTheatreAllocated(_booking.OperationTheatreId, _booking.DepartmentId, _booking.StartDate, _booking.EndDate);
+            if(_OTAllocationStatus<1)
+            {
+                throw new InvalidOperationException("the ot "
+                                                    +_booking.OperationTheatreId 
+                                                    +" is not allocated");
+            }
+
+
+            var _OTBlockStatus = await _bookingDataAccess.IsOperationTheatreBloked(_booking.OperationTheatreId, _booking.StartDate, _booking.EndDate);
+            if(_OTBlockStatus>0)
+            {
+                throw new InvalidOperationException("the ot "
+                                                    +_booking.OperationTheatreId 
+                                                    +" is blocked");
+            }
+
+
+            var _OTBookingStatus    = await _bookingDataAccess.IsOperationTheatreBooked(_booking.OperationTheatreId, _booking.StartDate, _booking.EndDate);
+            if(_OTBookingStatus>0)
+            {
+                throw new InvalidOperationException("the ot "
+                                                    +_booking.OperationTheatreId 
+                                                    +" is already booked for the slot "
+                                                    +_booking.StartDate+" to "+_booking.EndDate);
+            }
+
+            // END - VALIDATION SECTION
+            #endregion
+
+
             var result = await _bookingDataAccess.UpdateBooking(_booking);
             return result;
         }
