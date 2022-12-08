@@ -117,7 +117,7 @@ namespace BCMCH.OTM.Data.Booking
         }
         public async Task<int> IsOperationTheatreBooked(int _operationTheatreId, DateTime _startDate, DateTime _endDate)
         {
-            const string StoredProcedure = "[OTM].[IsOperationTheatreBloked]";
+            const string StoredProcedure = "[OTM].[IsOperationTheatreBooked]";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@operationTheatreId",_operationTheatreId );
             SqlParameters.Add("@StartDateToSearch", _startDate);
