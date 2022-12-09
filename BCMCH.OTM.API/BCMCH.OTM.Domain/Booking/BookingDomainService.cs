@@ -184,7 +184,7 @@ namespace BCMCH.OTM.Domain.Booking
         public async Task<IEnumerable<PostBookingModel>> PostBooking(PostBookingModel _booking)
         {
 
-            convertTimeTwelveToTwentyFour(_booking.EndDate);
+            // convertTimeTwelveToTwentyFour(_booking.EndDate);
             #region VALIDATION
             // START - VALIDATION SECTION   
             var _OTAllocationStatus = await _bookingDataAccess.IsOperationTheatreAllocated(_booking.OperationTheatreId, _booking.DepartmentId, _booking.StartDate, _booking.EndDate);
@@ -205,7 +205,8 @@ namespace BCMCH.OTM.Domain.Booking
             }
 
 
-            var _OTBookingStatus    = await _bookingDataAccess.IsOperationTheatreBooked(_booking.OperationTheatreId, _booking.StartDate, _booking.EndDate);
+            var _OTBookingStatus    = await _bookingDataAccess.IsOperationTheatreBooked(0,_booking.OperationTheatreId, _booking.StartDate, _booking.EndDate);
+            //  here the first argument is zero 
             if(_OTBookingStatus>0)
             {
                 throw new InvalidOperationException("the ot "
@@ -225,7 +226,7 @@ namespace BCMCH.OTM.Domain.Booking
         }
 
 
-        public async Task<IEnumerable<PostBookingModel>> UpdateBooking(PostBookingModel _booking)
+        public async Task<IEnumerable<UpdateBookingModel>> UpdateBooking(UpdateBookingModel _booking)
         {
             
             
@@ -248,8 +249,7 @@ namespace BCMCH.OTM.Domain.Booking
                                                     +" is blocked");
             }
 
-
-            var _OTBookingStatus    = await _bookingDataAccess.IsOperationTheatreBooked(_booking.OperationTheatreId, _booking.StartDate, _booking.EndDate);
+            var _OTBookingStatus    = await _bookingDataAccess.IsOperationTheatreBooked(_booking.Id, _booking.OperationTheatreId, _booking.StartDate, _booking.EndDate);
             if(_OTBookingStatus>0)
             {
                 throw new InvalidOperationException("Operation Theatre"

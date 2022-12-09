@@ -12,13 +12,13 @@ namespace BCMCH.OTM.Data.Contract.Booking
     {
         Task<IEnumerable<Bookings>> GetBookingList(int _operationTheatreId, string? _fromDate,string? _toDate);
         Task<IEnumerable<PostBookingModel>> PostBooking(PostBookingModel _booking);
-        Task<IEnumerable<PostBookingModel>> UpdateBooking(PostBookingModel _booking);
+        Task<IEnumerable<UpdateBookingModel>> UpdateBooking(UpdateBookingModel _booking);
 
 
         // Status Check 
         Task<int> IsOperationTheatreAllocated(int _operationTheatreId,int _departmentId , string _startDate, string _endDate);
         Task<int> IsOperationTheatreBloked(int _operationTheatreId, string _startDate, string _endDate);
-        Task<int> IsOperationTheatreBooked(int _operationTheatreId, string _startDate, string _endDate);
+        Task<int> IsOperationTheatreBooked(int _bookingIdToExcludeFromSearch, int _operationTheatreId, string _startDate, string _endDate);
         // Status Check 
 
 

@@ -63,11 +63,11 @@ namespace BCMCH.OTM.Data.Booking
         }
 
 
-        public async Task<IEnumerable<PostBookingModel>> UpdateBooking(PostBookingModel _booking)
+        public async Task<IEnumerable<UpdateBookingModel>> UpdateBooking(UpdateBookingModel _booking)
         {
             const string StoredProcedure = "[OTM].[UpdateBooking]";
             var SqlParameters = new DynamicParameters();
-            // SqlParameters.Add("@Id", _booking.Id);
+            SqlParameters.Add("@Id", _booking.Id);
             SqlParameters.Add("@OperationTheatreId", _booking.OperationTheatreId);
             SqlParameters.Add("@DoctorId", _booking.DoctorId);
             SqlParameters.Add("@AnaesthetistId", _booking.AnaesthetistId);
@@ -90,24 +90,24 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@EmployeeIdArray", _booking.EmployeeIdArray);
             SqlParameters.Add("@EquipmentsIdArray", _booking.EquipmentsIdArray);
 
-            var result = await _sqlHelper.QueryAsync<PostBookingModel>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            var result = await _sqlHelper.QueryAsync<UpdateBookingModel>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
 
 
         public async Task<int> IsOperationTheatreAllocated(int _operationTheatreId,int _departmentId , string _startDate, string _endDate)
         {
-            // '2022/12/09 10:00:00 am'
-            // ,'2022/12/09 01:00:00 pm'
-            
             const string StoredProcedure = "[OTM].[IsOperationTheatreAllocated]";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@StartDateToSearch", _startDate);
             SqlParameters.Add("@EndDateToSearch",   _endDate );
             SqlParameters.Add("@operationTheatreId",_operationTheatreId);
             SqlParameters.Add("@departmentId",_departmentId);
-            // var result= await _sqlHelper.ExecuteAsync(StoredProcedure, SqlParameters, CommandType.StoredProcedure);         
-            var result = await _sqlHelper.QueryAsync<Blocking>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            var result = await _sqlHelper.QueryAsync<UpdateBookingModel>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            // the result has Ienumerable type 
+            // what we do is we simply return the count/length of the ienumerable 
+            // if the count is less than 0 then the ot is not allocated for the department 
+            // if the count is greater than 0 then the ot is allocated for the department 
 
             Console.WriteLine();
             Console.Write("IsOperationTheatreAllocated");
@@ -170,10 +170,15 @@ namespace BCMCH.OTM.Data.Booking
             Console.WriteLine();
             return result;
         }
-        public async Task<int> IsOperationTheatreBooked(int _operationTheatreId, string _startDate, string _endDate)
+        public async Task<int> IsOperationTheatreBooked(int _bookingIdToExcludeFromSearch, int _operationTheatreId, string _startDate, string _endDate)
         {
+            // _bookingIdToExcludeFromSearch is used in updation , 
+            // for updation we dont have to check the time slots with current operation id 
+            // for inserting _bookingIdToExcludeFromSearch is 0
+
             const string StoredProcedure = "[OTM].[IsOperationTheatreBooked]";
             var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@BookingIdToExclude",_bookingIdToExcludeFromSearch );
             SqlParameters.Add("@operationTheatreId",_operationTheatreId );
             SqlParameters.Add("@StartDateToSearch", _startDate);
             SqlParameters.Add("@EndDateToSearch",   _endDate);

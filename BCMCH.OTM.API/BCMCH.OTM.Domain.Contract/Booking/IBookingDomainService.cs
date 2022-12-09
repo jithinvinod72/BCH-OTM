@@ -12,7 +12,7 @@ namespace BCMCH.OTM.Domain.Contract.Booking
     {
         Task<IEnumerable<BookingResponse>> GetBookingList(int _operationTheatreId, string? _fromDate,string? _toDate);
         Task<IEnumerable<PostBookingModel>> PostBooking(PostBookingModel _booking);
-        Task<IEnumerable<PostBookingModel>> UpdateBooking(PostBookingModel _booking);
+        Task<IEnumerable<UpdateBookingModel>> UpdateBooking(UpdateBookingModel _booking);
 
         Task<IEnumerable<Blocking>> PostBlocking(Blocking _blocking);
 

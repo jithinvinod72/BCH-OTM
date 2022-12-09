@@ -59,12 +59,12 @@ namespace BCMCH.OTM.API.Controllers
 
         [HttpPut]
         [Route("update-booking")]
-        public async Task<IActionResult> UpdateBooking(PostBookingModel _booking)
+        public async Task<IActionResult> UpdateBooking(UpdateBookingModel _booking)
         {
             try
             {
                 var result = await _bookingService.UpdateBooking(_booking);
-                return Ok(new ResponseVM<IEnumerable<PostBookingModel>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+                return Ok(new ResponseVM<IEnumerable<UpdateBookingModel>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
             }
             catch (Exception ex)
             {
