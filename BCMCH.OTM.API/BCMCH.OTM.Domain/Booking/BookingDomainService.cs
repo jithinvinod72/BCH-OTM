@@ -10,6 +10,7 @@ using BCMCH.OTM.Data.Contract.Booking;
 using BCMCH.OTM.Domain.Contract.Booking;
 using System.Runtime.CompilerServices;
 using System.Data.Common;
+using BCMCH.OTM.API.Shared.General;
 using System.Globalization;
 
 namespace BCMCH.OTM.Domain.Booking
@@ -290,5 +291,11 @@ namespace BCMCH.OTM.Domain.Booking
             
             return dateTime;
         }
+
+        private ResponseModel<bool> TestMethod()
+        {
+            return  new ResponseModel<bool>( false,"test method");
+        }
+
     }
 }
