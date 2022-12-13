@@ -1,6 +1,10 @@
 ﻿using BCMCH.OTM.API.Shared.Booking;
 using BCMCH.OTM.Data.Contract.Booking;
 using BCMCH.OTM.Domain.Contract.Booking;
+using System.Runtime.CompilerServices;
+using System.Data.Common;
+using BCMCH.OTM.API.Shared.General;
+using System.Globalization;
 
 using BCMCH.OTM.API.Shared.General;
 
@@ -128,5 +132,23 @@ namespace BCMCH.OTM.Domain.Booking
             return result;
         }
 
+        private DateTime convertTimeTwelveToTwentyFour( string _datetime )
+        {
+             DateTime dateTime =  DateTime.ParseExact( _datetime,  
+                                                        "yyyy/MM/dd hh:mm:ss tt", 
+                                                        System.Globalization.CultureInfo.InvariantCulture);
+            Console.WriteLine();
+            Console.Write("12 hour datetime : ");
+            Console.Write(_datetime);
+            Console.WriteLine();
+
+            Console.WriteLine();
+            Console.Write("24 hour datetime : ");
+            Console.Write(dateTime);
+            Console.WriteLine();
+
+            
+            return dateTime;
+        }
     }
 }
