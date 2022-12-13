@@ -1,4 +1,5 @@
 ﻿using BCMCH.OTM.API.Shared.Master;
+using BCMCH.OTM.API.Shared.General;
 using BCMCH.OTM.Data.Contract.Master;
 using BCMCH.OTM.Domain.Contract.Master;
 
@@ -18,14 +19,14 @@ namespace BCMCH.OTM.Domain.Master
         #endregion
 
         #region PUBLIC
-        public async Task<IEnumerable<Equipments>> EquipmentsDetails()
+        public async Task<IEnumerable<Equipments>> GetEquipments()
         {
-            var result = await _masterDataAccess.EquipmentsDetails();
+            var result = await _masterDataAccess.GetEquipments();
             return result;
         }
-        public async Task<IEnumerable<Departments>> DepartmentDetails()
+        public async Task<IEnumerable<Departments>> GetDepartments()
         {
-            var result = await _masterDataAccess.DepartmentDetails();
+            var result = await _masterDataAccess.GetDepartments();
             return result;
         }
         
@@ -35,9 +36,14 @@ namespace BCMCH.OTM.Domain.Master
             return result;
         }
         
-        public async Task<IEnumerable<Employee>> GetEmployeeList(string _searchOption , string _departmentArray)
+        public async Task<IEnumerable<Employee>> GetEmployees(string _searchOption , string _departmentArray)
         {
-            var result = await _masterDataAccess.GetEmployeeList(_searchOption ,_departmentArray);
+            _searchOption.Replace(" ", "%");
+            _searchOption = "%"+_searchOption+"%";
+            // replace space with % for sp and 
+            // adds % as first and last charecter
+
+            var result = await _masterDataAccess.GetEmployees(_searchOption ,_departmentArray);
             return result;
         }
         public async Task<IEnumerable<OperationTheatreAllocation>> GetOperationTheatreAllocations(int _departmentId, string? _fromDate)
@@ -45,9 +51,9 @@ namespace BCMCH.OTM.Domain.Master
             var result = await _masterDataAccess.GetOperationTheatreAllocations(_departmentId, _fromDate);
             return result;
         }
-        public async Task<IEnumerable<OperationTheatre>> GetOperationTheatreList()
+        public async Task<IEnumerable<OperationTheatre>> GetOperationTheatres()
         {
-            var result = await _masterDataAccess.GetOperationTheatreList();
+            var result = await _masterDataAccess.GetOperationTheatres();
             return result;
         }
 
@@ -55,6 +61,18 @@ namespace BCMCH.OTM.Domain.Master
         {
             var result = await _masterDataAccess.GetSurgeryList(_pageNumber, _rowsPerPage, _searchKeyword);
             return result;
+        }
+        public async Task<AllMasters> GetMasters()
+        {
+            AllMasters allMasters = new AllMasters();
+
+            allMasters.EquipmentList = await _masterDataAccess.GetEquipments();
+            allMasters.AnaesthetistList = await _masterDataAccess.GetEmployees("","[2]");
+            allMasters.OperationTheatreList = await _masterDataAccess.GetOperationTheatres();
+            allMasters.AnaesthesiaList = await _masterDataAccess.GetAnaesthesiaList();
+            allMasters.DepartmentsList = await _masterDataAccess.GetDepartments();
+
+            return allMasters;
         }
 
         public async Task<IEnumerable<Allocation>> PostAllocation(Allocation _allocation)

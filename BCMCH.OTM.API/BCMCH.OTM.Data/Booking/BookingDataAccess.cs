@@ -27,7 +27,6 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@FromDate", fromDate);
             SqlParameters.Add("@ToDate",   toDate );
             SqlParameters.Add("@OperationTheatreId", operationTheatreId );
-
             var result= await _sqlHelper.QueryAsync<Bookings>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
