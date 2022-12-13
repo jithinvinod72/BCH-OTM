@@ -27,13 +27,13 @@ namespace BCMCH.OTM.API.Controllers
 
         [HttpGet]
         [Route("get-bookings")]
-        public async Task<IActionResult> GetBookings(int _operationTheatreId=1, string? _fromDate="",string? _toDate="")
+        public async Task<IActionResult> GetBookings(int operationTheatreId=1, string? fromDate="",string? toDate="")
         {
             try
             {
                 // bla
-                var result = await _bookingService.GetBookingList(_operationTheatreId ,  _fromDate, _toDate);
-                return Ok(new ResponseVM<IEnumerable<BookingResponse>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+                var result = await _bookingService.GetBookingList(operationTheatreId ,  fromDate, toDate);
+                return Ok(new ResponseVM<IEnumerable<Bookings>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)
             {
@@ -42,12 +42,12 @@ namespace BCMCH.OTM.API.Controllers
         }
 
         [HttpPost]
-        [Route("post-booking")]
-        public async Task<IActionResult> PostBooking(PostBookingModel _booking)
+        [Route("add-booking")]
+        public async Task<IActionResult> AddBooking(PostBookingModel booking)
         {
             try
             {
-                var result = await _bookingService.PostBooking(_booking);
+                var result = await _bookingService.AddBooking(booking);
                 return Ok(new ResponseVM<IEnumerable<PostBookingModel>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)
@@ -78,12 +78,12 @@ namespace BCMCH.OTM.API.Controllers
 
         #region OT-BLOCKING
         [HttpPost]
-        [Route("post-blocking")]
-        public async Task<IActionResult> PostBlocking(Blocking _blocking)
+        [Route("add-blocking")]
+        public async Task<IActionResult> AddBlocking(Blocking _blocking)
         {
             try
             {
-                var result = await _bookingService.PostBlocking(_blocking);
+                var result = await _bookingService.AddBlocking(_blocking);
                 return Ok(new ResponseVM<IEnumerable<Blocking>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
             }
             catch (Exception ex)

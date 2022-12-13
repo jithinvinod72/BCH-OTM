@@ -20,89 +20,89 @@ namespace BCMCH.OTM.Data.Booking
         }
         #endregion
 
-        public async Task<IEnumerable<Bookings>> GetBookingList(int _operationTheatreId, string? _fromDate,string? _toDate)
+        public async Task<IEnumerable<Bookings>> GetBookingList(int operationTheatreId, string? fromDate,string? toDate)
         {
             const string StoredProcedure = "[OTM].[SelectBookings]";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@FromDate", _fromDate);
-            SqlParameters.Add("@ToDate",   _toDate );
-            SqlParameters.Add("@OperationTheatreId", _operationTheatreId );
+            SqlParameters.Add("@FromDate", fromDate);
+            SqlParameters.Add("@ToDate",   toDate );
+            SqlParameters.Add("@OperationTheatreId", operationTheatreId );
 
             var result= await _sqlHelper.QueryAsync<Bookings>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
 
-        public async Task<IEnumerable<PostBookingModel>> PostBooking(PostBookingModel _booking)
+        public async Task<IEnumerable<PostBookingModel>> AddBooking(PostBookingModel booking)
         {
             const string StoredProcedure = "[OTM].[InsertBooking]";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@OperationTheatreId", _booking.OperationTheatreId);
-            SqlParameters.Add("@DoctorId",   _booking.DoctorId );
-            SqlParameters.Add("@AnaesthetistId", _booking.AnaesthetistId );
+            SqlParameters.Add("@OperationTheatreId", booking.OperationTheatreId);
+            SqlParameters.Add("@DoctorId",   booking.DoctorId );
+            SqlParameters.Add("@AnaesthetistId", booking.AnaesthetistId );
 
-            SqlParameters.Add("@StatusId", _booking.StatusId );
-            SqlParameters.Add("@AnaesthesiaTypeId", _booking.AnaesthesiaTypeId );
-            SqlParameters.Add("@SurgeryId", _booking.SurgeryId );
+            SqlParameters.Add("@StatusId", booking.StatusId );
+            SqlParameters.Add("@AnaesthesiaTypeId", booking.AnaesthesiaTypeId );
+            SqlParameters.Add("@SurgeryId", booking.SurgeryId );
 
-            SqlParameters.Add("@RegistrationNo", _booking.RegistrationNo );
-            SqlParameters.Add("@StartDate", _booking.StartDate );
-            SqlParameters.Add("@EndDate", _booking.EndDate );
-            SqlParameters.Add("@Duration", _booking.Duration );
-            SqlParameters.Add("@InstructionToNurse", _booking.InstructionToNurse );
-            SqlParameters.Add("@InstructionToAnaesthetist", _booking.InstructionToAnaesthetist );
-            SqlParameters.Add("@InstructionToOperationTeatrePersons", _booking.InstructionToOperationTeatrePersons );
+            SqlParameters.Add("@RegistrationNo", booking.RegistrationNo );
+            SqlParameters.Add("@StartDate", booking.StartDate );
+            SqlParameters.Add("@EndDate", booking.EndDate );
+            SqlParameters.Add("@Duration", booking.Duration );
+            SqlParameters.Add("@InstructionToNurse", booking.InstructionToNurse );
+            SqlParameters.Add("@InstructionToAnaesthetist", booking.InstructionToAnaesthetist );
+            SqlParameters.Add("@InstructionToOperationTeatrePersons", booking.InstructionToOperationTeatrePersons );
 
-            SqlParameters.Add("@RequestForSpecialMeterial", _booking.RequestForSpecialMeterial );
-            SqlParameters.Add("@DepartmentId", _booking.DepartmentId );
-            SqlParameters.Add("@Type", _booking.Type );
-            SqlParameters.Add("@EmployeeIdArray", _booking.EmployeeIdArray );
-            SqlParameters.Add("@EquipmentsIdArray", _booking.EquipmentsIdArray );
+            SqlParameters.Add("@RequestForSpecialMeterial", booking.RequestForSpecialMeterial );
+            SqlParameters.Add("@DepartmentId", booking.DepartmentId );
+            SqlParameters.Add("@Type", booking.Type );
+            SqlParameters.Add("@EmployeeIdArray", booking.EmployeeIdArray );
+            SqlParameters.Add("@EquipmentsIdArray", booking.EquipmentsIdArray );
 
             var result= await _sqlHelper.QueryAsync<PostBookingModel>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
 
 
-        public async Task<IEnumerable<UpdateBookingModel>> UpdateBooking(UpdateBookingModel _booking)
+        public async Task<IEnumerable<UpdateBookingModel>> UpdateBooking(UpdateBookingModel booking)
         {
             const string StoredProcedure = "[OTM].[UpdateBooking]";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@Id", _booking.Id);
-            SqlParameters.Add("@OperationTheatreId", _booking.OperationTheatreId);
-            SqlParameters.Add("@DoctorId", _booking.DoctorId);
-            SqlParameters.Add("@AnaesthetistId", _booking.AnaesthetistId);
+            SqlParameters.Add("@Id", booking.Id);
+            SqlParameters.Add("@OperationTheatreId", booking.OperationTheatreId);
+            SqlParameters.Add("@DoctorId", booking.DoctorId);
+            SqlParameters.Add("@AnaesthetistId", booking.AnaesthetistId);
 
-            SqlParameters.Add("@StatusId", _booking.StatusId);
-            SqlParameters.Add("@AnaesthesiaTypeId", _booking.AnaesthesiaTypeId);
-            SqlParameters.Add("@SurgeryId", _booking.SurgeryId);
+            SqlParameters.Add("@StatusId", booking.StatusId);
+            SqlParameters.Add("@AnaesthesiaTypeId", booking.AnaesthesiaTypeId);
+            SqlParameters.Add("@SurgeryId", booking.SurgeryId);
 
-            SqlParameters.Add("@RegistrationNo", _booking.RegistrationNo);
-            SqlParameters.Add("@StartDate", _booking.StartDate);
-            SqlParameters.Add("@EndDate", _booking.EndDate);
-            SqlParameters.Add("@Duration", _booking.Duration);
-            SqlParameters.Add("@InstructionToNurse", _booking.InstructionToNurse);
-            SqlParameters.Add("@InstructionToAnaesthetist", _booking.InstructionToAnaesthetist);
-            SqlParameters.Add("@InstructionToOperationTeatrePersons", _booking.InstructionToOperationTeatrePersons);
+            SqlParameters.Add("@RegistrationNo", booking.RegistrationNo);
+            SqlParameters.Add("@StartDate", booking.StartDate);
+            SqlParameters.Add("@EndDate", booking.EndDate);
+            SqlParameters.Add("@Duration", booking.Duration);
+            SqlParameters.Add("@InstructionToNurse", booking.InstructionToNurse);
+            SqlParameters.Add("@InstructionToAnaesthetist", booking.InstructionToAnaesthetist);
+            SqlParameters.Add("@InstructionToOperationTeatrePersons", booking.InstructionToOperationTeatrePersons);
 
-            SqlParameters.Add("@RequestForSpecialMeterial", _booking.RequestForSpecialMeterial);
-            SqlParameters.Add("@DepartmentId", _booking.DepartmentId);
-            SqlParameters.Add("@Type", _booking.Type);
-            SqlParameters.Add("@EmployeeIdArray", _booking.EmployeeIdArray);
-            SqlParameters.Add("@EquipmentsIdArray", _booking.EquipmentsIdArray);
+            SqlParameters.Add("@RequestForSpecialMeterial", booking.RequestForSpecialMeterial);
+            SqlParameters.Add("@DepartmentId", booking.DepartmentId);
+            SqlParameters.Add("@Type", booking.Type);
+            SqlParameters.Add("@EmployeeIdArray", booking.EmployeeIdArray);
+            SqlParameters.Add("@EquipmentsIdArray", booking.EquipmentsIdArray);
 
             var result = await _sqlHelper.QueryAsync<UpdateBookingModel>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
 
 
-        public async Task<int> IsOperationTheatreAllocated(int _operationTheatreId,int _departmentId , string _startDate, string _endDate)
+        public async Task<int> IsOperationTheatreAllocated(int operationTheatreId,int departmentId , string startDate, string endDate)
         {
             const string StoredProcedure = "[OTM].[IsOperationTheatreAllocated]";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@StartDateToSearch", _startDate);
-            SqlParameters.Add("@EndDateToSearch",   _endDate );
-            SqlParameters.Add("@operationTheatreId",_operationTheatreId);
-            SqlParameters.Add("@departmentId",_departmentId);
+            SqlParameters.Add("@StartDateToSearch", startDate);
+            SqlParameters.Add("@EndDateToSearch",   endDate );
+            SqlParameters.Add("@operationTheatreId",operationTheatreId);
+            SqlParameters.Add("@departmentId",departmentId);
             var result = await _sqlHelper.QueryAsync<UpdateBookingModel>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             // the result has Ienumerable type 
             // what we do is we simply return the count/length of the ienumerable 
@@ -113,20 +113,20 @@ namespace BCMCH.OTM.Data.Booking
             Console.Write("IsOperationTheatreAllocated");
             Console.WriteLine();
             
-            Console.Write("_departmentId : ");
-            Console.Write(_departmentId);
+            Console.Write("departmentId : ");
+            Console.Write(departmentId);
             Console.WriteLine();
             
-            Console.Write("_operationTheatreId : ");
-            Console.Write(_operationTheatreId);
+            Console.Write("operationTheatreId : ");
+            Console.Write(operationTheatreId);
             Console.WriteLine();
             
-            Console.Write("_startDate : ");
-            Console.Write(_startDate);
+            Console.Write("startDate : ");
+            Console.Write(startDate);
             Console.WriteLine();
             
-            Console.Write("_endDate : " );
-            Console.Write(_endDate);
+            Console.Write("endDate : " );
+            Console.Write(endDate);
             Console.WriteLine();
 
             Console.Write("result : " );
@@ -138,29 +138,29 @@ namespace BCMCH.OTM.Data.Booking
             
             return result.Count();
         }
-        public async Task<int> IsOperationTheatreBloked(int _operationTheatreId, string _startDate, string _endDate)
+        public async Task<int> IsOperationTheatreBloked(int operationTheatreId, string startDate, string endDate)
         {
             const string StoredProcedure = "[OTM].[IsOperationTheatreBloked]";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@operationTheatreId",   _operationTheatreId );
-            SqlParameters.Add("@StartDateToSearch", _startDate);
-            SqlParameters.Add("@EndDateToSearch",   _endDate);
+            SqlParameters.Add("@operationTheatreId",   operationTheatreId );
+            SqlParameters.Add("@StartDateToSearch", startDate);
+            SqlParameters.Add("@EndDateToSearch",   endDate);
             var result= await _sqlHelper.ExecuteAsync(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             Console.WriteLine();
             Console.Write("IsOperationTheatreBloked");
             Console.WriteLine();
             
             
-            Console.Write("_operationTheatreId : ");
-            Console.Write(_operationTheatreId);
+            Console.Write("operationTheatreId : ");
+            Console.Write(operationTheatreId);
             Console.WriteLine();
             
-            Console.Write("_startDate : ");
-            Console.Write(_startDate);
+            Console.Write("startDate : ");
+            Console.Write(startDate);
             Console.WriteLine();
             
-            Console.Write("_endDate : " );
-            Console.Write(_endDate);
+            Console.Write("endDate : " );
+            Console.Write(endDate);
             Console.WriteLine();
 
             Console.Write("result : " );
@@ -170,34 +170,34 @@ namespace BCMCH.OTM.Data.Booking
             Console.WriteLine();
             return result;
         }
-        public async Task<int> IsOperationTheatreBooked(int _bookingIdToExcludeFromSearch, int _operationTheatreId, string _startDate, string _endDate)
+        public async Task<int> IsOperationTheatreBooked(int bookingIdToExcludeFromSearch, int operationTheatreId, string startDate, string endDate)
         {
-            // _bookingIdToExcludeFromSearch is used in updation , 
+            // bookingIdToExcludeFromSearch is used in updation , 
             // for updation we dont have to check the time slots with current operation id 
-            // for inserting _bookingIdToExcludeFromSearch is 0
+            // for inserting bookingIdToExcludeFromSearch is 0
 
             const string StoredProcedure = "[OTM].[IsOperationTheatreBooked]";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@BookingIdToExclude",_bookingIdToExcludeFromSearch );
-            SqlParameters.Add("@operationTheatreId",_operationTheatreId );
-            SqlParameters.Add("@StartDateToSearch", _startDate);
-            SqlParameters.Add("@EndDateToSearch",   _endDate);
+            SqlParameters.Add("@BookingIdToExclude",bookingIdToExcludeFromSearch );
+            SqlParameters.Add("@operationTheatreId",operationTheatreId );
+            SqlParameters.Add("@StartDateToSearch", startDate);
+            SqlParameters.Add("@EndDateToSearch",   endDate);
             var result= await _sqlHelper.ExecuteAsync(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             Console.WriteLine();
             Console.Write("IsOperationTheatreBooked");
             Console.WriteLine();
             
             
-            Console.Write("_operationTheatreId : ");
-            Console.Write(_operationTheatreId);
+            Console.Write("operationTheatreId : ");
+            Console.Write(operationTheatreId);
             Console.WriteLine();
             
-            Console.Write("_startDate : ");
-            Console.Write(_startDate);
+            Console.Write("startDate : ");
+            Console.Write(startDate);
             Console.WriteLine();
             
-            Console.Write("_endDate : " );
-            Console.Write(_endDate);
+            Console.Write("endDate : " );
+            Console.Write(endDate);
             Console.WriteLine();
 
             Console.Write("result : " );
@@ -213,17 +213,17 @@ namespace BCMCH.OTM.Data.Booking
 
 
         #region BLOCKING
-        public async Task<IEnumerable<Blocking>> PostBlocking(Blocking _blocking)
+        public async Task<IEnumerable<Blocking>> AddBlocking(Blocking blocking)
         {
             const string StoredProcedure = "[OTM].[InsertBlocking]";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@OperationTheatreId", _blocking.OperationTheatreId);
+            SqlParameters.Add("@OperationTheatreId", blocking.OperationTheatreId);
             SqlParameters.Add("@StatusId",   3 );
-            SqlParameters.Add("@StartDate", _blocking.StartDate );
-            SqlParameters.Add("@EndDate", _blocking.EndDate);
-            SqlParameters.Add("@Duration",   _blocking.Duration );
-            SqlParameters.Add("@ModifiedBy", _blocking.ModifiedBy );
-            SqlParameters.Add("@Type", "BLOCKING" );
+            SqlParameters.Add("@StartDate", blocking.StartDate );
+            SqlParameters.Add("@EndDate", blocking.EndDate);
+            SqlParameters.Add("@Duration",   blocking.Duration );
+            SqlParameters.Add("@ModifiedBy", blocking.ModifiedBy );
+            SqlParameters.Add("@Type", "BLOCK" );
 
             var result= await _sqlHelper.QueryAsync<Blocking>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
