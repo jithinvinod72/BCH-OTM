@@ -81,7 +81,7 @@ namespace BCMCH.OTM.Domain.Booking
         }
 
 
-        public async Task<Envelope<IEnumerable<UpdateBookingModel>>> UpdateBooking(UpdateBookingModel _booking)
+        public async Task<Envelope<IEnumerable<UpdateBookingModel>>> UpdateBooking(UpdateBookingModel booking)
         {
             
             
@@ -115,7 +115,7 @@ namespace BCMCH.OTM.Domain.Booking
             #endregion
 
 
-            var result = await _bookingDataAccess.UpdateBooking(_booking);
+            var result = await _bookingDataAccess.UpdateBooking(booking);
 
              return new Envelope<IEnumerable<UpdateBookingModel>>(true,"data-update-success", result); ;
         }
