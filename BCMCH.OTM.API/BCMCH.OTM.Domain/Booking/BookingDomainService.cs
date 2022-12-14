@@ -12,6 +12,7 @@ using System.Runtime.CompilerServices;
 using System.Data.Common;
 using BCMCH.OTM.API.Shared.General;
 using System.Globalization;
+using BCMCH.OTM.Infrastucture.Generic;
 
 namespace BCMCH.OTM.Domain.Booking
 {
@@ -227,7 +228,7 @@ namespace BCMCH.OTM.Domain.Booking
         }
 
 
-        public async Task<IEnumerable<UpdateBookingModel>> UpdateBooking(UpdateBookingModel _booking)
+        public async Task<Envelope<IEnumerable<UpdateBookingModel>>> UpdateBooking(UpdateBookingModel _booking)
         {
             
             
@@ -236,9 +237,7 @@ namespace BCMCH.OTM.Domain.Booking
             var _OTAllocationStatus = await _bookingDataAccess.IsOperationTheatreAllocated(_booking.OperationTheatreId, _booking.DepartmentId, _booking.StartDate, _booking.EndDate);
             if(_OTAllocationStatus<1)
             {
-                throw new InvalidOperationException("Operation Theatre "
-                                                    +_booking.OperationTheatreId 
-                                                    +" is not allocated");
+               return new Envelope<IEnumerable<UpdateBookingModel>>(false,"data-update-failed");
             }
 
 
@@ -264,7 +263,8 @@ namespace BCMCH.OTM.Domain.Booking
 
 
             var result = await _bookingDataAccess.UpdateBooking(_booking);
-            return result;
+
+             return new Envelope<IEnumerable<UpdateBookingModel>>(true,"data-update-success", result); ;
         }
 
         public async Task<IEnumerable<Blocking>> PostBlocking(Blocking _blocking)
