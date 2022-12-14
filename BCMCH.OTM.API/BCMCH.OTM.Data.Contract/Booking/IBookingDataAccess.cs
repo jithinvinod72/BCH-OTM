@@ -10,20 +10,20 @@ namespace BCMCH.OTM.Data.Contract.Booking
 {
     public interface IBookingDataAccess
     {
-        Task<IEnumerable<Bookings>> GetBookingList(int _operationTheatreId, string? _fromDate,string? _toDate);
-        Task<IEnumerable<PostBookingModel>> PostBooking(PostBookingModel _booking);
-        Task<IEnumerable<UpdateBookingModel>> UpdateBooking(UpdateBookingModel _booking);
+        Task<IEnumerable<Bookings>> GetBookingList(int operationTheatreId, string? fromDate,string? toDate);
+        Task<IEnumerable<PostBookingModel>> AddBooking(PostBookingModel booking);
+        Task<IEnumerable<UpdateBookingModel>> UpdateBooking(UpdateBookingModel booking);
 
 
         // Status Check 
-        Task<int> IsOperationTheatreAllocated(int _operationTheatreId,int _departmentId , string _startDate, string _endDate);
-        Task<int> IsOperationTheatreBloked(int _operationTheatreId, string _startDate, string _endDate);
-        Task<int> IsOperationTheatreBooked(int _bookingIdToExcludeFromSearch, int _operationTheatreId, string _startDate, string _endDate);
+        Task<int> IsOperationTheatreAllocated(int operationTheatreId,int departmentId , string startDate, string endDate);
+        Task<int> IsOperationTheatreBloked(int operationTheatreId, string startDate, string endDate);
+        Task<int> IsOperationTheatreBooked(int bookingIdToExcludeFromSearch, int operationTheatreId, string startDate, string endDate);
         // Status Check 
 
 
         // OT blocking
-        Task<IEnumerable<Blocking>> PostBlocking(Blocking _blocking);
+        Task<IEnumerable<Blocking>> AddBlocking(Blocking blocking);
         // OT blocking
     }
 }

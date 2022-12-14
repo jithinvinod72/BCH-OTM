@@ -1,4 +1,5 @@
 ﻿using BCMCH.OTM.API.Shared.Master;
+using BCMCH.OTM.API.Shared.General;
 using BCMCH.OTM.API.ViewModels.Generic;
 using BCMCH.OTM.API.ViewModels.ResponseMessage;
 using BCMCH.OTM.Domain.Contract.Master;
@@ -23,13 +24,13 @@ namespace BCMCH.OTM.API.Controllers
 
         #region PUBLIC
         [HttpGet]
-        [Route("get-equipments-details")]
-        public async Task<IActionResult> EquipmentsDetails()
+        [Route("get-equipments")]
+        public async Task<IActionResult> GetEquipments()
         {
 
             try
             {
-                var result = await _masterService.EquipmentsDetails();
+                var result = await _masterService.GetEquipments();
                 return Ok(new ResponseVM<IEnumerable<Equipments>>(true, ResponseMessages.DATA_ACCESS_SUCCESS,result));
             }
             catch (Exception ex)
@@ -39,12 +40,12 @@ namespace BCMCH.OTM.API.Controllers
         }
         
         [HttpGet]
-        [Route("get-departments-details")]
-        public async Task<IActionResult> Departments()
+        [Route("get-departments")]
+        public async Task<IActionResult> GetDepartments()
         {
             try
             {
-                var result = await _masterService.DepartmentDetails();
+                var result = await _masterService.GetDepartments();
                 return Ok(new ResponseVM<IEnumerable<Departments>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)
@@ -55,7 +56,7 @@ namespace BCMCH.OTM.API.Controllers
 
 
         [HttpGet]
-        [Route("get-anasthesia-list")]
+        [Route("get-anasthesiatypes")]
         public async Task<IActionResult> GetAnaesthesiaList()
         {
             try
@@ -70,12 +71,12 @@ namespace BCMCH.OTM.API.Controllers
         }
 
         [HttpGet]
-        [Route("get-employee-list")]
-        public async Task<IActionResult> GetEmployeeList(string? SearchKeyword=""  , string departments="[]" )
+        [Route("get-employees")]
+        public async Task<IActionResult> GetEmployees(string? SearchKeyword=""  , string departments="[]" )
         {
             try
             {
-                var result = await _masterService.GetEmployeeList(SearchKeyword,departments);
+                var result = await _masterService.GetEmployees(SearchKeyword,departments);
                 return Ok(new ResponseVM<IEnumerable<Employee>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)
@@ -100,12 +101,12 @@ namespace BCMCH.OTM.API.Controllers
         }
 
         [HttpGet]
-        [Route("get-operationtheatre-list")]
-        public async Task<IActionResult> GetOperationTheatreAllocations()
+        [Route("get-operationtheatres")]
+        public async Task<IActionResult> GetOperationTheatres()
         {
             try
             {
-                var result = await _masterService.GetOperationTheatreList();
+                var result = await _masterService.GetOperationTheatres();
                 return Ok(new ResponseVM<IEnumerable<OperationTheatre>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)
@@ -123,6 +124,22 @@ namespace BCMCH.OTM.API.Controllers
             {
                 var result = await _masterService.GetSurgeryList(_pageNumber, _rowsPerPage, _searchKeyword);
                 return Ok(new ResponseVM<IEnumerable<Surgery>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+
+        [HttpGet]
+        [Route("get-masters")]
+        public async Task<IActionResult> GetMasters()
+        {
+            try
+            {
+                var result = await _masterService.GetMasters();
+                return Ok(new ResponseVM<AllMasters>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)
             {

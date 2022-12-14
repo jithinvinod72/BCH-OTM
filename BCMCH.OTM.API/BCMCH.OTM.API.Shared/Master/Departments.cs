@@ -13,6 +13,6 @@ namespace BCMCH.OTM.API.Shared.Master
         public int DivisionId {get;set;}
         public int TypeCode {get;set;}
         public string? DepartmentName { get; set; }
-        // public string? Description { get; set; }
+
     }
 }

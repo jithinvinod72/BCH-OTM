@@ -1,4 +1,5 @@
 ﻿using BCMCH.OTM.API.Shared.Master;
+using BCMCH.OTM.API.Shared.General;
 using BCMCH.OTM.Data.Contract.Master;
 using BCMCH.OTM.Infrastucture.AppSettings.Abstracts;
 using Dapper;
@@ -21,7 +22,7 @@ namespace BCMCH.OTM.Data.Master
         #endregion
 
         #region PUBLIC
-        public async Task<IEnumerable<Equipments>> EquipmentsDetails()
+        public async Task<IEnumerable<Equipments>> GetEquipments()
         {
             const string StoredProcedure = "[OTM].[SelectEquipments]";
             var SqlParameters = new DynamicParameters();
@@ -30,14 +31,11 @@ namespace BCMCH.OTM.Data.Master
             return result;
         }
         
-        public async Task<IEnumerable<Departments>> DepartmentDetails()
+        public async Task<IEnumerable<Departments>> GetDepartments()
         {
             const string StoredProcedure = "[OTM].[SelectDepartments]";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@Search", "");
-            SqlParameters.Add("@pageNumber", 1);
-            SqlParameters.Add("@RowsOfPage", 100);
-
             var result= await _sqlHelper.QueryAsync<Departments>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         
@@ -47,11 +45,10 @@ namespace BCMCH.OTM.Data.Master
             const string StoredProcedure = "[OTM].[SelectAnaesthesiaList]";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@Search", "");
-
             var result= await _sqlHelper.QueryAsync<Anaesthesia>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
-        public async Task<IEnumerable<Employee>> GetEmployeeList(string _searchOption , string _departmentArray )
+        public async Task<IEnumerable<Employee>> GetEmployees(string _searchOption , string _departmentArray )
         {
             const string StoredProcedure = "[OTM].[SelectEmployeesWithDepartmentsMapping]";
             var SqlParameters = new DynamicParameters();
@@ -75,7 +72,7 @@ namespace BCMCH.OTM.Data.Master
             return result;
         }
 
-        public async Task<IEnumerable<OperationTheatre>> GetOperationTheatreList()
+        public async Task<IEnumerable<OperationTheatre>> GetOperationTheatres()
         {
             const string StoredProcedure = "[OTM].[SelectOperationTheatres]";
             var SqlParameters = new DynamicParameters();
@@ -94,6 +91,17 @@ namespace BCMCH.OTM.Data.Master
             var result= await _sqlHelper.QueryAsync<Surgery>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
+        // public async Task<IEnumerable<AllMasters>> GetMasters(int _pageNumber, int _rowsPerPage, string? _searchKeyword="")
+        // {
+        //     const string StoredProcedure = "[OTM].[SelectSurgeries]";
+        //     var SqlParameters = new DynamicParameters();
+        //     SqlParameters.Add("@PageNumber", _pageNumber);
+        //     SqlParameters.Add("@RowsOfPage", _rowsPerPage );
+        //     SqlParameters.Add("@Search", _searchKeyword );
+
+        //     var result= await _sqlHelper.QueryAsync<Surgery>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+        //     return result;
+        // }
 
         public async Task<IEnumerable<Allocation>> PostAllocation(Allocation _allocation)
         {

@@ -1,0 +1,26 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using BCMCH.OTM.API.Shared.General;
+using BCMCH.OTM.API.Shared.Master;
+
+namespace BCMCH.OTM.API.Shared.Master
+{
+    public class AllMasters
+    {
+        public IEnumerable<Equipments> EquipmentList {get; set;}
+        public IEnumerable<Employee> AnaesthetistList {get; set;}
+        public IEnumerable<OperationTheatre> OperationTheatreList {get; set;}
+        public IEnumerable<Anaesthesia> AnaesthesiaList {get; set;}
+        public IEnumerable<Departments> DepartmentsList {get; set;}
+    }
+}
+
+
+// OT List 
+// Equipments LIST 
+// Anasthetia type list
+
+// department List
