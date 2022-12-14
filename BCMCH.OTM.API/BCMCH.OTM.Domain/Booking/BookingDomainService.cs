@@ -85,37 +85,28 @@ namespace BCMCH.OTM.Domain.Booking
         {
             
             
-            #region VALIDATION
-            // START - VALIDATION SECTION   
-            var _OTAllocationStatus = await _bookingDataAccess.IsOperationTheatreAllocated(booking.OperationTheatreId, booking.DepartmentId, booking.StartDate, booking.EndDate);
-            if(_OTAllocationStatus<1)
+            #region VALIDATION  
+            var OTAllocationStatus = await _bookingDataAccess.IsOperationTheatreAllocated(booking.OperationTheatreId, booking.DepartmentId, booking.StartDate, booking.EndDate);
+            if(OTAllocationStatus < 1)
             {
                return new Envelope<IEnumerable<UpdateBookingModel>>(false,"data-update-failed");
             }
 
-
-            var _OTBlockStatus = await _bookingDataAccess.IsOperationTheatreBloked(booking.OperationTheatreId, booking.StartDate, booking.EndDate);
-            if(_OTBlockStatus>0)
+            var OTBlockStatus = await _bookingDataAccess.IsOperationTheatreBloked(booking.OperationTheatreId, booking.StartDate, booking.EndDate);
+            if(OTBlockStatus > 0)
             {
-                throw new InvalidOperationException("Operation Theatre"
-                                                    +booking.OperationTheatreId 
-                                                    +" is blocked");
+                return new Envelope<IEnumerable<UpdateBookingModel>>(false, $"Operation Theatre {booking.OperationTheatreId} is blocked");
             }
 
-            var _OTBookingStatus    = await _bookingDataAccess.IsOperationTheatreBooked(booking.Id, booking.OperationTheatreId, booking.StartDate, booking.EndDate);
-            if(_OTBookingStatus>0)
+            var OTBookingStatus    = await _bookingDataAccess.IsOperationTheatreBooked(booking.Id, booking.OperationTheatreId, booking.StartDate, booking.EndDate);
+            if(OTBookingStatus > 0)
             {
-                throw new InvalidOperationException("Operation Theatre"
-                                                    +booking.OperationTheatreId 
-                                                    +" is already booked for the slot "
-                                                    +booking.StartDate+" to "+booking.EndDate);
+                return new Envelope<IEnumerable<UpdateBookingModel>>(false, $"Operation Theatre {booking.OperationTheatreId} is already booked for the slot ${booking.StartDate} to ${booking.EndDate}");
             }
-
-            // END - VALIDATION SECTION
             #endregion
 
 
-            var result = await _bookingDataAccess.UpdateBooking(booking);
+             var result = await _bookingDataAccess.UpdateBooking(booking);
 
              return new Envelope<IEnumerable<UpdateBookingModel>>(true,"data-update-success", result); ;
         }
