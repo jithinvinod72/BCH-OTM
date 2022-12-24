@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Data.Common;
 using BCMCH.OTM.API.Shared.General;
 using System.Globalization;
+using BCMCH.OTM.Infrastucture.Generic;
 
 using BCMCH.OTM.API.Shared.General;
 
@@ -80,50 +81,34 @@ namespace BCMCH.OTM.Domain.Booking
         }
 
 
-        public async Task<IEnumerable<UpdateBookingModel>> UpdateBooking(UpdateBookingModel booking)
+        public async Task<Envelope<IEnumerable<UpdateBookingModel>>> UpdateBooking(UpdateBookingModel booking)
         {
             
             
-            #region VALIDATION
-            // START - VALIDATION SECTION   
-            var _OTAllocationStatus = await _bookingDataAccess.IsOperationTheatreAllocated(booking.OperationTheatreId, booking.DepartmentId, booking.StartDate, booking.EndDate);
-            if(_OTAllocationStatus<1)
+            #region VALIDATION  
+            var OTAllocationStatus = await _bookingDataAccess.IsOperationTheatreAllocated(booking.OperationTheatreId, booking.DepartmentId, booking.StartDate, booking.EndDate);
+            if(OTAllocationStatus < 1)
             {
-                throw new InvalidOperationException("Operation Theatre "
-                                                    +booking.OperationTheatreId 
-                                                    +" is not allocated");
-                // return Ok(ResponseModel<IEnumerable<UpdateBookingModel>>((false, ResponseMessage.DATA_NOT_FOUND) );
-                // return ResponseModel<IEnumerable<UpdateBookingModel>>(true, "data not found" );
-
-                // Exception e = new InvalidOperationException("This statement is the original exception message.");
-
-                // return new ResponseModel<IEnumerable<UpdateBookingModel>>(true, ResponseMessage.DATA_NOT_FOUND, );
+               return new Envelope<IEnumerable<UpdateBookingModel>>(false,"data-update-failed");
             }
 
-
-            var _OTBlockStatus = await _bookingDataAccess.IsOperationTheatreBloked(booking.OperationTheatreId, booking.StartDate, booking.EndDate);
-            if(_OTBlockStatus>0)
+            var OTBlockStatus = await _bookingDataAccess.IsOperationTheatreBloked(booking.OperationTheatreId, booking.StartDate, booking.EndDate);
+            if(OTBlockStatus > 0)
             {
-                throw new InvalidOperationException("Operation Theatre"
-                                                    +booking.OperationTheatreId 
-                                                    +" is blocked");
+                return new Envelope<IEnumerable<UpdateBookingModel>>(false, $"Operation Theatre {booking.OperationTheatreId} is blocked");
             }
 
-            var _OTBookingStatus    = await _bookingDataAccess.IsOperationTheatreBooked(booking.Id, booking.OperationTheatreId, booking.StartDate, booking.EndDate);
-            if(_OTBookingStatus>0)
+            var OTBookingStatus    = await _bookingDataAccess.IsOperationTheatreBooked(booking.Id, booking.OperationTheatreId, booking.StartDate, booking.EndDate);
+            if(OTBookingStatus > 0)
             {
-                throw new InvalidOperationException("Operation Theatre"
-                                                    +booking.OperationTheatreId 
-                                                    +" is already booked for the slot "
-                                                    +booking.StartDate+" to "+booking.EndDate);
+                return new Envelope<IEnumerable<UpdateBookingModel>>(false, $"Operation Theatre {booking.OperationTheatreId} is already booked for the slot ${booking.StartDate} to ${booking.EndDate}");
             }
-
-            // END - VALIDATION SECTION
             #endregion
 
 
-            var result = await _bookingDataAccess.UpdateBooking(booking);
-            return result;
+             var result = await _bookingDataAccess.UpdateBooking(booking);
+
+             return new Envelope<IEnumerable<UpdateBookingModel>>(true,"data-update-success", result); ;
         }
 
         public async Task<IEnumerable<Blocking>> AddBlocking(Blocking blocking)

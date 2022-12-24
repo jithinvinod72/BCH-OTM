@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using BCMCH.OTM.API.Shared.Booking;
+using BCMCH.OTM.Infrastucture.Generic;
 
 namespace BCMCH.OTM.Domain.Contract.Booking
 {
@@ -12,7 +13,7 @@ namespace BCMCH.OTM.Domain.Contract.Booking
     {
         Task<IEnumerable<Bookings>> GetBookingList(int operationTheatreId, string? fromDate,string? toDate);
         Task<IEnumerable<PostBookingModel>> AddBooking(PostBookingModel booking);
-        Task<IEnumerable<UpdateBookingModel>> UpdateBooking(UpdateBookingModel booking);
+        Task<Envelope<IEnumerable<UpdateBookingModel>>> UpdateBooking(UpdateBookingModel _booking);
         Task<IEnumerable<Blocking>> AddBlocking(Blocking blocking);
 
     }
