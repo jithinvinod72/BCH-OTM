@@ -35,7 +35,6 @@ namespace BCMCH.OTM.Data.Master
         {
             const string StoredProcedure = "[OTM].[SelectDepartments]";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@Search", "");
             var result= await _sqlHelper.QueryAsync<Departments>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         
@@ -44,16 +43,17 @@ namespace BCMCH.OTM.Data.Master
         {
             const string StoredProcedure = "[OTM].[SelectAnaesthesiaList]";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@Search", "");
             var result= await _sqlHelper.QueryAsync<Anaesthesia>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
-        public async Task<IEnumerable<Employee>> GetEmployees(string _searchOption , string _departmentArray )
+        public async Task<IEnumerable<Employee>> GetEmployees(string searchOption , string departmentArray, int pageNumber, int rowsOfPage )
         {
             const string StoredProcedure = "[OTM].[SelectEmployeesWithDepartmentsMapping]";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@Search", _searchOption);
-            SqlParameters.Add("@DepartmentsToFetchFrom", _departmentArray);
+            SqlParameters.Add("@PageNumber", pageNumber);
+            SqlParameters.Add("@RowsOfPage", rowsOfPage);
+            SqlParameters.Add("@Search", searchOption);
+            SqlParameters.Add("@DepartmentsToFetchFrom", departmentArray);
             var result= await _sqlHelper.QueryAsync<Employee>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }

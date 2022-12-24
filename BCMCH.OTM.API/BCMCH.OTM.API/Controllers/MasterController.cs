@@ -72,11 +72,12 @@ namespace BCMCH.OTM.API.Controllers
 
         [HttpGet]
         [Route("get-employees")]
-        public async Task<IActionResult> GetEmployees(string? SearchKeyword=""  , string departments="[]" )
+        public async Task<IActionResult> GetEmployees(string? searchKeyword=""  , string departments="[]", int pageNumber=1, int rowsOfPage=100 )
         {
+            // GetEmployees(string searchOption , string departmentArray,  int pageNumber, int rowsOfPage)
             try
             {
-                var result = await _masterService.GetEmployees(SearchKeyword,departments);
+                var result = await _masterService.GetEmployees(searchKeyword,departments, pageNumber, rowsOfPage);
                 return Ok(new ResponseVM<IEnumerable<Employee>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)

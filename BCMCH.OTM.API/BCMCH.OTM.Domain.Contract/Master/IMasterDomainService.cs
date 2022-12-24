@@ -8,7 +8,8 @@ namespace BCMCH.OTM.Domain.Contract.Master
         Task<IEnumerable<Departments>> GetDepartments();
         Task<IEnumerable<Equipments>> GetEquipments();
         Task<IEnumerable<Anaesthesia>> GetAnaesthesiaList();
-        Task<IEnumerable<Employee>> GetEmployees(string _searchOption , string _departmentArray);
+        // Task<IEnumerable<Employee>> GetEmployees(string _searchOption , string _departmentArray);
+        Task<IEnumerable<Employee>> GetEmployees(string searchOption , string departmentArray,  int pageNumber, int rowsOfPage);
         Task<IEnumerable<OperationTheatreAllocation>> GetOperationTheatreAllocations(int _departmentId, string? _fromDate);
         Task<IEnumerable<OperationTheatre>> GetOperationTheatres();
         Task<IEnumerable<Surgery>> GetSurgeryList(int _pageNumber, int _rowsPerPage, string? _searchKeyword="");

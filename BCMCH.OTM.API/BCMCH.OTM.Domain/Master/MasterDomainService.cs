@@ -36,14 +36,15 @@ namespace BCMCH.OTM.Domain.Master
             return result;
         }
         
-        public async Task<IEnumerable<Employee>> GetEmployees(string _searchOption , string _departmentArray)
+        public async Task<IEnumerable<Employee>> GetEmployees(string searchOption , string departmentArray,  int pageNumber, int rowsOfPage)
         {
-            _searchOption.Replace(" ", "%");
-            _searchOption = "%"+_searchOption+"%";
+            searchOption.Replace(" ", "%");
+            searchOption = "%"+searchOption+"%";
             // replace space with % for sp and 
             // adds % as first and last charecter
+            // GetEmployees(string searchOption , string departmentArray, int pageNumber, int rowsOfPage )
 
-            var result = await _masterDataAccess.GetEmployees(_searchOption ,_departmentArray);
+            var result = await _masterDataAccess.GetEmployees(searchOption ,departmentArray, pageNumber,rowsOfPage);
             return result;
         }
         public async Task<IEnumerable<OperationTheatreAllocation>> GetOperationTheatreAllocations(int _departmentId, string? _fromDate)
@@ -59,15 +60,17 @@ namespace BCMCH.OTM.Domain.Master
 
         public async  Task<IEnumerable<Surgery>> GetSurgeryList(int _pageNumber, int _rowsPerPage, string? _searchKeyword="")
         {
+            _searchKeyword.Replace(" ", "%");
+            _searchKeyword = "%"+_searchKeyword+"%";
             var result = await _masterDataAccess.GetSurgeryList(_pageNumber, _rowsPerPage, _searchKeyword);
             return result;
         }
         public async Task<AllMasters> GetMasters()
         {
             AllMasters allMasters = new AllMasters();
-
+            
             allMasters.EquipmentList = await _masterDataAccess.GetEquipments();
-            allMasters.AnaesthetistList = await _masterDataAccess.GetEmployees("","[2]");
+            allMasters.AnaesthetistList = await _masterDataAccess.GetEmployees("%%", "[2]", 1, 100 ); // 2 is the department of anaesthetists
             allMasters.OperationTheatreList = await _masterDataAccess.GetOperationTheatres();
             allMasters.AnaesthesiaList = await _masterDataAccess.GetAnaesthesiaList();
             allMasters.DepartmentsList = await _masterDataAccess.GetDepartments();

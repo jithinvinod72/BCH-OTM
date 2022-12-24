@@ -14,6 +14,21 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+
+
+
+
+// cors added by sreejith
+app.UseCors(builder =>
+{
+    builder
+    .AllowAnyOrigin();
+});
+// cors added by sreejith
+
+
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

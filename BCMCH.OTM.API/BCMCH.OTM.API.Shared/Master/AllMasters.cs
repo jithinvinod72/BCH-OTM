@@ -17,10 +17,3 @@ namespace BCMCH.OTM.API.Shared.Master
         public IEnumerable<Departments> DepartmentsList {get; set;}
     }
 }
-
-
-// OT List 
-// Equipments LIST 
-// Anasthetia type list
-
-// department List
