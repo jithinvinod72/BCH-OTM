@@ -74,7 +74,6 @@ namespace BCMCH.OTM.API.Controllers
         [Route("get-employees")]
         public async Task<IActionResult> GetEmployees(string? searchKeyword=""  , string departments="[]", int pageNumber=1, int rowsOfPage=100 )
         {
-            // GetEmployees(string searchOption , string departmentArray,  int pageNumber, int rowsOfPage)
             try
             {
                 var result = await _masterService.GetEmployees(searchKeyword,departments, pageNumber, rowsOfPage);
@@ -157,6 +156,22 @@ namespace BCMCH.OTM.API.Controllers
             {
                 var result = await _masterService.PostAllocation(_allocation);
                 return Ok(new ResponseVM<IEnumerable<Allocation>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+
+        [HttpGet]
+        [Route("get-Allocation")]
+        public async Task<IActionResult> GetAllocation( string startDate, string endDate)
+        {
+            try
+            {
+                var result = await _masterService.GetAllocation(startDate, endDate);
+                return Ok(new ResponseVM<IEnumerable<GetAllocationModel>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)
             {

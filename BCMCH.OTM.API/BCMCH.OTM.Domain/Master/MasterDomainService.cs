@@ -78,6 +78,12 @@ namespace BCMCH.OTM.Domain.Master
             return allMasters;
         }
 
+        public async Task<IEnumerable<GetAllocationModel>> GetAllocation(string startDate, string endDate)
+        {
+            var result = await _masterDataAccess.GetAllocation(startDate, endDate);
+            return result;
+        }
+            
         public async Task<IEnumerable<Allocation>> PostAllocation(Allocation _allocation)
         {
             var result = await _masterDataAccess.PostAllocation(_allocation);

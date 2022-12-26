@@ -26,8 +26,8 @@ namespace BCMCH.OTM.API.Controllers
         #region PUBLIC
 
         [HttpGet]
-        [Route("get-bookings")]
-        public async Task<IActionResult> GetBookings(int operationTheatreId=1, string? fromDate="",string? toDate="")
+        [Route("get-events")]
+        public async Task<IActionResult> GetEvents(int operationTheatreId=1, string? fromDate="",string? toDate="")
         {
             try
             {

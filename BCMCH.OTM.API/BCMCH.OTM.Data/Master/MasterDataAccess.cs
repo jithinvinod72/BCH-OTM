@@ -91,18 +91,18 @@ namespace BCMCH.OTM.Data.Master
             var result= await _sqlHelper.QueryAsync<Surgery>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
-        // public async Task<IEnumerable<AllMasters>> GetMasters(int _pageNumber, int _rowsPerPage, string? _searchKeyword="")
-        // {
-        //     const string StoredProcedure = "[OTM].[SelectSurgeries]";
-        //     var SqlParameters = new DynamicParameters();
-        //     SqlParameters.Add("@PageNumber", _pageNumber);
-        //     SqlParameters.Add("@RowsOfPage", _rowsPerPage );
-        //     SqlParameters.Add("@Search", _searchKeyword );
-
-        //     var result= await _sqlHelper.QueryAsync<Surgery>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
-        //     return result;
-        // }
-
+        
+        public async Task<IEnumerable<GetAllocationModel>> GetAllocation(string startDate, string endDate)
+        {
+            const string StoredProcedure = "[OTM].[SelectAllocation]";          
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@DeartmentId"    , 1 );
+            SqlParameters.Add("@StartDate"      , startDate );
+            SqlParameters.Add("@EndDate"        , endDate );
+            var result= await _sqlHelper.QueryAsync<GetAllocationModel>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            return result;
+        }
+        
         public async Task<IEnumerable<Allocation>> PostAllocation(Allocation _allocation)
         {
             const string StoredProcedure = "[OTM].[InsertAllocation]";
