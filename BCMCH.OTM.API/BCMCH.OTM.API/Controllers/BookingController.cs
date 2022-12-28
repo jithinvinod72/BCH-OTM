@@ -48,7 +48,7 @@ namespace BCMCH.OTM.API.Controllers
             try
             {
                 var result = await _bookingService.AddBooking(booking);
-                return Ok(new ResponseVM<IEnumerable<PostBookingModel>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+                return Ok(result);
             }
             catch (Exception ex)
             {
