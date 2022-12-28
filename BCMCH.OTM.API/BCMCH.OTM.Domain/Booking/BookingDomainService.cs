@@ -3,11 +3,9 @@ using BCMCH.OTM.Data.Contract.Booking;
 using BCMCH.OTM.Domain.Contract.Booking;
 using System.Runtime.CompilerServices;
 using System.Data.Common;
-using BCMCH.OTM.API.Shared.General;
 using System.Globalization;
 using BCMCH.OTM.Infrastucture.Generic;
-
-using BCMCH.OTM.API.Shared.General;
+using BCMCH.OTM.API.Shared.Master;
 
 namespace BCMCH.OTM.Domain.Booking
 {
@@ -124,6 +122,18 @@ namespace BCMCH.OTM.Domain.Booking
 
             
             return dateTime;
+        }
+
+        
+        public async Task<BookingsAndAllocations> SelectBookingsAndAllocations(int operationTheatreId, string? fromDate,string? toDate)
+        {
+            var bookings = await _bookingDataAccess.GetBookingList(operationTheatreId, fromDate, toDate);
+            var allocations = await _bookingDataAccess.GetAllocation(operationTheatreId, fromDate, toDate);
+            var result = new BookingsAndAllocations();
+            result.Bookings = bookings;
+            result.Allocations = allocations;
+
+            return result;
         }
     }
 }

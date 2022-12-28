@@ -4,6 +4,7 @@ using Dapper;
 using BCMCH.OTM.API.Shared.Booking;
 using System.Data;
 using System.Data.Common;
+using BCMCH.OTM.API.Shared.Master;
 
 namespace BCMCH.OTM.Data.Booking
 {
@@ -60,7 +61,16 @@ namespace BCMCH.OTM.Data.Booking
             var result= await _sqlHelper.QueryAsync<PostBookingModel>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
-
+        public async Task<IEnumerable<GetAllocationModel>> GetAllocation(int departmentId, string startDate, string endDate)
+        {
+            const string StoredProcedure = "[OTM].[SelectAllocation]";          
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@DeartmentId"    , departmentId );
+            SqlParameters.Add("@StartDate"      , startDate );
+            SqlParameters.Add("@EndDate"        , endDate );
+            var result= await _sqlHelper.QueryAsync<GetAllocationModel>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            return result;
+        }
 
         public async Task<IEnumerable<UpdateBookingModel>> UpdateBooking(UpdateBookingModel booking)
         {
@@ -222,7 +232,7 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@EndDate", blocking.EndDate);
             SqlParameters.Add("@Duration",   blocking.Duration );
             SqlParameters.Add("@ModifiedBy", blocking.ModifiedBy );
-            SqlParameters.Add("@Type", "BLOCK" );
+            SqlParameters.Add("@Type", "BLOCKED" );
             // SqlParameters.Add("@IsDeleted", 0 );
 
             // @OperationTheatreId

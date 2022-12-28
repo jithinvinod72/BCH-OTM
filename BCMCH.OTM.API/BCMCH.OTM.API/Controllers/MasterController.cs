@@ -179,6 +179,23 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("get-today")]
+        public async Task<IActionResult> GetToday()
+        {
+            try
+            {
+                var result = await _masterService.GetDateToday();
+                return Ok(new ResponseVM<DateTime>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+
+
 
         #endregion
     }

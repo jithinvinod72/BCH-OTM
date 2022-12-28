@@ -74,6 +74,7 @@ namespace BCMCH.OTM.Domain.Master
             allMasters.OperationTheatreList = await _masterDataAccess.GetOperationTheatres();
             allMasters.AnaesthesiaList = await _masterDataAccess.GetAnaesthesiaList();
             allMasters.DepartmentsList = await _masterDataAccess.GetDepartments();
+            allMasters.DateTimeToday = await GetDateToday();
 
             return allMasters;
         }
@@ -89,6 +90,12 @@ namespace BCMCH.OTM.Domain.Master
             var result = await _masterDataAccess.PostAllocation(_allocation);
             return result;
         }
+        public async Task<DateTime>GetDateToday()
+        {
+            var result = await _masterDataAccess.GetDateToday();
+            return result.ElementAt(0);
+        }
+        
         #endregion
         
     }

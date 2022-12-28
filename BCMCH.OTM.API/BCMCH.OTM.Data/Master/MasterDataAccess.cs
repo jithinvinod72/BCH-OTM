@@ -103,6 +103,7 @@ namespace BCMCH.OTM.Data.Master
             return result;
         }
         
+        
         public async Task<IEnumerable<Allocation>> PostAllocation(Allocation _allocation)
         {
             const string StoredProcedure = "[OTM].[InsertAllocation]";
@@ -115,6 +116,17 @@ namespace BCMCH.OTM.Data.Master
             SqlParameters.Add("@ModifiedBy"             , _allocation.ModifiedBy );
 
             var result= await _sqlHelper.QueryAsync<Allocation>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            return result;
+        }
+
+
+        public async Task<IEnumerable<DateTime>> GetDateToday()
+        {
+            const string Query = "SELECT GETDATE()";
+            
+            var SqlParameters = new DynamicParameters();
+
+            var result= await _sqlHelper.QueryAsync<DateTime>(Query, SqlParameters, CommandType.Text);
             return result;
         }
         

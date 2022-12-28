@@ -14,5 +14,6 @@ namespace BCMCH.OTM.Data.Contract.Master
         Task<IEnumerable<Surgery>> GetSurgeryList(int _pageNumber, int _rowsPerPage, string? _searchKeyword="");
         Task<IEnumerable<GetAllocationModel>> GetAllocation(int departmentId, string startDate, string endDate);
         Task<IEnumerable<Allocation>> PostAllocation(Allocation _allocation);
+        Task<IEnumerable<DateTime>> GetDateToday();
     }
 }

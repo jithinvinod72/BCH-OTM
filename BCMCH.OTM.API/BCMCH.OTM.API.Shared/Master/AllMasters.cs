@@ -10,6 +10,7 @@ namespace BCMCH.OTM.API.Shared.Master
 {
     public class AllMasters
     {
+        public DateTime DateTimeToday {get; set;}
         public IEnumerable<Equipments> EquipmentList {get; set;}
         public IEnumerable<Employee> AnaesthetistList {get; set;}
         public IEnumerable<OperationTheatre> OperationTheatreList {get; set;}
