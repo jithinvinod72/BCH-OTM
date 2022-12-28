@@ -165,12 +165,12 @@ namespace BCMCH.OTM.API.Controllers
 
 
         [HttpGet]
-        [Route("get-Allocation")]
-        public async Task<IActionResult> GetAllocation( string startDate, string endDate)
+        [Route("get-allocation")]
+        public async Task<IActionResult> GetAllocation(int departmentId, string startDate, string endDate)
         {
             try
             {
-                var result = await _masterService.GetAllocation(startDate, endDate);
+                var result = await _masterService.GetAllocation(departmentId, startDate, endDate);
                 return Ok(new ResponseVM<IEnumerable<GetAllocationModel>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)

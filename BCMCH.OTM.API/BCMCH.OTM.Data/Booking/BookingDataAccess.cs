@@ -223,7 +223,15 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@Duration",   blocking.Duration );
             SqlParameters.Add("@ModifiedBy", blocking.ModifiedBy );
             SqlParameters.Add("@Type", "BLOCK" );
-            SqlParameters.Add("@IsDeleted", 0 );
+            // SqlParameters.Add("@IsDeleted", 0 );
+
+            // @OperationTheatreId
+            // @StatusId
+            // @StartDate
+            // @EndDate
+            // @Duration
+            // @ModifiedBy
+            // @Type
 
             var result= await _sqlHelper.QueryAsync<Blocking>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
