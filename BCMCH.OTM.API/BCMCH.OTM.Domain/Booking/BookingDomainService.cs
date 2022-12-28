@@ -35,49 +35,39 @@ namespace BCMCH.OTM.Domain.Booking
         #endregion
 
 
-        public async Task<IEnumerable<PostBookingModel>> AddBooking(PostBookingModel booking)
+        public async Task<Envelope<IEnumerable<PostBookingModel>>> AddBooking(PostBookingModel booking)
         {
 
             // convertTimeTwelveToTwentyFour(booking.EndDate);
             #region VALIDATION
             // START - VALIDATION SECTION   
-            var _OTAllocationStatus = await _bookingDataAccess.IsOperationTheatreAllocated(booking.OperationTheatreId, booking.DepartmentId, booking.StartDate, booking.EndDate);
-            if(_OTAllocationStatus<1)
+            var OTAllocationStatus = await _bookingDataAccess.IsOperationTheatreAllocated(booking.OperationTheatreId, booking.DepartmentId, booking.StartDate, booking.EndDate);
+            if (OTAllocationStatus < 1)
             {
-                // return Ok(new ResponseVM<bool>(false, "bla"));
-                throw new InvalidOperationException("the ot "
-                                                    +booking.OperationTheatreId 
-                                                    +" is not allocated");
+                return new Envelope<IEnumerable<PostBookingModel>>(false, $"the ot "
+                                                    + booking.OperationTheatreId
+                                                    + " is not allocated");
             }
 
-
-            var _OTBlockStatus = await _bookingDataAccess.IsOperationTheatreBloked(booking.OperationTheatreId, booking.StartDate, booking.EndDate);
-            if(_OTBlockStatus>0)
+            var OTBlockStatus = await _bookingDataAccess.IsOperationTheatreBloked(booking.OperationTheatreId, booking.StartDate, booking.EndDate);
+            if (OTBlockStatus > 0)
             {
-                throw new InvalidOperationException("the ot "
-                                                    +booking.OperationTheatreId 
-                                                    +" is blocked");
+                return new Envelope<IEnumerable<PostBookingModel>>(false, $"Operation Theatre {booking.OperationTheatreId} is blocked");
             }
 
-
-            var _OTBookingStatus    = await _bookingDataAccess.IsOperationTheatreBooked(0,booking.OperationTheatreId, booking.StartDate, booking.EndDate);
-            //  here the first argument is zero 
-            if(_OTBookingStatus>0)
+            var OTBookingStatus = await _bookingDataAccess.IsOperationTheatreBooked(0, booking.OperationTheatreId, booking.StartDate, booking.EndDate);
+            if (OTBookingStatus > 0)
             {
-                throw new InvalidOperationException("the ot "
-                                                    +booking.OperationTheatreId 
-                                                    +" is already booked for the slot "
-                                                    +booking.StartDate+" to "+booking.EndDate);
+                return new Envelope<IEnumerable<PostBookingModel>>(false, $"Operation Theatre {booking.OperationTheatreId} is already booked for the slot ${booking.StartDate} to ${booking.EndDate}");
             }
+
 
             // END - VALIDATION SECTION
-            #endregion
-
-
+            #endregion        
 
 
             var result = await _bookingDataAccess.AddBooking(booking);
-            return result;
+            return new Envelope<IEnumerable<PostBookingModel>>(true, "booking created", result); ;
         }
 
 
