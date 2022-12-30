@@ -27,12 +27,12 @@ namespace BCMCH.OTM.API.Controllers
 
         [HttpGet]
         [Route("get-events")]
-        public async Task<IActionResult> SelectEvents(int operationTheatreId=1, string? fromDate="",string? toDate="")
+        public async Task<IActionResult> SelectEvents(int departmentId=1, string? fromDate="",string? toDate="")
         {
             try
             {
                 // bla
-                var result = await _bookingService.GetBookingList(operationTheatreId ,  fromDate, toDate);
+                var result = await _bookingService.GetBookingList(departmentId ,  fromDate, toDate);
                 return Ok(new ResponseVM<IEnumerable<Bookings>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)
@@ -43,11 +43,11 @@ namespace BCMCH.OTM.API.Controllers
 
         [HttpGet]
         [Route("get-events-and-allocation")]
-        public async Task<IActionResult> SelectEventsAndAllocations(int operationTheatreId=1, string? fromDate="",string? toDate="")
+        public async Task<IActionResult> SelectEventsAndAllocations(int departmentId=1, string? fromDate="",string? toDate="")
         {
             try
             {
-                var result = await _bookingService.SelectBookingsAndAllocations(operationTheatreId ,  fromDate, toDate);
+                var result = await _bookingService.SelectBookingsAndAllocations(departmentId ,  fromDate, toDate);
                 return Ok(new ResponseVM<BookingsAndAllocations>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)

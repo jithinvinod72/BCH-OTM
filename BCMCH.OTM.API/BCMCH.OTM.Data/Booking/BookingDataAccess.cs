@@ -21,13 +21,13 @@ namespace BCMCH.OTM.Data.Booking
         }
         #endregion
 
-        public async Task<IEnumerable<Bookings>> GetBookingList(int operationTheatreId, string? fromDate,string? toDate)
+        public async Task<IEnumerable<Bookings>> GetBookingList(int departmentId, string? fromDate,string? toDate)
         {
             const string StoredProcedure = "[OTM].[SelectBookings]";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@FromDate", fromDate);
             SqlParameters.Add("@ToDate",   toDate );
-            SqlParameters.Add("@OperationTheatreId", operationTheatreId );
+            SqlParameters.Add("@DepartmentId", departmentId );
             var result= await _sqlHelper.QueryAsync<Bookings>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
@@ -63,7 +63,7 @@ namespace BCMCH.OTM.Data.Booking
         }
         public async Task<IEnumerable<GetAllocationModel>> GetAllocation(int departmentId, string startDate, string endDate)
         {
-            const string StoredProcedure = "[OTM].[SelectAllocation]";          
+            const string StoredProcedure = "[OTM].[SelectAllocation]";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@DeartmentId"    , departmentId );
             SqlParameters.Add("@StartDate"      , startDate );

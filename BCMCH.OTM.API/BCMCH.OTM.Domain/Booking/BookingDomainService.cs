@@ -125,13 +125,18 @@ namespace BCMCH.OTM.Domain.Booking
         }
 
         
-        public async Task<BookingsAndAllocations> SelectBookingsAndAllocations(int operationTheatreId, string? fromDate,string? toDate)
+        public async Task<BookingsAndAllocations> SelectBookingsAndAllocations(int departmentId, string? fromDate,string? toDate)
         {
-            var bookings = await _bookingDataAccess.GetBookingList(operationTheatreId, fromDate, toDate);
-            var allocations = await _bookingDataAccess.GetAllocation(operationTheatreId, fromDate, toDate);
+            var bookings = await _bookingDataAccess.GetBookingList(departmentId, fromDate, toDate);
+            var allocations = await _bookingDataAccess.GetAllocation(departmentId, fromDate, toDate);
+            var allocatedOperationtheatres = allocations.Select(o => o.OperationTheatreId).Distinct();
+            // above line selects unique OperationTheatreId from the allocations 
+            // used to show drop down in frontend 
+
             var result = new BookingsAndAllocations();
             result.Bookings = bookings;
             result.Allocations = allocations;
+            result.AllocatedOperationTheatres = allocatedOperationtheatres;
 
             return result;
         }
