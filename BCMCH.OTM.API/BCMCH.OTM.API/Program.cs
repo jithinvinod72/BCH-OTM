@@ -21,8 +21,7 @@ var app = builder.Build();
 // cors added by sreejith
 app.UseCors(builder =>
 {
-    builder
-    .AllowAnyOrigin();
+    builder.AllowAnyOrigin();
 });
 // cors added by sreejith
 
