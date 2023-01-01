@@ -25,9 +25,9 @@ namespace BCMCH.OTM.Domain.Booking
 
 
         #region PUBLIC
-        public async Task<IEnumerable<Bookings>> GetBookingList(int operationTheatreId, string? fromDate,string? toDate)
+        public async Task<IEnumerable<Bookings>> GetBookingList(int departmentId,int operationTheatreId, string? fromDate,string? toDate)
         {
-            var result = await _bookingDataAccess.GetBookingList(operationTheatreId, fromDate, toDate);
+            var result = await _bookingDataAccess.GetBookingList(departmentId, operationTheatreId, fromDate, toDate);
             return result;
         }
         #endregion
@@ -125,19 +125,33 @@ namespace BCMCH.OTM.Domain.Booking
         }
 
         
-        public async Task<BookingsAndAllocations> SelectBookingsAndAllocations(int departmentId, string? fromDate,string? toDate)
+        public async Task<BookingsAndAllocations> SelectBookingsAndAllocations(int departmentId,int operationTheatreId , string? fromDate,string? toDate)
         {
-            var bookings = await _bookingDataAccess.GetBookingList(departmentId, fromDate, toDate);
+            // selects bookings and allocations in accordance with given 
+            // departmentId
+            // operationTheatreId
+            // fromDate
+            // toDate
+            var bookings = await _bookingDataAccess.GetBookingList(departmentId, operationTheatreId, fromDate, toDate);
+
+            var allocations = await _bookingDataAccess.GetAllocation(departmentId, fromDate, toDate);
+            // fetches allocation details of the given departments
+            var filteredAllocations = allocations.Where( o=> operationTheatreId==o.OperationTheatreId);
+            // filter allocations for given operation theatre id 
+            var result = new BookingsAndAllocations();
+            result.Bookings = bookings;
+            result.Allocations = filteredAllocations;
+            return result;
+        }
+        public async Task<IEnumerable<int?>> SelectAllocatedTheatres(int departmentId, string? fromDate,string? toDate)
+        {
+            // sellects the unique operation theatre id those are allocated for the given departments
+            // in accordance with given startDate and endDate
             var allocations = await _bookingDataAccess.GetAllocation(departmentId, fromDate, toDate);
             var allocatedOperationtheatres = allocations.Select(o => o.OperationTheatreId).Distinct();
             // above line selects unique OperationTheatreId from the allocations 
-            // used to show drop down in frontend 
-
-            var result = new BookingsAndAllocations();
-            result.Bookings = bookings;
-            result.Allocations = allocations;
-            result.AllocatedOperationTheatres = allocatedOperationtheatres;
-
+            // used to show drop down in frontend             
+            var result = allocatedOperationtheatres;
             return result;
         }
     }

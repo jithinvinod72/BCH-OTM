@@ -11,7 +11,7 @@ namespace BCMCH.OTM.Data.Contract.Booking
 {
     public interface IBookingDataAccess
     {
-        Task<IEnumerable<Bookings>> GetBookingList(int departmentId, string? fromDate,string? toDate);
+        Task<IEnumerable<Bookings>> GetBookingList(int departmentId,int operationTheatreId, string? fromDate,string? toDate);
         Task<IEnumerable<GetAllocationModel>> GetAllocation(int departmentId, string? startDate, string? endDate);
         Task<IEnumerable<PostBookingModel>> AddBooking(PostBookingModel booking);
         Task<IEnumerable<UpdateBookingModel>> UpdateBooking(UpdateBookingModel booking);

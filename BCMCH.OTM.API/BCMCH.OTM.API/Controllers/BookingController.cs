@@ -27,12 +27,12 @@ namespace BCMCH.OTM.API.Controllers
 
         [HttpGet]
         [Route("get-events")]
-        public async Task<IActionResult> SelectEvents(int departmentId=1, string? fromDate="",string? toDate="")
+        public async Task<IActionResult> SelectEvents(int departmentId=1, int operationTheatreId=0 ,string? fromDate="",string? toDate="")
         {
             try
             {
                 // bla
-                var result = await _bookingService.GetBookingList(departmentId ,  fromDate, toDate);
+                var result = await _bookingService.GetBookingList(departmentId, operationTheatreId, fromDate, toDate);
                 return Ok(new ResponseVM<IEnumerable<Bookings>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)
@@ -43,11 +43,11 @@ namespace BCMCH.OTM.API.Controllers
 
         [HttpGet]
         [Route("get-events-and-allocation")]
-        public async Task<IActionResult> SelectEventsAndAllocations(int departmentId=1, string? fromDate="",string? toDate="")
+        public async Task<IActionResult> SelectEventsAndAllocations(int departmentId=0,int operationTheatreId=0, string? fromDate="",string? toDate="")
         {
             try
             {
-                var result = await _bookingService.SelectBookingsAndAllocations(departmentId ,  fromDate, toDate);
+                var result = await _bookingService.SelectBookingsAndAllocations(departmentId, operationTheatreId ,  fromDate, toDate);
                 return Ok(new ResponseVM<BookingsAndAllocations>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)
@@ -55,6 +55,22 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
+
+        [HttpGet]
+        [Route("get-allocatedTheatres")]
+        public async Task<IActionResult> SelectAllocatedTheatres(int departmentId=1, string? fromDate="",string? toDate="")
+        {
+            try
+            {
+                var result = await _bookingService.SelectAllocatedTheatres(departmentId ,  fromDate, toDate);
+                return Ok(new ResponseVM<IEnumerable<int?>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        
 
         
 
