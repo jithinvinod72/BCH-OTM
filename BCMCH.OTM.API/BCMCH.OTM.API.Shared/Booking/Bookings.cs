@@ -12,10 +12,21 @@ namespace BCMCH.OTM.API.Shared.Booking
         public int OperationTheatreId {get; set; }
         public int? BookedByEmployee{get; set; }
         public int? BookedByDepartment{get; set; }
+        public string? BookedByDoctorFirstName {get;set;}
+        public string? BookedByDoctorLastName {get;set;}
+        public string? BookedByDoctorMiddleName {get;set;}
+        public int? BookedByDoctorDepartmentId {get;set;}
+        public int? BookedByDoctorPositionId {get;set;}
         public int? AnaesthetistId {get; set; }
         public int? BookingStatusId {get; set; }
         public int? AnaesthesiaTypeId {get; set; }
         public int? SurgeryId {get; set; }
+
+        public string? SurgeryName {get;set;}
+        public string? SurgeryPrintName {get;set;}
+        public string? SurgeryAliasName {get;set;}
+        public string? SurgeryInstructionsToPatient {get;set;}
+
         public string? PatientRegistrationNo {get; set; }
         public DateTime StartDate {get; set; }
         public DateTime EndDate {get; set; }
@@ -36,9 +47,6 @@ namespace BCMCH.OTM.API.Shared.Booking
         public string? AnaesthetistMiddleName {get; set; }
         public int? AnaesthetistDepartmentId {get; set; }
         public int? AnaesthetistPositionId {get; set; }
-        public int? AnaesthetistJobId {get; set; }
-        public string? AnaesthetistEmployeeCurrentStatus {get; set; }
-        public bool? AnaesthetistEmployeeIsActive {get; set; }
         public string? AnaesthesiaType {get; set; }
         public int? StatusCode  {get; set; }
         public string? StatusName  {get; set; }
