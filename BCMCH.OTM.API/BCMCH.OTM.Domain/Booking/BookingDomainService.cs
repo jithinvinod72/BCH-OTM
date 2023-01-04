@@ -24,13 +24,17 @@ namespace BCMCH.OTM.Domain.Booking
 
 
 
-        #region PUBLIC
+        
         public async Task<IEnumerable<Bookings>> GetBookingList(int departmentId,int operationTheatreId, string? fromDate,string? toDate)
         {
             var result = await _bookingDataAccess.GetBookingList(departmentId, operationTheatreId, fromDate, toDate);
             return result;
         }
-        #endregion
+        public async Task<IEnumerable<Bookings>> DeleteBooking(string IdArray="")
+        {
+            var result = await _bookingDataAccess.DeleteBooking("["+IdArray+"]");
+            return result;
+        }
 
 
         public async Task<Envelope<IEnumerable<PostBookingModel>>> AddBooking(PostBookingModel booking)
@@ -110,15 +114,15 @@ namespace BCMCH.OTM.Domain.Booking
              DateTime dateTime =  DateTime.ParseExact( _datetime,  
                                                         "yyyy/MM/dd hh:mm:ss tt", 
                                                         System.Globalization.CultureInfo.InvariantCulture);
-            Console.WriteLine();
-            Console.Write("12 hour datetime : ");
-            Console.Write(_datetime);
-            Console.WriteLine();
+            // Console.WriteLine();
+            // Console.Write("12 hour datetime : ");
+            // Console.Write(_datetime);
+            // Console.WriteLine();
 
-            Console.WriteLine();
-            Console.Write("24 hour datetime : ");
-            Console.Write(dateTime);
-            Console.WriteLine();
+            // Console.WriteLine();
+            // Console.Write("24 hour datetime : ");
+            // Console.Write(dateTime);
+            // Console.WriteLine();
 
             
             return dateTime;

@@ -16,6 +16,7 @@ namespace BCMCH.OTM.Domain.Contract.Booking
         Task<BookingsAndAllocations> SelectBookingsAndAllocations(int departmentId,int operationTheatreId , string? fromDate,string? toDate);
         Task<Envelope<IEnumerable<PostBookingModel>>> AddBooking(PostBookingModel booking);
         Task<Envelope<IEnumerable<UpdateBookingModel>>> UpdateBooking(UpdateBookingModel _booking);
+        Task<IEnumerable<Bookings>> DeleteBooking(string IdArray="");
         Task<IEnumerable<Blocking>> AddBlocking(Blocking blocking);
 
     }

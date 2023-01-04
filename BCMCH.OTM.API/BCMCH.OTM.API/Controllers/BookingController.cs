@@ -90,13 +90,30 @@ namespace BCMCH.OTM.API.Controllers
         }
 
 
-        [HttpPut]
+
+
+        [HttpPatch]
         [Route("update-booking")]
         public async Task<IActionResult> UpdateBooking(UpdateBookingModel _booking)
         {
             try
             {
                 var result = await _bookingService.UpdateBooking(_booking);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+        [HttpDelete]
+        [Route("delete-booking")]
+        public async Task<IActionResult> DeleteBooking(string IdArray="")
+        {
+            try
+            {
+                var result = await _bookingService.DeleteBooking(IdArray);
                 return Ok(result);
             }
             catch (Exception ex)

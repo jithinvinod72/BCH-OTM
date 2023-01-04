@@ -15,6 +15,7 @@ namespace BCMCH.OTM.Data.Contract.Booking
         Task<IEnumerable<GetAllocationModel>> GetAllocation(int departmentId, string? startDate, string? endDate);
         Task<IEnumerable<PostBookingModel>> AddBooking(PostBookingModel booking);
         Task<IEnumerable<UpdateBookingModel>> UpdateBooking(UpdateBookingModel booking);
+        Task<IEnumerable<Bookings>> DeleteBooking(string IdArray);
 
 
         // Status Check 
