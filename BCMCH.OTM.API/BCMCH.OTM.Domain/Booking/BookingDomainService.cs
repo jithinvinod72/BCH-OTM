@@ -67,7 +67,8 @@ namespace BCMCH.OTM.Domain.Booking
             // END - VALIDATION SECTION
             #endregion        
 
-
+            booking.EmployeeIdArray="["+booking.EmployeeIdArray+"]";
+            booking.EquipmentsIdArray="["+booking.EquipmentsIdArray+"]";
             var result = await _bookingDataAccess.AddBooking(booking);
             return new Envelope<IEnumerable<PostBookingModel>>(true, "booking created", result); ;
         }
