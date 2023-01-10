@@ -6,6 +6,7 @@ using System.Data.Common;
 using System.Globalization;
 using BCMCH.OTM.Infrastucture.Generic;
 using BCMCH.OTM.API.Shared.Master;
+using BCMCH.OTM.API.Shared.General;
 
 namespace BCMCH.OTM.Domain.Booking
 {
@@ -30,12 +31,35 @@ namespace BCMCH.OTM.Domain.Booking
             var result = await _bookingDataAccess.GetBookingList(departmentId, operationTheatreId, fromDate, toDate);
             return result;
         }
+        public async Task<EventFields> GetEventEquipmentsAndEmployees(int bookingId)
+        {
+            var equipments = await _bookingDataAccess.GetEventEquipments(bookingId);
+            var employees  = await _bookingDataAccess.GetEventEmployees(bookingId);
+            var departmentIds = employees.Select(o => o.DepartmentID).Distinct();
+
+            // Console.WriteLine(departmentIds.Contains(11));
+
+            var allDepartments = await _bookingDataAccess.GetDepartments();
+            var filteredDepartments = allDepartments.Where(o=>  departmentIds.Contains(o.Id));
+            
+            var fields = new EventFields();
+            fields.Equipments = equipments;
+            fields.Surgeons = employees;
+            fields.Departments = filteredDepartments;
+            
+            return fields;
+        }
+        // public async Task<IEnumerable<Employee>> GetEventEmployees(int bookingId)
+        // {
+        //     var result = await _bookingDataAccess.GetEventEmployees(bookingId);
+        //     return result;
+        // }
+
         public async Task<IEnumerable<Bookings>> DeleteBooking(string IdArray="")
         {
             var result = await _bookingDataAccess.DeleteBooking("["+IdArray+"]");
             return result;
         }
-
 
         public async Task<Envelope<IEnumerable<PostBookingModel>>> AddBooking(PostBookingModel booking)
         {

@@ -55,6 +55,20 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
+        [HttpGet]
+        [Route("get-event-equipments-and-employees")]
+        public async Task<IActionResult> SelectEventEquipmentsAndEmployees(int bookingId)
+        {
+            try
+            {
+                var result = await _bookingService.GetEventEquipmentsAndEmployees(bookingId);
+                return Ok(new ResponseVM<EventFields>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
 
         [HttpGet]
         [Route("get-allocatedTheatres")]
@@ -141,6 +155,8 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
+
+
 
         #endregion
 
