@@ -12,7 +12,7 @@ namespace BCMCH.OTM.API.Shared.Master
         public int? Code {get;set;}
         public int? DivisionId {get;set;}
         public int? TypeCode {get;set;}
-        public string? DepartmentName { get; set; }
+        public string? Name { get; set; }
 
     }
 }
