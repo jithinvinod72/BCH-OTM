@@ -123,9 +123,11 @@ namespace BCMCH.OTM.Domain.Booking
             #endregion
 
 
-             var result = await _bookingDataAccess.UpdateBooking(booking);
+            booking.EmployeeIdArray="["+booking.EmployeeIdArray+"]";
+            booking.EquipmentsIdArray="["+booking.EquipmentsIdArray+"]";
+            var result = await _bookingDataAccess.UpdateBooking(booking);
 
-             return new Envelope<IEnumerable<UpdateBookingModel>>(true,"data-update-success", result); ;
+            return new Envelope<IEnumerable<UpdateBookingModel>>(true,"data-update-success", result); ;
         }
 
         public async Task<IEnumerable<Blocking>> AddBlocking(Blocking blocking)
