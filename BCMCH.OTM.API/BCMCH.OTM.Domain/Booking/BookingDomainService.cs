@@ -61,7 +61,7 @@ namespace BCMCH.OTM.Domain.Booking
             return result;
         }
 
-        public async Task<Envelope<IEnumerable<PostBookingModel>>> AddBooking(PostBookingModel booking)
+        public async Task<Envelope<IEnumerable<int>>> AddBooking(PostBookingModel booking)
         {
 
             // convertTimeTwelveToTwentyFour(booking.EndDate);
@@ -70,7 +70,7 @@ namespace BCMCH.OTM.Domain.Booking
             var OTAllocationStatus = await _bookingDataAccess.IsOperationTheatreAllocated(booking.OperationTheatreId, booking.DepartmentId, booking.StartDate, booking.EndDate);
             if (OTAllocationStatus < 1)
             {
-                return new Envelope<IEnumerable<PostBookingModel>>(false, $"the ot "
+                return new Envelope<IEnumerable<int>>(false, $"the ot "
                                                     + booking.OperationTheatreId
                                                     + " is not allocated");
             }
@@ -78,13 +78,13 @@ namespace BCMCH.OTM.Domain.Booking
             var OTBlockStatus = await _bookingDataAccess.IsOperationTheatreBloked(booking.OperationTheatreId, booking.StartDate, booking.EndDate);
             if (OTBlockStatus > 0)
             {
-                return new Envelope<IEnumerable<PostBookingModel>>(false, $"Operation Theatre {booking.OperationTheatreId} is blocked");
+                return new Envelope<IEnumerable<int>>(false, $"Operation Theatre {booking.OperationTheatreId} is blocked");
             }
 
             var OTBookingStatus = await _bookingDataAccess.IsOperationTheatreBooked(0, booking.OperationTheatreId, booking.StartDate, booking.EndDate);
             if (OTBookingStatus > 0)
             {
-                return new Envelope<IEnumerable<PostBookingModel>>(false, $"Operation Theatre {booking.OperationTheatreId} is already booked for the slot ${booking.StartDate} to ${booking.EndDate}");
+                return new Envelope<IEnumerable<int>>(false, $"Operation Theatre {booking.OperationTheatreId} is already booked for the slot ${booking.StartDate} to ${booking.EndDate}");
             }
 
 
@@ -94,7 +94,7 @@ namespace BCMCH.OTM.Domain.Booking
             booking.EmployeeIdArray="["+booking.EmployeeIdArray+"]";
             booking.EquipmentsIdArray="["+booking.EquipmentsIdArray+"]";
             var result = await _bookingDataAccess.AddBooking(booking);
-            return new Envelope<IEnumerable<PostBookingModel>>(true, "booking created", result); ;
+            return new Envelope<IEnumerable<int>>(true, "booking created", result); ;
         }
 
 

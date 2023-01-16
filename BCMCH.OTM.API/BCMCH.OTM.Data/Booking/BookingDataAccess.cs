@@ -34,7 +34,7 @@ namespace BCMCH.OTM.Data.Booking
             return result;
         }
 
-        public async Task<IEnumerable<PostBookingModel>> AddBooking(PostBookingModel booking)
+        public async Task<IEnumerable<int>> AddBooking(PostBookingModel booking)
         {
             const string StoredProcedure = "[OTM].[InsertBooking]";
             var SqlParameters = new DynamicParameters();
@@ -60,7 +60,7 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@EmployeeIdArray", booking.EmployeeIdArray );
             SqlParameters.Add("@EquipmentsIdArray", booking.EquipmentsIdArray );
 
-            var result= await _sqlHelper.QueryAsync<PostBookingModel>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            var result= await _sqlHelper.QueryAsync<int>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
         public async Task<IEnumerable<GetAllocationModel>> GetAllocation(int departmentId, string startDate, string endDate)
