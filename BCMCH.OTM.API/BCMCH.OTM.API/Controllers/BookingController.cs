@@ -27,12 +27,12 @@ namespace BCMCH.OTM.API.Controllers
 
         [HttpGet]
         [Route("get-events")]
-        public async Task<IActionResult> SelectEvents(int departmentId=1, int operationTheatreId=0 ,string? fromDate="",string? toDate="")
+        public async Task<IActionResult> SelectEvents(int departmentId=1 ,string? fromDate="",string? toDate="")
         {
             try
             {
                 // bla
-                var result = await _bookingService.GetBookingList(departmentId, operationTheatreId, fromDate, toDate);
+                var result = await _bookingService.GetBookingList(departmentId, fromDate, toDate);
                 return Ok(new ResponseVM<IEnumerable<Bookings>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)

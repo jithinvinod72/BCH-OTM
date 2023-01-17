@@ -26,9 +26,11 @@ namespace BCMCH.OTM.Domain.Booking
 
 
         
-        public async Task<IEnumerable<Bookings>> GetBookingList(int departmentId,int operationTheatreId, string? fromDate,string? toDate)
+        public async Task<IEnumerable<Bookings>> GetBookingList(int departmentId, string? fromDate,string? toDate)
         {
-            var result = await _bookingDataAccess.GetBookingList(departmentId, operationTheatreId, fromDate, toDate);
+            var result = await _bookingDataAccess.GetBookingList(departmentId, fromDate, toDate);
+            // result = result.Where(booking=>booking.OperationTheatreId==operationTheatreId);
+            // filters the bookings with given otid 
             return result;
         }
         public async Task<EventFields> GetEventEquipmentsAndEmployees(int bookingId)
@@ -163,7 +165,12 @@ namespace BCMCH.OTM.Domain.Booking
             // operationTheatreId
             // fromDate
             // toDate
-            var bookings = await _bookingDataAccess.GetBookingList(departmentId, operationTheatreId, fromDate, toDate);
+            var bookings = await _bookingDataAccess.GetBookingList(departmentId, fromDate, toDate);
+            bookings = bookings.Where(booking=>booking.OperationTheatreId==operationTheatreId);
+            // filters the bookings with given otid 
+
+            // var result = await _bookingDataAccess.GetBookingList(departmentId, fromDate, toDate);
+            // result = result.Where(booking=>booking.OperationTheatreId==operationTheatreId);
 
             var allocations = await _bookingDataAccess.GetAllocation(departmentId, fromDate, toDate);
             // fetches allocation details of the given departments
