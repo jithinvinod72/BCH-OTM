@@ -335,3 +335,12 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+.vscode/launch.json
+.vscode/tasks.json
+BCMCH.OTM.API/dotnet-core-tutorial.zip
+site
+BCMCH.OTM.API.zip
+test.pem
+BCMCH.OTM.API/Dockerfile
+BCMCH.OTM.API/BCMCH.OTM.API/Dockerfile
+BCMCH.OTM.API/backend.zip
