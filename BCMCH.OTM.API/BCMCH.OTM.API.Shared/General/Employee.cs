@@ -21,19 +21,3 @@ namespace BCMCH.OTM.API.Shared.General
         public string? departmentName {get; set;}
     }
 }
-
-// EmployeeId
-// EmployeeCode
-// Title
-// FirstName
-// LastName
-// MiddleName
-// DepartmentId
-// PositionId
-// JobId
-// CurrentStatus
-// IsActive
-// EmployeeCategoryId
-// DepartmentId
-// departmentTypeCode
-// departmentName

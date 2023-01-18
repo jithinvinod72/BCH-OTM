@@ -72,9 +72,7 @@ namespace BCMCH.OTM.Domain.Booking
             var OTAllocationStatus = await _bookingDataAccess.IsOperationTheatreAllocated(booking.OperationTheatreId, booking.DepartmentId, booking.StartDate, booking.EndDate);
             if (OTAllocationStatus < 1)
             {
-                return new Envelope<IEnumerable<int>>(false, $"the ot "
-                                                    + booking.OperationTheatreId
-                                                    + " is not allocated");
+                return new Envelope<IEnumerable<int>>(false, $"OT {booking.OperationTheatreId} is not allocated forthis time");
             }
 
             var OTBlockStatus = await _bookingDataAccess.IsOperationTheatreBloked(booking.OperationTheatreId, booking.StartDate, booking.EndDate);
@@ -108,7 +106,7 @@ namespace BCMCH.OTM.Domain.Booking
             var OTAllocationStatus = await _bookingDataAccess.IsOperationTheatreAllocated(booking.OperationTheatreId, booking.DepartmentId, booking.StartDate, booking.EndDate);
             if(OTAllocationStatus < 1)
             {
-               return new Envelope<IEnumerable<UpdateBookingModel>>(false,"data-update-failed");
+               return new Envelope<IEnumerable<UpdateBookingModel>>(false,$"OT {booking.OperationTheatreId} is not allocated for this time");
             }
 
             var OTBlockStatus = await _bookingDataAccess.IsOperationTheatreBloked(booking.OperationTheatreId, booking.StartDate, booking.EndDate);
