@@ -1,16 +1,15 @@
-﻿using BCMCH.OTM.Data.Contract.Master;
+﻿using BCMCH.OTM.Data.Booking;
+using BCMCH.OTM.Data.Contract.Booking;
+using BCMCH.OTM.Data.Contract.Master;
 using BCMCH.OTM.Data.Master;
+using BCMCH.OTM.Domain.Booking;
+using BCMCH.OTM.Domain.Contract.Booking;
 using BCMCH.OTM.Domain.Contract.Master;
 using BCMCH.OTM.Domain.Master;
 using BCMCH.OTM.Infrastucture.AppSettings;
 using BCMCH.OTM.Infrastucture.AppSettings.Abstracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BCMCH.OTM.Infrastucture.IOC
 {
@@ -25,8 +24,8 @@ namespace BCMCH.OTM.Infrastucture.IOC
         {
             services.AddTransient<IMasterDomainService, MasterDomainService>();
             services.AddTransient<IMasterDataAccess, MasterDataAccess>();
-            services.AddTransient<IBookingsDomainService, BookingsDomainService>();
-            services.AddTransient<IBookingsDataAccess, BookingsDataAccess>();
+            services.AddTransient<IBookingDataAccess, BookingDataAccess>();
+            services.AddTransient<IBookingDomainService, BookingDomainService>();
             services.AddTransient<ISqlDbHelper, SqlDbHelper>();
             services.AddTransient<IConnectionStrings, ConnectionStrings>();
         }
