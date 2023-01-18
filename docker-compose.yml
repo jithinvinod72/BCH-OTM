@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  webapp:
+    image: webapp
+    build:
+      dockerfile: ./BCH-OTM/BCMCH.OTM.API/Dockerfile
+    ports:
+      - "80:80"
+      - 443
