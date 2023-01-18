@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -13,7 +13,3 @@
   </ItemGroup>
 
 </Project>
-
-<!-- ioc enthina ellathilum use cheythekkunne ? -->
-<!-- oro project add cheyyumbolum infrastructurilum add cheyyano ? -->
-<!-- puthiya report layer add cheyyanamenkil evidunna add cheyyande -->

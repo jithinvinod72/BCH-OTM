@@ -19,5 +19,6 @@ namespace BCMCH.OTM.Infrastucture.AppSettings.Abstracts
         T ExecuteScalar<T>(string sql, DynamicParameters dp, CommandType commandType = CommandType.Text);
         Task<T> ExecuteScalarAsync<T>(string sql, DynamicParameters dp, CommandType commandType = CommandType.Text);
 
+
     }
 }
