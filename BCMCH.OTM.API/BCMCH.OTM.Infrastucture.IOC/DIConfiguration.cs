@@ -6,6 +6,7 @@ using BCMCH.OTM.Domain.Booking;
 using BCMCH.OTM.Domain.Contract.Booking;
 using BCMCH.OTM.Domain.Contract.Master;
 using BCMCH.OTM.Domain.Master;
+using BCMCH.OTM.External;
 using BCMCH.OTM.Infrastucture.AppSettings;
 using BCMCH.OTM.Infrastucture.AppSettings.Abstracts;
 using Microsoft.Extensions.Configuration;
@@ -22,12 +23,14 @@ namespace BCMCH.OTM.Infrastucture.IOC
         }
         private static void AddDomainDependency(IServiceCollection services, IConfiguration configuration)
         {
+            services.AddTransient<IOTMDataClient, OTMDataClient>();
             services.AddTransient<IMasterDomainService, MasterDomainService>();
             services.AddTransient<IMasterDataAccess, MasterDataAccess>();
             services.AddTransient<IBookingDataAccess, BookingDataAccess>();
             services.AddTransient<IBookingDomainService, BookingDomainService>();
             services.AddTransient<ISqlDbHelper, SqlDbHelper>();
             services.AddTransient<IConnectionStrings, ConnectionStrings>();
+
         }
     }
 }
