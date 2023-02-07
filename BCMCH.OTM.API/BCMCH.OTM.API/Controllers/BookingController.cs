@@ -4,12 +4,13 @@ using BCMCH.OTM.Domain.Contract.Booking;
 
 using BCMCH.OTM.API.ViewModels.Generic;
 using BCMCH.OTM.API.ViewModels.ResponseMessage;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace BCMCH.OTM.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class BookingController : ControllerBase
     {
         #region PRIVATE

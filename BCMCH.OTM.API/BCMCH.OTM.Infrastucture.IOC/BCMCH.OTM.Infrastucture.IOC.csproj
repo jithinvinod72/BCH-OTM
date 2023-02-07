@@ -17,6 +17,7 @@
     <ProjectReference Include="..\BCMCH.OTM.Data\BCMCH.OTM.Data.csproj" />
     <ProjectReference Include="..\BCMCH.OTM.Domain.Contract\BCMCH.OTM.Domain.Contract.csproj" />
     <ProjectReference Include="..\BCMCH.OTM.Domain\BCMCH.OTM.Domain.csproj" />
+    <ProjectReference Include="..\BCMCH.OTM.External\BCMCH.OTM.External.csproj" />
     <ProjectReference Include="..\BCMCH.OTM.Infrastucture\BCMCH.OTM.Infrastucture.csproj" />
   </ItemGroup>
 

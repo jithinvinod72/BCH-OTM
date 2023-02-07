@@ -57,6 +57,14 @@ namespace BCMCH.OTM.Data.Master
             var result= await _sqlHelper.QueryAsync<Employee>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
+        public async Task<IEnumerable<Employee>> GetEmployeeDetails(int employeeCode)
+        {
+            const string StoredProcedure = "[OTM].[SelectEmployeeDetails]";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@EmployeeCode", employeeCode);
+            var result= await _sqlHelper.QueryAsync<Employee>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            return result;
+        }
 
         public async Task<IEnumerable<OperationTheatreAllocation>> GetOperationTheatreAllocations(int _departmentId=0, string? _fromDate="")
         {

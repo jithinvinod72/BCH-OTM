@@ -47,6 +47,11 @@ namespace BCMCH.OTM.Domain.Master
             var result = await _masterDataAccess.GetEmployees(searchOption ,departmentArray, pageNumber,rowsOfPage);
             return result;
         }
+        public async Task<IEnumerable<Employee>> GetEmployeeDetails(int employeeCode)
+        {
+            var result = await _masterDataAccess.GetEmployeeDetails(employeeCode);
+            return result;
+        }
         public async Task<IEnumerable<OperationTheatreAllocation>> GetOperationTheatreAllocations(int _departmentId, string? _fromDate)
         {
             var result = await _masterDataAccess.GetOperationTheatreAllocations(_departmentId, _fromDate);

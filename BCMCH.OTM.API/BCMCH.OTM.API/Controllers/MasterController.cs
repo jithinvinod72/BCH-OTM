@@ -4,21 +4,31 @@ using BCMCH.OTM.API.ViewModels.Generic;
 using BCMCH.OTM.API.ViewModels.ResponseMessage;
 using BCMCH.OTM.Domain.Contract.Master;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication;
+using System.Net.Http.Headers;
+using BCMCH.OTM.External;
+using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BCMCH.OTM.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class MasterController : ControllerBase
     {
         #region PRIVATE
         private readonly IMasterDomainService _masterService;
+        private readonly IOTMDataClient _iOTMDataClient;
+        private readonly IConfiguration _configuration;
         #endregion
 
         #region CONSTRUCTOR
-        public MasterController(IMasterDomainService masterService)
+        public MasterController(IMasterDomainService masterService, IOTMDataClient iOTMDataClient, IConfiguration configuration)
         {
             _masterService = masterService;
+            _iOTMDataClient = iOTMDataClient;
+            _configuration = configuration;
         }
         #endregion
 
@@ -39,6 +49,58 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
         
+
+        [HttpGet]
+        [Route("get-user-auth")]
+        public async Task<IActionResult> GetUserAuth()
+        {
+
+            Console.WriteLine("here");
+            try
+            {
+
+                if (!Request.Headers.ContainsKey("Authorization"))
+                    Ok(new ResponseVM<bool>(false, "Missing Authorization Header"));
+
+                
+                string url= _configuration.GetSection("baseURL").Value + @"user/validate";
+
+
+                var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
+                Console.WriteLine(authHeader);
+                var token = authHeader.Parameter;
+
+                BodyExternalAPI key = new BodyExternalAPI();
+                key.key = token;
+
+                var result =await _iOTMDataClient.PostAsync<UserDetails>(url, key);
+
+                if (result == null) { 
+                    return Ok(new ResponseVM<bool>(false, ResponseMessages.DATA_NOT_FOUND));
+                }
+
+                return Ok(new ResponseVM<UserDetails>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        [HttpGet]
+        [Route("get-user-details")]
+        public async Task<IActionResult> GetUserDetails(int employeeCode)
+        {
+            try
+            {
+                var result = await _masterService.GetEmployeeDetails(employeeCode);
+                return Ok(new ResponseVM<IEnumerable<Employee>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
         [HttpGet]
         [Route("get-departments")]
         public async Task<IActionResult> GetDepartments()
@@ -194,10 +256,9 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
 
-
-
-
         #endregion
     }
 }
+
+
 

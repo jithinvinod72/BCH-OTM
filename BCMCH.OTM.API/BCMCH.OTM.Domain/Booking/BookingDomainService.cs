@@ -1,12 +1,7 @@
 ﻿using BCMCH.OTM.API.Shared.Booking;
 using BCMCH.OTM.Data.Contract.Booking;
 using BCMCH.OTM.Domain.Contract.Booking;
-using System.Runtime.CompilerServices;
-using System.Data.Common;
-using System.Globalization;
 using BCMCH.OTM.Infrastucture.Generic;
-using BCMCH.OTM.API.Shared.Master;
-using BCMCH.OTM.API.Shared.General;
 
 namespace BCMCH.OTM.Domain.Booking
 {
