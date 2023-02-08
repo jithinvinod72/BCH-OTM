@@ -1,4 +1,5 @@
 ﻿using BCMCH.OTM.API.Shared.Booking;
+using BCMCH.OTM.API.Shared.General;
 using BCMCH.OTM.Data.Contract.Booking;
 using BCMCH.OTM.Domain.Contract.Booking;
 using BCMCH.OTM.Infrastucture.Generic;
@@ -183,6 +184,12 @@ namespace BCMCH.OTM.Domain.Booking
             // above line selects unique OperationTheatreId from the allocations 
             // used to show drop down in frontend             
             var result = allocatedOperationtheatres;
+            return result;
+        }
+
+        public async Task<IEnumerable<Patient>> GetPatientData(string registrationNo)
+        {
+            var result = await _bookingDataAccess.GetPatientData(registrationNo);
             return result;
         }
     }

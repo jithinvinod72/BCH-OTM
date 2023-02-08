@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using BCMCH.OTM.API.Shared.Booking;
+using BCMCH.OTM.API.Shared.General;
 using BCMCH.OTM.Infrastucture.Generic;
 
 namespace BCMCH.OTM.Domain.Contract.Booking
@@ -19,6 +20,6 @@ namespace BCMCH.OTM.Domain.Contract.Booking
         Task<Envelope<IEnumerable<UpdateBookingModel>>> UpdateBooking(UpdateBookingModel _booking);
         Task<IEnumerable<Bookings>> DeleteBooking(string IdArray="");
         Task<IEnumerable<Blocking>> AddBlocking(Blocking blocking);
-
+        Task<IEnumerable<Patient>> GetPatientData(string registrationNo);
     }
 }

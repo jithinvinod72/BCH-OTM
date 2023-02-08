@@ -4,7 +4,7 @@ using BCMCH.OTM.Data.Contract.Master;
 using BCMCH.OTM.Infrastucture.AppSettings.Abstracts;
 using Dapper;
 using System.Data;
-
+using System.Numerics;
 
 namespace BCMCH.OTM.Data.Master
 {
@@ -137,7 +137,6 @@ namespace BCMCH.OTM.Data.Master
             var result= await _sqlHelper.QueryAsync<DateTime>(Query, SqlParameters, CommandType.Text);
             return result;
         }
-        
         #endregion
         
     }

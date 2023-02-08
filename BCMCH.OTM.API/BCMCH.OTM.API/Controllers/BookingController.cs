@@ -5,6 +5,7 @@ using BCMCH.OTM.Domain.Contract.Booking;
 using BCMCH.OTM.API.ViewModels.Generic;
 using BCMCH.OTM.API.ViewModels.ResponseMessage;
 using Microsoft.AspNetCore.Authorization;
+using BCMCH.OTM.API.Shared.General;
 
 namespace BCMCH.OTM.API.Controllers
 {
@@ -156,13 +157,24 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
-
-
-
         #endregion
 
 
-
-
+        #region PATIENT-DATA
+        [HttpGet]
+        [Route("get-patient-data")]
+        public async Task<IActionResult> GetPatient(string registrationNo)
+        {
+            try
+            {
+                var result = await _bookingService.GetPatientData(registrationNo);
+                return Ok(new ResponseVM<IEnumerable<Patient>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        #endregion
     }
 }
