@@ -93,6 +93,14 @@ namespace BCMCH.OTM.Domain.Booking
             return new Envelope<IEnumerable<int>>(true, "booking created", result); ;
         }
 
+        public async Task<Envelope<IEnumerable<int>>> AddWaitingList(PostBookingModel booking)
+        {
+            booking.EmployeeIdArray="["+booking.EmployeeIdArray+"]";
+            booking.EquipmentsIdArray="["+booking.EquipmentsIdArray+"]";
+            var result = await _bookingDataAccess.AddBooking(booking);
+            return new Envelope<IEnumerable<int>>(true, "booking created", result); ;
+        }
+
 
         public async Task<Envelope<IEnumerable<UpdateBookingModel>>> UpdateBooking(UpdateBookingModel booking)
         {
@@ -126,32 +134,15 @@ namespace BCMCH.OTM.Domain.Booking
             return new Envelope<IEnumerable<UpdateBookingModel>>(true,"data-update-success", result); ;
         }
 
+      
+
         public async Task<IEnumerable<Blocking>> AddBlocking(Blocking blocking)
         {
             var result = await _bookingDataAccess.AddBlocking(blocking);
             return result;
         }
 
-        private DateTime convertTimeTwelveToTwentyFour( string _datetime )
-        {
-             DateTime dateTime =  DateTime.ParseExact( _datetime,  
-                                                        "yyyy/MM/dd hh:mm:ss tt", 
-                                                        System.Globalization.CultureInfo.InvariantCulture);
-            // Console.WriteLine();
-            // Console.Write("12 hour datetime : ");
-            // Console.Write(_datetime);
-            // Console.WriteLine();
 
-            // Console.WriteLine();
-            // Console.Write("24 hour datetime : ");
-            // Console.Write(dateTime);
-            // Console.WriteLine();
-
-            
-            return dateTime;
-        }
-
-        
         public async Task<BookingsAndAllocations> SelectBookingsAndAllocations(int departmentId,int operationTheatreId , string? fromDate,string? toDate)
         {
             // selects bookings and allocations in accordance with given 

@@ -104,6 +104,39 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
+        
+        [HttpPost]
+        [Route("add-waiting-list")]
+        public async Task<IActionResult> AddWaitingList(PostBookingModel booking)
+        {
+            try
+            {
+                var result = await _bookingService.AddWaitingList(booking);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+        #region OT-BLOCKING
+        [HttpPost]
+        [Route("add-blocking")]
+        public async Task<IActionResult> AddBlocking(Blocking _blocking)
+        {
+            try
+            {
+                var result = await _bookingService.AddBlocking(_blocking);
+                return Ok(new ResponseVM<IEnumerable<Blocking>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        #endregion
+
 
 
 
@@ -140,24 +173,6 @@ namespace BCMCH.OTM.API.Controllers
 
         #endregion
 
-
-
-        #region OT-BLOCKING
-        [HttpPost]
-        [Route("add-blocking")]
-        public async Task<IActionResult> AddBlocking(Blocking _blocking)
-        {
-            try
-            {
-                var result = await _bookingService.AddBlocking(_blocking);
-                return Ok(new ResponseVM<IEnumerable<Blocking>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
-            }
-            catch (Exception ex)
-            {
-                return Ok(new ResponseVM<bool>(false, ex.Message));
-            }
-        }
-        #endregion
 
 
         #region PATIENT-DATA

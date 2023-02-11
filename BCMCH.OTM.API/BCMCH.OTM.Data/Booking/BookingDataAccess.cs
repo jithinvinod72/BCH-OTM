@@ -62,6 +62,7 @@ namespace BCMCH.OTM.Data.Booking
             var result= await _sqlHelper.QueryAsync<int>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
+
         public async Task<IEnumerable<GetAllocationModel>> GetAllocation(int departmentId, string startDate, string endDate)
         {
             const string StoredProcedure = "[OTM].[SelectAllocation]";

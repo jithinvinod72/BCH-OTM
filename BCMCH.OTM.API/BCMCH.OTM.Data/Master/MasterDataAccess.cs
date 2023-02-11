@@ -24,10 +24,13 @@ namespace BCMCH.OTM.Data.Master
         #region PUBLIC
         public async Task<IEnumerable<Equipments>> GetEquipments()
         {
-            const string StoredProcedure = "[OTM].[SelectEquipments]";
+            const string Query = "SELECT"+
+                                 " [Id]"+
+                                 ",[Name]"+
+                                 ",[Description]"+
+                                 "FROM [BeHiveCoreDev].[OTM].[EquipmentsMaster]";
             var SqlParameters = new DynamicParameters();
-
-            var result= await _sqlHelper.QueryAsync<Equipments>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            var result= await _sqlHelper.QueryAsync<Equipments>(Query, SqlParameters, CommandType.Text);
             return result;
         }
         
@@ -82,9 +85,16 @@ namespace BCMCH.OTM.Data.Master
 
         public async Task<IEnumerable<OperationTheatre>> GetOperationTheatres()
         {
-            const string StoredProcedure = "[OTM].[SelectOperationTheatres]";
+            const string Query = "SELECT [Id] AS OperationTheatreId"+
+                                 ",[Name]"+
+                                 ",[Location]"+
+                                 ",[Type]"+
+                                 ",[DepartmentId]"+
+                                 ",[CleaningTime]"+
+                                 ",[ModifiedBy]"+
+                                 "FROM [BeHiveCoreDev].[OTM].[OperationTheatreMaster]";
             var SqlParameters = new DynamicParameters();
-            var result= await _sqlHelper.QueryAsync<OperationTheatre>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            var result= await _sqlHelper.QueryAsync<OperationTheatre>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 
