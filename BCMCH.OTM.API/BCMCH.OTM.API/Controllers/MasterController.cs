@@ -225,6 +225,22 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("post-Allocation-in-a-range")]
+        public async Task<IActionResult> PostAllocationInARange( AllocateInRange _allocation)
+        {
+            try
+            {
+                // Task<int> PostAllocationInARange(AllocateInRange _allocation);
+                var result = await _masterService.PostAllocationInARange(_allocation);
+                return Ok(new ResponseVM<IEnumerable<int>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
 
         [HttpGet]
         [Route("get-allocation")]

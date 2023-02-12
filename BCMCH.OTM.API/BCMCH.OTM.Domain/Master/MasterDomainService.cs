@@ -2,6 +2,7 @@
 using BCMCH.OTM.API.Shared.General;
 using BCMCH.OTM.Data.Contract.Master;
 using BCMCH.OTM.Domain.Contract.Master;
+using System.Globalization;
 
 namespace BCMCH.OTM.Domain.Master
 {
@@ -17,6 +18,18 @@ namespace BCMCH.OTM.Domain.Master
             _masterDataAccess = masterDataAccess;
         }
         #endregion
+
+
+
+
+        #region PRIVATE-FUNCTIONS
+        private string DatetimeCovetsion()
+        {
+            return "";
+        }
+        #endregion
+
+
 
         #region PUBLIC
         public async Task<IEnumerable<Equipments>> GetEquipments()
@@ -89,12 +102,154 @@ namespace BCMCH.OTM.Domain.Master
             var result = await _masterDataAccess.GetAllocation(departmentId, startDate, endDate);
             return result;
         }
-            
+
+
+
+        // ----------------------------------------
+        // START- Consits functions for allocation 
+        #region ALLOCATION_REGION
+        // START- private functions to handle allocation
+        private DateTime StringToDateTimeConverter( string _date )
+        {
+            // this function converts input _date string to the date format for dot net
+            CultureInfo provider = CultureInfo.InvariantCulture;
+            DateTime parsedDate = DateTime.ParseExact(_date, "yyyy/MM/dd",provider);
+            return parsedDate;   
+        }
+        private int DateDifference(DateTime start, DateTime end)
+        {
+            // this function returns the number of days between two given dates .
+            // For eg : if we give 1/1/2022 and 3/1/2022 it will give the difference as 2 
+            return (end.Date-start.Date).Days;
+        }
+        private int DayFinder(DateTime givenDate)
+        {
+            // returns day of the week for a given date
+            int day = (int)givenDate.DayOfWeek;
+            return day;
+        }
+        private List<DateTime> FilterDatesOfDay(DateTime start, DateTime end, int givenDayNumber)
+        {
+            List<DateTime> FilteredDates = new List<DateTime>();
+            // used to store the filtered dates.
+
+            int difference = DateDifference(start, end);
+            // First we find the number of days between a given start date and end date
+            // For eg : if we give 1/1/2022 and 3/1/2022 it will give the difference as 2 
+
+            // after finding the difference we add it to the start date one by one.
+            // eg : if the difference is 5 and our start date is 1/1/2022
+            // we loop from 0 to 5 
+            // and during each iteration we add a day with the start date that is : 1/1/2022
+            // so for the first iteration 
+            // i=0 and the dateRecurring will be 1/1/2022
+            // i=1 and the dateRecurring will be 2/1/2022
+            // i=2 and the dateRecurring will be 3/1/2022 
+            // ..etc..
+            // i=5 and the dateRecurring will be 5/1/2022 
+            for (int i = 0; i <= difference; i++)
+            {
+                DateTime dateRecurring = start.AddDays(i);
+                // the above line increments the given date with 1 during each iterations
+                int currentDayNumber = DayFinder(dateRecurring);
+                // the day finder is a function that return the number of the week day of the given date
+                // ie: 0 for Sunday 
+                // 1 for Monday .... 6 for Saturday 
+                if (givenDayNumber == currentDayNumber)
+                {
+                    // if the current day number is the givenDayNumber that we want to post
+                    // we add it to the FilteredDates function
+                    FilteredDates.Add(dateRecurring);
+                }
+            }
+            // atlast we return the filtered adata
+            return FilteredDates;
+        }
+        private DateTime AddDateAndTime(DateTime _date, string _time)
+        {
+            string[] TimeSplitted = _time.Split(':');
+            TimeSpan ts = new TimeSpan(Int32.Parse(TimeSplitted[0]) , Int32.Parse(TimeSplitted[1]), Int32.Parse(TimeSplitted[2]) );
+            _date = _date.Date + ts;
+            return _date;
+        }
+        // END- private functions to handle allocation
+
+
+        // START- public functions for allocation to access from controller
         public async Task<IEnumerable<Allocation>> PostAllocation(Allocation _allocation)
         {
+            // used to post allocation with only a startdate,enddate,otid and department id
             var result = await _masterDataAccess.PostAllocation(_allocation);
             return result;
         }
+        
+        public async Task<IEnumerable<int>> PostAllocationInARange(AllocateInRange _allocation)
+        {
+            // used to bulk posting allocation
+            // first we convert the incoming startdate and enddate to date in js 
+            DateTime start = StringToDateTimeConverter(_allocation.StartDate);
+            DateTime end = StringToDateTimeConverter(_allocation.EndDate);
+
+            // SUMMARY : 
+            // in this function we give required parameters like start date and end date
+            // and the week day number eg: for Sunday the day number will be 0, for Monday the day number will be 1,etc..
+            // usingthese we filter out the dates of the days given in between the range that is given.
+            List<DateTime> filteredDatesWithDay = FilterDatesOfDay(start, end, _allocation.day);
+            // The above function will filter the dates of the day number that we have given within a given start and end dates.
+
+            // we loop through the filteredDatesWithDay and allocate the start and end time with ot and department ids using the PostAllocation function
+            foreach (DateTime dateRecurring in filteredDatesWithDay)
+            {
+                DateTime starDateTime   =  AddDateAndTime(dateRecurring,_allocation.StartTime);
+                // the above line adds startDate + startTime time to find the allocation startdatetime
+                DateTime endDateTime    =  AddDateAndTime(dateRecurring,_allocation.EndTime);
+                // the above line adds endDate + endTime time to find the allocation startdatetime
+                string date_time_start  = starDateTime.ToString("yyyy-MM-ddTHH:mm:ss");
+                // converts to string format which we use to write to database
+                string date_time_end    = endDateTime.ToString("yyyy-MM-ddTHH:mm:ss");
+                // converts to string format which we use to write to database
+                
+                // year-month-date
+
+
+                Console.WriteLine();
+                Console.Write("datetime start : ");
+                Console.Write(date_time_start);
+                Console.WriteLine();
+                Console.Write("datetime end : ");
+                Console.Write(date_time_end);
+                Console.WriteLine();
+
+                
+                Allocation _postAllocation_format = new Allocation();
+                
+                _postAllocation_format.OperationTheatreId = _allocation.OperationTheatreId;
+                _postAllocation_format.AssignedDepartmentId = _allocation.AssignedDepartmentId;
+                _postAllocation_format.StartDate = date_time_start;
+                _postAllocation_format.EndDate = date_time_end;
+                _postAllocation_format.ModifiedBy = _allocation.ModifiedBy;
+
+
+                await PostAllocation(_postAllocation_format);
+
+                // public int?      OperationTheatreId {get; set; }
+                // public int?      AssignedDepartmentId {get; set; }
+                // public string    StartDate {get; set; }
+                // public string    EndDate {get; set; }
+                // public int?      ModifiedBy {get; set; }
+            }
+            // return 0;
+            return new List<int> { 0 };
+        }
+        // END- public functions for allocation to access from controller
+        #endregion
+        // END- Consits functions for allocation 
+        // ----------------------------------------
+
+
+        
+
+        
         public async Task<DateTime>GetDateToday()
         {
             var result = await _masterDataAccess.GetDateToday();
