@@ -122,17 +122,22 @@ namespace BCMCH.OTM.Domain.Master
             // For eg : if we give 1/1/2022 and 3/1/2022 it will give the difference as 2 
             return (end.Date-start.Date).Days;
         }
-        private int DayFinder(DateTime givenDate)
+        private string DayFinder(DateTime givenDate)
         {
             // returns day of the week for a given date
             int day = (int)givenDate.DayOfWeek;
-            return day;
+            return  day.ToString();
         }
-        private List<DateTime> FilterDatesOfDay(DateTime start, DateTime end, int givenDayNumber)
+        private List<DateTime> FilterDatesOfDay(DateTime start, DateTime end, string givenDayNumbers)
         {
+            // given day numbers will be a comma seperated string eg : 1,2,4
+            // we need to it that to an array by using split command
+            string[] givenDayNumbersSplitted = givenDayNumbers.Split(',');
+            // this contains the array which includes the days to add
+
+
             List<DateTime> FilteredDates = new List<DateTime>();
             // used to store the filtered dates.
-
             int difference = DateDifference(start, end);
             // First we find the number of days between a given start date and end date
             // For eg : if we give 1/1/2022 and 3/1/2022 it will give the difference as 2 
@@ -151,11 +156,11 @@ namespace BCMCH.OTM.Domain.Master
             {
                 DateTime dateRecurring = start.AddDays(i);
                 // the above line increments the given date with 1 during each iterations
-                int currentDayNumber = DayFinder(dateRecurring);
+                string currentDayNumber = DayFinder(dateRecurring);
                 // the day finder is a function that return the number of the week day of the given date
                 // ie: 0 for Sunday 
                 // 1 for Monday .... 6 for Saturday 
-                if (givenDayNumber == currentDayNumber)
+                if (givenDayNumbersSplitted.Contains(currentDayNumber))
                 {
                     // if the current day number is the givenDayNumber that we want to post
                     // we add it to the FilteredDates function

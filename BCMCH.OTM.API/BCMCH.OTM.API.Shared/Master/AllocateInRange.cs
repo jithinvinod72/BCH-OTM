@@ -14,7 +14,7 @@ namespace BCMCH.OTM.API.Shared.Master
         public string EndDate {get; set; }
         public string StartTime {get; set; }
         public string EndTime {get; set; }
-        public int day {get; set; }
+        public string day {get; set; }
         public int? ModifiedBy {get; set; }
     }
 }
