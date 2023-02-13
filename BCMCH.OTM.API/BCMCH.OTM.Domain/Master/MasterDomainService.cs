@@ -113,7 +113,7 @@ namespace BCMCH.OTM.Domain.Master
         {
             // this function converts input _date string to the date format for dot net
             CultureInfo provider = CultureInfo.InvariantCulture;
-            DateTime parsedDate = DateTime.ParseExact(_date, "yyyy/MM/dd",provider);
+            DateTime parsedDate = DateTime.ParseExact(_date, "yyyy-MM-dd",provider);
             return parsedDate;   
         }
         private int DateDifference(DateTime start, DateTime end)
