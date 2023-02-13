@@ -16,5 +16,9 @@ namespace BCMCH.OTM.Data.Contract.Master
         Task<IEnumerable<GetAllocationModel>> GetAllocation(int departmentId, string startDate, string endDate);
         Task<IEnumerable<Allocation>> PostAllocation(Allocation _allocation);
         Task<IEnumerable<DateTime>> GetDateToday();
+
+        // QUESTION SECTION START
+         Task<IEnumerable<PostQuestionsModel>> PostQuestion(PostQuestionsModel question);
+         // QUESTION SECTION END
     }
 }

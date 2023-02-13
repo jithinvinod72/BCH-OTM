@@ -250,10 +250,6 @@ namespace BCMCH.OTM.Domain.Master
         #endregion
         // END- Consits functions for allocation 
         // ----------------------------------------
-
-
-        
-
         
         public async Task<DateTime>GetDateToday()
         {
@@ -261,6 +257,15 @@ namespace BCMCH.OTM.Domain.Master
             return result.ElementAt(0);
         }
         
+        #endregion
+        
+
+        #region QUESTION_SECTION
+        public async Task<IEnumerable<PostQuestionsModel>> PostQuestion(PostQuestionsModel question)
+        {
+            var result = await _masterDataAccess.PostQuestion(question);
+            return result;
+        }
         #endregion
         
     }

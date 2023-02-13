@@ -271,8 +271,26 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
-
         #endregion
+
+        #region QUESTION_SECTION
+        [HttpPost]
+        [Route("post-questions")]
+        public async Task<IActionResult> PostQuestion(PostQuestionsModel question)
+        {
+            try
+            {
+                var result = await _masterService.PostQuestion(question);
+                return Ok(new ResponseVM<IEnumerable<PostQuestionsModel>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        #endregion
+        
+        
     }
 }
 

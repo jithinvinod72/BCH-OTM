@@ -148,6 +148,45 @@ namespace BCMCH.OTM.Data.Master
             return result;
         }
         #endregion
+
+        // ##############################
+        // QUESTION_HANDLES SECTION START
+        // this section handles form questions
+        #region QUESTION_HANDLES
+        public async Task<IEnumerable<PostQuestionsModel>> PostQuestion(PostQuestionsModel question)
+        {
+            string Query =  "INSERT INTO [OTM].[FormQuestions]("+
+                                    "[FormsectionId],"+
+                                    "[FormQuestionType],"+
+                                    "[order],"+
+                                    "[name],"+
+                                    "[question],"+
+                                    "[parentId],"+
+                                    "[rolesToShow],"+
+                                    "[questionTypeId],"+
+                                    "[Options] )"+
+                                  " VALUES "+
+                                  " ( "+
+                                        question.FormsectionId.ToString()+
+                                    ","+question.FormQuestionType.ToString()+
+                                    ","+question.order.ToString()+
+                                    ",'"+question.name+"'"+
+                                    ",'"+question.question+"'"+
+                                    ","+question.parentId.ToString()+
+                                    ",'"+question.rolesToShow+"'"+
+                                    ","+question.questionTypeId.ToString()+
+                                    ",'"+question.Options+"'"+
+                                  " ) ";
+            Console.WriteLine(Query);
+
+            var SqlParameters = new DynamicParameters();
+
+            var result= await _sqlHelper.QueryAsync<PostQuestionsModel>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+        #endregion
+        // QUESTION_HANDLES SECTION END
+
         
     }
 }
