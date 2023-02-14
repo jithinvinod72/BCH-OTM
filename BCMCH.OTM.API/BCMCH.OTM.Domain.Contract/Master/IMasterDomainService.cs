@@ -18,5 +18,12 @@ namespace BCMCH.OTM.Domain.Contract.Master
         Task<IEnumerable<Allocation>> PostAllocation(Allocation _allocation);
         Task<IEnumerable<int>> PostAllocationInARange(AllocateInRange _allocation);
         Task<DateTime>GetDateToday();
+
+        // QUESTION SECTIION START
+        Task<IEnumerable<PostQuestionsModel>> PostQuestion(PostQuestionsModel question);
+        Task<IEnumerable<string>> PostQuestionType(string questionType);
+        Task<IEnumerable<string>> PostFormSections(string section);
+        Task<IEnumerable<GetQuestions>> GetFormQuestions();
+        // QUESTION SECTIION END
     }
 }
