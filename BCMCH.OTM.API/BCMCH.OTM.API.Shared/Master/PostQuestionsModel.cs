@@ -29,3 +29,12 @@ namespace BCMCH.OTM.API.Shared.Master
 // rolesToShow
 // questionTypeId
 // Options
+// FormsectionId
+// FormQuestionType
+// order
+// name
+// question
+// parentId
+// rolesToShow
+// questionTypeId
+// Options
