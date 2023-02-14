@@ -19,22 +19,3 @@ namespace BCMCH.OTM.API.Shared.Master
         public int IsRequired {get;set;}
     }
 }
-
-// FormsectionId
-// FormQuestionType
-// order
-// name
-// question
-// parentId
-// rolesToShow
-// questionTypeId
-// Options
-// FormsectionId
-// FormQuestionType
-// order
-// name
-// question
-// parentId
-// rolesToShow
-// questionTypeId
-// Options

@@ -349,6 +349,37 @@ namespace BCMCH.OTM.API.Controllers
         }
         // Question section Fetch END
         #endregion
+
+        #region FORM_ANSWER_HANDLE
+        [HttpPost]
+        [Route("post-form-answers")]
+        public async Task<IActionResult> PostFormAnswers(PostAnswer answer)
+        {
+            try
+            {
+                var result = await _masterService.PostFormAnswer(answer);
+                return Ok(new ResponseVM<IEnumerable<PostAnswer>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        [HttpGet]
+        [Route("get-form-answers")]
+        public async Task<IActionResult> GetFormAnswers(int eventId)
+        {
+            try
+            {
+                var result = await _masterService.GetFormAnswer(eventId);
+                return Ok(new ResponseVM<IEnumerable<GetAnswer>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        #endregion
         
         
     }

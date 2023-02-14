@@ -221,6 +221,60 @@ namespace BCMCH.OTM.Data.Master
         #endregion
         // QUESTION_HANDLES SECTION END
 
+        // ANSWER HANDLE SECTION START
+        public async Task<IEnumerable<PostAnswer>> PostFormAnswer(PostAnswer answer)
+        {
+            string Query =  @"
+                            INSERT INTO [OTM].[FormAnswer]
+                            (
+                                [eventId], [questionId], [answer]
+                            )
+                            VALUES
+                            (
+                                @eventId,@questionId,@answer
+                            )
+                            ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@eventId"    , answer.eventId );
+            SqlParameters.Add("@questionId" , answer.questionId );
+            SqlParameters.Add("@answer"     , answer.answer );
+            var result= await _sqlHelper.QueryAsync<PostAnswer>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+        public async Task<IEnumerable<GetAnswer>> GetFormAnswer(int eventId)
+        {
+            string Query =  @"
+                                SELECT
+                                    [Id],
+                                    [eventId],
+                                    [questionid],
+                                    [answer]
+                                FROM 
+                                    [OTM].[FormAnswer]
+                                WHERE 
+                                    [eventId]=@eventId
+                            ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@eventId"    , eventId );
+            var result= await _sqlHelper.QueryAsync<GetAnswer>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
         
+        // ANSWER HANDLE SECTION END
+
+
+        
+
     }
 }
+
+
+// SELECT
+//     [Id],
+//     [eventId],
+//     [questionid],
+//     [answer]
+// FROM 
+//     [OTM].[FormAnswer]
+// WHERE 
+//     [eventId]=@eventId

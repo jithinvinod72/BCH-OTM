@@ -25,5 +25,7 @@ namespace BCMCH.OTM.Domain.Contract.Master
         Task<IEnumerable<string>> PostFormSections(string section);
         Task<IEnumerable<GetQuestions>> GetFormQuestions();
         // QUESTION SECTIION END
+        Task<IEnumerable<PostAnswer>> PostFormAnswer(PostAnswer answer);
+        Task<IEnumerable<GetAnswer>> GetFormAnswer(int eventId);
     }
 }

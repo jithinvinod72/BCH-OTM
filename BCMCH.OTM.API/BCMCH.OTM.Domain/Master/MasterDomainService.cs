@@ -285,6 +285,20 @@ namespace BCMCH.OTM.Domain.Master
             return result;
         }
         #endregion
+
+        #region FORM_ANSWER_HANDLE
+
+        public async Task<IEnumerable<PostAnswer>> PostFormAnswer(PostAnswer answer)
+        {
+            var result = await _masterDataAccess.PostFormAnswer(answer);
+            return result;
+        }
+        public async Task<IEnumerable<GetAnswer>> GetFormAnswer(int eventId)
+        {
+            var result = await _masterDataAccess.GetFormAnswer(eventId);
+            return result;
+        }
+        #endregion
         
     }
 }
