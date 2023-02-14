@@ -24,11 +24,14 @@ namespace BCMCH.OTM.Data.Master
         #region PUBLIC
         public async Task<IEnumerable<Equipments>> GetEquipments()
         {
-            const string Query = "SELECT"+
-                                 " [Id]"+
-                                 ",[Name]"+
-                                 ",[Description]"+
-                                 "FROM [BeHiveCoreDev].[OTM].[EquipmentsMaster]";
+            const string Query = @"
+                                  SELECT
+                                    [Id],
+                                    [Name],
+                                    [Description]
+                                  FROM 
+                                    [BeHiveCoreDev].[OTM].[EquipmentsMaster]
+                                 ";
             var SqlParameters = new DynamicParameters();
             var result= await _sqlHelper.QueryAsync<Equipments>(Query, SqlParameters, CommandType.Text);
             return result;
@@ -85,14 +88,17 @@ namespace BCMCH.OTM.Data.Master
 
         public async Task<IEnumerable<OperationTheatre>> GetOperationTheatres()
         {
-            const string Query = "SELECT [Id] AS OperationTheatreId"+
-                                 ",[Name]"+
-                                 ",[Location]"+
-                                 ",[Type]"+
-                                 ",[DepartmentId]"+
-                                 ",[CleaningTime]"+
-                                 ",[ModifiedBy]"+
-                                 "FROM [BeHiveCoreDev].[OTM].[OperationTheatreMaster]";
+            const string Query = @"
+                                    SELECT 
+                                        [Id] AS OperationTheatreId,
+                                        [Name]                    ,
+                                        [Location]                ,
+                                        [Type]                    ,
+                                        [DepartmentId]            ,
+                                        [CleaningTime]            ,
+                                        [ModifiedBy]
+                                    FROM [BeHiveCoreDev].[OTM].[OperationTheatreMaster]                     
+                                 ";
             var SqlParameters = new DynamicParameters();
             var result= await _sqlHelper.QueryAsync<OperationTheatre>(Query, SqlParameters, CommandType.Text);
             return result;
@@ -156,52 +162,82 @@ namespace BCMCH.OTM.Data.Master
         // Insert section START
         public async Task<IEnumerable<PostQuestionsModel>> PostQuestion(PostQuestionsModel question)
         {
-            string Query =  "INSERT INTO [OTM].[FormQuestions]("+
-                                    "[FormsectionId],"+
-                                    "[FormQuestionTypeId],"+
-                                    "[order],"+
-                                    "[name],"+
-                                    "[question],"+
-                                    "[parentId],"+
-                                    "[rolesToShow],"+
-                                    "[Options], "+
-                                    "[IsRequired] )"+
-                                  " VALUES "+
-                                  " ( "+
-                                        question.FormsectionId.ToString()+
-                                    ","+question.FormQuestionTypeId.ToString()+
-                                    ","+question.order.ToString()+
-                                    ",'"+question.name+"'"+
-                                    ",'"+question.question+"'"+
-                                    ","+question.parentId.ToString()+
-                                    ",'"+question.rolesToShow+"'"+
-                                    ",'"+question.Options+"'"+
-                                    ",'"+question.IsRequired+"'"+
-                                  " ) ";
-            Console.WriteLine(Query);
-
+            string Query =  @"
+                                INSERT INTO [OTM].[FormQuestions]
+                                (
+                                    [FormsectionId],
+                                    [FormQuestionTypeId],
+                                    [order],
+                                    [name],
+                                    [question],
+                                    [parentId],
+                                    [rolesToShow],
+                                    [Options], 
+                                    [IsRequired] 
+                                )
+                                VALUES 
+                                ( 
+                                    @formSectionId   ,
+                                    @FormQuestionTypeId  ,
+                                    @order ,
+                                    @name ,
+                                    @question ,
+                                    @parentId    ,
+                                    @rolesToShow  ,
+                                    @Options  ,
+                                    @IsRequired
+                                )
+                            ";
+            
             var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@FormsectionId"      , question.FormsectionId.ToString() );
+            SqlParameters.Add("@FormQuestionTypeId" , question.FormQuestionTypeId.ToString() );
+            SqlParameters.Add("@order"              , question.order.ToString() );
+            SqlParameters.Add("@name"               , question.name );
+            SqlParameters.Add("@question"           , question.question );
+            SqlParameters.Add("@parentId"           , question.parentId.ToString() );
+            SqlParameters.Add("@rolesToShow"        , question.rolesToShow );
+            SqlParameters.Add("@Options"            , question.Options);
+            SqlParameters.Add("@rolesToShow"        , question.rolesToShow );
+            SqlParameters.Add("@IsRequired"         , question.IsRequired);
+            
+            Console.WriteLine(SqlParameters);
 
             var result= await _sqlHelper.QueryAsync<PostQuestionsModel>(Query, SqlParameters, CommandType.Text);
             return result;
         }
         public async Task<IEnumerable<string>> PostQuestionType(string questionType)
         {
-            string Query =  "INSERT INTO [OTM].[FormQuestionType] ([Name])"+
-                                  " VALUES "+
-                                  " ( '"+questionType+"') ";
-            Console.WriteLine(Query);
+            string Query =  @"
+                                INSERT INTO [OTM].[FormQuestionType] 
+                                (
+                                    [Name]
+                                )
+                                VALUES 
+                                ( 
+                                    @questionType
+                                ) 
+                            ";
             var SqlParameters = new DynamicParameters();
-
+            SqlParameters.Add("@questionType"    , questionType);
             var result= await _sqlHelper.QueryAsync<string>(Query, SqlParameters, CommandType.Text);
             return result;
         }
         public async Task<IEnumerable<string>> PostFormSections(string section)
-        {
-            string Query =  "INSERT INTO [OTM].[FormSections] ([sectionName])"+
-                            " VALUES ( '"+section+"') ";
-            Console.WriteLine(Query);
+        {   
+            string Query =  @"
+                                INSERT INTO [OTM].[FormSections] 
+                                (
+                                    [sectionName]
+                                )
+                                VALUES 
+                                ( 
+                                    @section
+                                ) 
+                            ";
+
             var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@section"    , section);
 
             var result= await _sqlHelper.QueryAsync<string>(Query, SqlParameters, CommandType.Text);
             return result;
@@ -225,14 +261,14 @@ namespace BCMCH.OTM.Data.Master
         public async Task<IEnumerable<PostAnswer>> PostFormAnswer(PostAnswer answer)
         {
             string Query =  @"
-                            INSERT INTO [OTM].[FormAnswer]
-                            (
-                                [eventId], [questionId], [answer]
-                            )
-                            VALUES
-                            (
-                                @eventId,@questionId,@answer
-                            )
+                                INSERT INTO [OTM].[FormAnswer]
+                                (
+                                    [eventId], [questionId], [answer]
+                                )
+                                VALUES
+                                (
+                                    @eventId,@questionId,@answer
+                                )
                             ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@eventId"    , answer.eventId );
@@ -267,14 +303,3 @@ namespace BCMCH.OTM.Data.Master
 
     }
 }
-
-
-// SELECT
-//     [Id],
-//     [eventId],
-//     [questionid],
-//     [answer]
-// FROM 
-//     [OTM].[FormAnswer]
-// WHERE 
-//     [eventId]=@eventId

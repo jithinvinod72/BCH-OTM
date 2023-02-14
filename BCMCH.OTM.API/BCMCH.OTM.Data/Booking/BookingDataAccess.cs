@@ -75,30 +75,56 @@ namespace BCMCH.OTM.Data.Booking
         }
         public async Task<IEnumerable<Equipments>> GetEventEquipments(int bookingId)
         {
-            // used to fetch the equipments with their booking Id
-            string Query ="SELECT [EquipmentsMaster].Id ,[Name],[Description]"+
-                                " FROM [OTM].[EquipmentsMapping]"+
-                                " LEFT JOIN  OTM.[EquipmentsMaster] ON [EquipmentId] =OTM.[EquipmentsMaster].Id"+
-                                " WHERE  BookingId="+bookingId.ToString() ;
+            string Query =@"
+                            SELECT 
+                                [EquipmentsMaster].Id ,
+                                [Name],
+                                [Description]
+                            FROM [OTM].[EquipmentsMapping]
+                            LEFT JOIN  
+                                [OTM].[EquipmentsMaster] ON [EquipmentId] =[OTM].[EquipmentsMaster].[Id]
+                            WHERE 
+                                BookingId=@bookingId" ;
+
             var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@bookingId"    , bookingId );
             var result= await _sqlHelper.QueryAsync<Equipments>(Query, SqlParameters, CommandType.Text);
             return result;
         }
         public async Task<IEnumerable<Employee>> GetEventEmployees(int bookingId)
         {
             // used to fetch the employees with their booking Id
-            string Query =  "SELECT EmployeeId,FirstName,MiddleName,LastName,DepartmentID "+
-                            " FROM  [OTM].[EmployeeMapping]"+
-                            " LEFT JOIN HR.[Employees] ON OTM.EmployeeMapping.EmployeeId =HR.[Employees].Id"+
-                            " WHERE BookingId="+bookingId.ToString() ;
+            string Query =  @"
+                                SELECT 
+                                    EmployeeId,
+                                    FirstName,
+                                    MiddleName,
+                                    LastName,
+                                    DepartmentID 
+                                FROM  
+                                    [OTM].[EmployeeMapping]
+                                LEFT JOIN 
+                                    HR.[Employees] ON OTM.EmployeeMapping.EmployeeId =HR.[Employees].Id
+                                WHERE 
+                                    BookingId=@bookingId
+                            ";
             var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@bookingId"    , bookingId.ToString() );
             var result= await _sqlHelper.QueryAsync<Employee>(Query, SqlParameters, CommandType.Text);
             return result;
         }
         public async Task<IEnumerable<Departments>> GetDepartments()
         {
-            string Query =  "SELECT [Id],[Code],[DivisionId],[TypeCode],[Name]"+
-                            " FROM dbo.Departments";
+            string Query =  @"
+                                SELECT 
+                                        [Id],
+                                        [Code],
+                                        [DivisionId],
+                                        [TypeCode],
+                                        [Name]
+                                FROM 
+                                    dbo.Departments
+                            ";
             var SqlParameters = new DynamicParameters();
             var result= await _sqlHelper.QueryAsync<Departments>(Query, SqlParameters, CommandType.Text);
             return result;
