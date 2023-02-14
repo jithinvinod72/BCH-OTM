@@ -333,9 +333,8 @@ namespace BCMCH.OTM.API.Controllers
         }
         // Question section post END
         // Question section Fetch START
-
         [HttpGet]
-        [Route("get-form-section")]
+        [Route("get-form-questions")]
         public async Task<IActionResult> GetFormQuestions()
         {
             try
@@ -348,6 +347,7 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
+        // Question section Fetch END
         #endregion
         
         
