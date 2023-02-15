@@ -179,33 +179,6 @@ namespace BCMCH.OTM.Data.Booking
             // if the count is less than 0 then the ot is not allocated for the department 
             // if the count is greater than 0 then the ot is allocated for the department 
 
-            // Console.WriteLine();
-            // Console.Write("IsOperationTheatreAllocated");
-            // Console.WriteLine();
-            
-            // Console.Write("departmentId : ");
-            // Console.Write(departmentId);
-            // Console.WriteLine();
-            
-            // Console.Write("operationTheatreId : ");
-            // Console.Write(operationTheatreId);
-            // Console.WriteLine();
-            
-            // Console.Write("startDate : ");
-            // Console.Write(startDate);
-            // Console.WriteLine();
-            
-            // Console.Write("endDate : " );
-            // Console.Write(endDate);
-            // Console.WriteLine();
-
-            // Console.Write("result : " );
-            // Console.Write(result.Count());
-            // Console.WriteLine();
-
-            // Console.WriteLine();
-            
-            
             return result.Count();
         }
         public async Task<int> IsOperationTheatreBloked(int operationTheatreId, string startDate, string endDate)
@@ -216,28 +189,6 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@StartDateToSearch", startDate);
             SqlParameters.Add("@EndDateToSearch",   endDate);
             var result= await _sqlHelper.ExecuteAsync(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
-            // Console.WriteLine();
-            // Console.Write("IsOperationTheatreBloked");
-            // Console.WriteLine();
-            
-            
-            // Console.Write("operationTheatreId : ");
-            // Console.Write(operationTheatreId);
-            // Console.WriteLine();
-            
-            // Console.Write("startDate : ");
-            // Console.Write(startDate);
-            // Console.WriteLine();
-            
-            // Console.Write("endDate : " );
-            // Console.Write(endDate);
-            // Console.WriteLine();
-
-            // Console.Write("result : " );
-            // Console.Write(result);
-            // Console.WriteLine();
-
-            // Console.WriteLine();
             return result;
         }
         public async Task<int> IsOperationTheatreBooked(int bookingIdToExcludeFromSearch, int operationTheatreId, string startDate, string endDate)
@@ -245,7 +196,6 @@ namespace BCMCH.OTM.Data.Booking
             // bookingIdToExcludeFromSearch is used in updation , 
             // for updation we dont have to check the time slots with current operation id 
             // for inserting bookingIdToExcludeFromSearch is 0
-
             const string StoredProcedure = "[OTM].[IsOperationTheatreBooked]";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@BookingIdToExclude",bookingIdToExcludeFromSearch );
@@ -253,28 +203,6 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@StartDateToSearch", startDate);
             SqlParameters.Add("@EndDateToSearch",   endDate);
             var result= await _sqlHelper.ExecuteAsync(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
-            // Console.WriteLine();
-            // Console.Write("IsOperationTheatreBooked");
-            // Console.WriteLine();
-            
-            
-            // Console.Write("operationTheatreId : ");
-            // Console.Write(operationTheatreId);
-            // Console.WriteLine();
-            
-            // Console.Write("startDate : ");
-            // Console.Write(startDate);
-            // Console.WriteLine();
-            
-            // Console.Write("endDate : " );
-            // Console.Write(endDate);
-            // Console.WriteLine();
-
-            // Console.Write("result : " );
-            // Console.Write(result);
-            // Console.WriteLine();
-
-            // Console.WriteLine();
 
             return result;
         }
@@ -282,10 +210,17 @@ namespace BCMCH.OTM.Data.Booking
 
         public async Task<IEnumerable<Bookings>> DeleteBooking(string IdArray)
         {
-            const string StoredProcedure = "[OTM].[DeleteBookings]";
+            string Query =  @"
+                                UPDATE 
+                                    [OTM].[Bookings]
+                                SET 
+                                    [IsDeleted] = 1
+                                WHERE 
+                                    Id IN (SELECT value FROM OPENJSON(@IdArray))
+                            ";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@IdArray", IdArray);
-            var result= await _sqlHelper.QueryAsync<Bookings>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            SqlParameters.Add("@IdArray"    , IdArray );
+            var result= await _sqlHelper.QueryAsync<Bookings>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 

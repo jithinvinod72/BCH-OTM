@@ -47,9 +47,20 @@ namespace BCMCH.OTM.Data.Master
         }
         public async Task<IEnumerable<Anaesthesia>> GetAnaesthesiaList()
         {
-            const string StoredProcedure = "[OTM].[SelectAnaesthesiaList]";
+            // const string StoredProcedure = "[OTM].[SelectAnaesthesiaList]";
+            // var SqlParameters = new DynamicParameters();
+            // var result= await _sqlHelper.QueryAsync<Anaesthesia>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            // return result;
+            const string Query = @"
+                                    SELECT 
+                                        [Id],[Name],[ModifiedBy]
+                                    FROM 
+                                        [OTM].[AnaesthesiaTypeMaster]
+                                    ORDER BY 
+                                        Name
+                                 ";
             var SqlParameters = new DynamicParameters();
-            var result= await _sqlHelper.QueryAsync<Anaesthesia>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            var result= await _sqlHelper.QueryAsync<Anaesthesia>(Query, SqlParameters, CommandType.Text);
             return result;
         }
         public async Task<IEnumerable<Employee>> GetEmployees(string searchOption , string departmentArray, int pageNumber, int rowsOfPage )
@@ -130,7 +141,16 @@ namespace BCMCH.OTM.Data.Master
         
         public async Task<IEnumerable<Allocation>> PostAllocation(Allocation _allocation)
         {
-            const string StoredProcedure = "[OTM].[InsertAllocation]";
+            string Query = @"
+                                INSERT INTO [OTM].[OperationTheatreAllocation]
+                                ( 
+                                    [OperationTheatreId],[AssignedDepartmentId],[StartDate],[EndDate],[ModifiedBy]
+                                )
+                                VALUES
+                                ( 
+                                    @OperationTheatreId, @AssignedDepartmentId,@StartDate,@EndDate,@ModifiedBy
+                                )
+                            ";
             var SqlParameters = new DynamicParameters();
 
             SqlParameters.Add("@OperationTheatreId"     , _allocation.OperationTheatreId );
@@ -139,7 +159,7 @@ namespace BCMCH.OTM.Data.Master
             SqlParameters.Add("@EndDate"                , _allocation.EndDate );
             SqlParameters.Add("@ModifiedBy"             , _allocation.ModifiedBy );
 
-            var result= await _sqlHelper.QueryAsync<Allocation>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            var result= await _sqlHelper.QueryAsync<Allocation>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 
