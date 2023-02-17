@@ -20,6 +20,7 @@ namespace BCMCH.OTM.API.Shared.Master
         public int IsRequired {get;set;}
         public string QuestionTypeName {get;set;}
         public string FormSectionName {get;set;}
+        public int IsDisabled {get;set;}
     }
 
 }

@@ -47,10 +47,6 @@ namespace BCMCH.OTM.Data.Master
         }
         public async Task<IEnumerable<Anaesthesia>> GetAnaesthesiaList()
         {
-            // const string StoredProcedure = "[OTM].[SelectAnaesthesiaList]";
-            // var SqlParameters = new DynamicParameters();
-            // var result= await _sqlHelper.QueryAsync<Anaesthesia>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
-            // return result;
             const string Query = @"
                                     SELECT 
                                         [Id],[Name],[ModifiedBy]
@@ -193,7 +189,8 @@ namespace BCMCH.OTM.Data.Master
                                     [parentId],
                                     [rolesToShow],
                                     [Options], 
-                                    [IsRequired] 
+                                    [IsRequired],
+                                    [IsDisabled]
                                 )
                                 VALUES 
                                 ( 
@@ -206,6 +203,7 @@ namespace BCMCH.OTM.Data.Master
                                     @rolesToShow  ,
                                     @Options  ,
                                     @IsRequired
+                                    @IsDisabled
                                 )
                             ";
             
@@ -220,6 +218,7 @@ namespace BCMCH.OTM.Data.Master
             SqlParameters.Add("@Options"            , question.Options);
             SqlParameters.Add("@rolesToShow"        , question.rolesToShow );
             SqlParameters.Add("@IsRequired"         , question.IsRequired);
+            SqlParameters.Add("@IsDisabled"         , question.IsDisabled);
             
             Console.WriteLine(SqlParameters);
 
@@ -282,18 +281,21 @@ namespace BCMCH.OTM.Data.Master
         {
             string Query =  @"
                                 INSERT INTO [OTM].[FormAnswer]
-                                (
-                                    [eventId], [questionId], [answer]
-                                )
-                                VALUES
-                                (
-                                    @eventId,@questionId,@answer
-                                )
+                                SELECT * 
+                                FROM OPENJSON(@json, '$.answers')
+                                WITH  (
+                                        eventId             int             '$.eventId',  
+                                        questionid          int             '$.questionId', 
+                                        answer              varchar(1000)   '$.answer',
+                                        answerOptionsId     varchar(1000)   '$.answerOptionsId'
+                                    );
+
                             ";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@eventId"    , answer.eventId );
-            SqlParameters.Add("@questionId" , answer.questionId );
-            SqlParameters.Add("@answer"     , answer.answer );
+            SqlParameters.Add("@json"    , answer.answersJsonString );
+            Console.WriteLine(answer.answersJsonString);
+            // SqlParameters.Add("@questionId" , answer.questionId );
+            // SqlParameters.Add("@answer"     , answer.answer );
             var result= await _sqlHelper.QueryAsync<PostAnswer>(Query, SqlParameters, CommandType.Text);
             return result;
         }
@@ -304,7 +306,8 @@ namespace BCMCH.OTM.Data.Master
                                     [Id],
                                     [eventId],
                                     [questionid],
-                                    [answer]
+                                    [answer],
+                                    [answerOptionsId]
                                 FROM 
                                     [OTM].[FormAnswer]
                                 WHERE 

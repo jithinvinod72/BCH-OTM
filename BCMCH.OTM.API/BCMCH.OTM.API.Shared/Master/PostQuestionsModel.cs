@@ -17,5 +17,6 @@ namespace BCMCH.OTM.API.Shared.Master
         public string rolesToShow {get;set;}
         public string Options {get;set;}
         public int IsRequired {get;set;}
+        public int IsDisabled {get;set;}
     }
 }
