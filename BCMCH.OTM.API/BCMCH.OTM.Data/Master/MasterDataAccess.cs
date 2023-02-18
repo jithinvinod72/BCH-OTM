@@ -79,19 +79,6 @@ namespace BCMCH.OTM.Data.Master
             return result;
         }
 
-        public async Task<IEnumerable<OperationTheatreAllocation>> GetOperationTheatreAllocations(int _departmentId=0, string? _fromDate="")
-        {
-            // if department id is 0 fetches all department datas
-            // else fetches with department id
-            const string StoredProcedure = "[OTM].[SelectOperationTheatreAllocation]";
-            var SqlParameters = new DynamicParameters();
-            
-            SqlParameters.Add("@DepartmentId", _departmentId);
-            SqlParameters.Add("@FromDate", _fromDate );
-
-            var result= await _sqlHelper.QueryAsync<OperationTheatreAllocation>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
-            return result;
-        }
 
         public async Task<IEnumerable<OperationTheatre>> GetOperationTheatres()
         {
@@ -123,16 +110,6 @@ namespace BCMCH.OTM.Data.Master
             return result;
         }
         
-        public async Task<IEnumerable<GetAllocationModel>> GetAllocation(int departmentId, string startDate, string endDate)
-        {
-            const string StoredProcedure = "[OTM].[SelectAllocation]";          
-            var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@DeartmentId"    , departmentId );
-            SqlParameters.Add("@StartDate"      , startDate );
-            SqlParameters.Add("@EndDate"        , endDate );
-            var result= await _sqlHelper.QueryAsync<GetAllocationModel>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
-            return result;
-        }
         
         
         public async Task<IEnumerable<Allocation>> PostAllocation(Allocation _allocation)
@@ -293,9 +270,6 @@ namespace BCMCH.OTM.Data.Master
                             ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@json"    , answer.answersJsonString );
-            Console.WriteLine(answer.answersJsonString);
-            // SqlParameters.Add("@questionId" , answer.questionId );
-            // SqlParameters.Add("@answer"     , answer.answer );
             var result= await _sqlHelper.QueryAsync<PostAnswer>(Query, SqlParameters, CommandType.Text);
             return result;
         }

@@ -154,12 +154,10 @@ namespace BCMCH.OTM.Domain.Booking
             bookings = bookings.Where(booking=>booking.OperationTheatreId==operationTheatreId);
             // filters the bookings with given otid 
 
-            // var result = await _bookingDataAccess.GetBookingList(departmentId, fromDate, toDate);
-            // result = result.Where(booking=>booking.OperationTheatreId==operationTheatreId);
-
-            var allocations = await _bookingDataAccess.GetAllocation(departmentId, fromDate, toDate);
+            var allocations = await _bookingDataAccess.GetAllocation(fromDate, toDate);
             // fetches allocation details of the given departments
             var filteredAllocations = allocations.Where( o=> operationTheatreId==o.OperationTheatreId);
+            filteredAllocations = allocations.Where( o=> departmentId==o.AssignedDepartmentId);
             // filter allocations for given operation theatre id 
             var result = new BookingsAndAllocations();
             result.Bookings = bookings;
@@ -170,8 +168,10 @@ namespace BCMCH.OTM.Domain.Booking
         {
             // sellects the unique operation theatre id those are allocated for the given departments
             // in accordance with given startDate and endDate
-            var allocations = await _bookingDataAccess.GetAllocation(departmentId, fromDate, toDate);
-            var allocatedOperationtheatres = allocations.Select(o => o.OperationTheatreId).Distinct();
+            var allocations = await _bookingDataAccess.GetAllocation(fromDate, toDate);
+            var filteredAllocations = allocations.Where( o=> departmentId==o.AssignedDepartmentId);
+            var allocatedOperationtheatres = filteredAllocations.Select(o => o.OperationTheatreId).Distinct();
+            
             // above line selects unique OperationTheatreId from the allocations 
             // used to show drop down in frontend             
             var result = allocatedOperationtheatres;

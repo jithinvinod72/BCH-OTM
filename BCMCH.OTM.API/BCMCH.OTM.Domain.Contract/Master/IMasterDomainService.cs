@@ -10,11 +10,9 @@ namespace BCMCH.OTM.Domain.Contract.Master
         Task<IEnumerable<Anaesthesia>> GetAnaesthesiaList();
         Task<IEnumerable<Employee>> GetEmployees(string searchOption , string departmentArray,  int pageNumber, int rowsOfPage);
         Task<IEnumerable<Employee>> GetEmployeeDetails(int employeeCode);
-        Task<IEnumerable<OperationTheatreAllocation>> GetOperationTheatreAllocations(int _departmentId, string? _fromDate);
         Task<IEnumerable<OperationTheatre>> GetOperationTheatres();
         Task<IEnumerable<Surgery>> GetSurgeryList(int _pageNumber, int _rowsPerPage, string? _searchKeyword="");
         Task<AllMasters> GetMasters();
-        Task<IEnumerable<GetAllocationModel>> GetAllocation(int departmentId, string startDate,string endDate);
         Task<IEnumerable<Allocation>> PostAllocation(Allocation _allocation);
         Task<IEnumerable<int>> PostAllocationInARange(AllocateInRange _allocation);
         Task<DateTime>GetDateToday();

@@ -147,20 +147,6 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("get-operationtheatre-allocation")]
-        public async Task<IActionResult> GetOperationTheatreAllocations(int _departmentId, string? _fromDate)
-        {
-            try
-            {
-                var result = await _masterService.GetOperationTheatreAllocations(_departmentId, _fromDate);
-                return Ok(new ResponseVM<IEnumerable<OperationTheatreAllocation>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
-            }
-            catch (Exception ex)
-            {
-                return Ok(new ResponseVM<bool>(false, ex.Message));
-            }
-        }
 
         [HttpGet]
         [Route("get-operationtheatres")]
@@ -234,22 +220,6 @@ namespace BCMCH.OTM.API.Controllers
                 // Task<int> PostAllocationInARange(AllocateInRange _allocation);
                 var result = await _masterService.PostAllocationInARange(_allocation);
                 return Ok(new ResponseVM<IEnumerable<int>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
-            }
-            catch (Exception ex)
-            {
-                return Ok(new ResponseVM<bool>(false, ex.Message));
-            }
-        }
-
-
-        [HttpGet]
-        [Route("get-allocation")]
-        public async Task<IActionResult> GetAllocation(int departmentId, string startDate, string endDate)
-        {
-            try
-            {
-                var result = await _masterService.GetAllocation(departmentId, startDate, endDate);
-                return Ok(new ResponseVM<IEnumerable<GetAllocationModel>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)
             {
