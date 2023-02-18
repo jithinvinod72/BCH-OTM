@@ -110,6 +110,16 @@ namespace BCMCH.OTM.Data.Master
             return result;
         }
         
+        public async Task<IEnumerable<GetAllocationModel>> GetAllocations(string startDate, string endDate)
+        {
+            const string StoredProcedure = "[OTM].[SelectAllocation]";
+            var SqlParameters = new DynamicParameters();
+            // SqlParameters.Add("@DeartmentId"    , departmentId );
+            SqlParameters.Add("@StartDate"      , startDate );
+            SqlParameters.Add("@EndDate"        , endDate );
+            var result= await _sqlHelper.QueryAsync<GetAllocationModel>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            return result;
+        }
         
         
         public async Task<IEnumerable<Allocation>> PostAllocation(Allocation _allocation)
@@ -133,6 +143,20 @@ namespace BCMCH.OTM.Data.Master
             SqlParameters.Add("@ModifiedBy"             , _allocation.ModifiedBy );
 
             var result= await _sqlHelper.QueryAsync<Allocation>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
+        public async Task<IEnumerable<int>> DeleteAllocations(string allocationIds)
+        {
+            string Query = @"
+                                DELETE FROM 
+                                    [OTM].[OperationTheatreAllocation]
+                                WHERE 
+                                    [Id] IN (SELECT value FROM OPENJSON(@IdArray))
+                            ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@IdArray", allocationIds );
+            var result= await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 

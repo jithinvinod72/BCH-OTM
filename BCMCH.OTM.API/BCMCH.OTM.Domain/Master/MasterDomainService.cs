@@ -172,10 +172,21 @@ namespace BCMCH.OTM.Domain.Master
 
 
         // START- public functions for allocation to access from controller
+        public async Task<IEnumerable<GetAllocationModel>> GetAllocations(string startDate, string endDate)
+        {
+            var result = await _masterDataAccess.GetAllocations(startDate,endDate);
+            return result;
+        }
         public async Task<IEnumerable<Allocation>> PostAllocation(Allocation _allocation)
         {
             // used to post allocation with only a startdate,enddate,otid and department id
             var result = await _masterDataAccess.PostAllocation(_allocation);
+            return result;
+        }
+        public async Task<IEnumerable<int>> DeleteAllocations(string allocationIds)
+        {
+            allocationIds="["+allocationIds+"]";
+            var result = await _masterDataAccess.DeleteAllocations(allocationIds);
             return result;
         }
         

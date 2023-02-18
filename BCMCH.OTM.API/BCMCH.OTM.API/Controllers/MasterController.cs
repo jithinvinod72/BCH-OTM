@@ -228,6 +228,36 @@ namespace BCMCH.OTM.API.Controllers
         }
 
         [HttpGet]
+        [Route("get-allocation")]
+        public async Task<IActionResult> GetAllocations(string startDate, string endDate)
+        {
+            try
+            {
+                var result = await _masterService.GetAllocations( startDate, endDate);
+                return Ok(new ResponseVM<IEnumerable<GetAllocationModel>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        [HttpDelete]
+        [Route("delete-allocations")]
+        public async Task<IActionResult> DeleteAllocations(string? allocationIds)
+        {
+            try
+            {
+                // Task<int> PostAllocationInARange(AllocateInRange _allocation);
+                var result = await _masterService.DeleteAllocations(allocationIds);
+                return Ok(new ResponseVM<IEnumerable<int>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+        [HttpGet]
         [Route("get-today")]
         public async Task<IActionResult> GetToday()
         {
