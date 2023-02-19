@@ -95,6 +95,7 @@ namespace BCMCH.OTM.Domain.Booking
 
         public async Task<Envelope<IEnumerable<int>>> AddWaitingList(PostBookingModel booking)
         {
+            // here there are no validations required. 
             booking.EmployeeIdArray="["+booking.EmployeeIdArray+"]";
             booking.EquipmentsIdArray="["+booking.EquipmentsIdArray+"]";
             var result = await _bookingDataAccess.AddBooking(booking);

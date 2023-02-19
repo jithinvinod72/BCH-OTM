@@ -280,20 +280,34 @@ namespace BCMCH.OTM.Data.Master
         // ANSWER HANDLE SECTION START
         public async Task<IEnumerable<PostAnswer>> PostFormAnswer(PostAnswer answer)
         {
+            // Id IN (SELECT value FROM OPENJSON(@IdArray))
             string Query =  @"
+
+                                -- delete start
+                                DELETE FROM [OTM].[FormAnswer]
+                                WHERE 
+                                    eventId=@eventId
+                                    AND 
+                                    questionid IN (SELECT value FROM OPENJSON(@questionIdArray))
+                                -- delete end
+                                
+
                                 INSERT INTO [OTM].[FormAnswer]
                                 SELECT * 
-                                FROM OPENJSON(@json, '$.answers')
+                                FROM OPENJSON(@josnAnswers, '$.answers')
                                 WITH  (
                                         eventId             int             '$.eventId',  
                                         questionid          int             '$.questionId', 
                                         answer              varchar(1000)   '$.answer',
-                                        answerOptionsId     varchar(1000)   '$.answerOptionsId'
+                                        answerOptionsId     varchar(1000)   '$.answerOptionsId',
+                                        postedBy            varchar(1000)   '$.postedBy'
                                     );
 
                             ";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@json"    , answer.answersJsonString );
+            SqlParameters.Add("@eventId"    , answer.eventId );
+            SqlParameters.Add("@josnAnswers"    , answer.answersJsonString );
+            SqlParameters.Add("@questionIdArray"    , answer.questionIdArray );
             var result= await _sqlHelper.QueryAsync<PostAnswer>(Query, SqlParameters, CommandType.Text);
             return result;
         }
