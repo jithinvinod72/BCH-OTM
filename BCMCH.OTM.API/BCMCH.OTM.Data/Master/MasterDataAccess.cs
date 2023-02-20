@@ -203,7 +203,7 @@ namespace BCMCH.OTM.Data.Master
                                     @parentId    ,
                                     @rolesToShow  ,
                                     @Options  ,
-                                    @IsRequired
+                                    @IsRequired,
                                     @IsDisabled
                                 )
                             ";
