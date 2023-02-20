@@ -281,10 +281,12 @@ namespace BCMCH.OTM.Domain.Master
         }
         // insert question section END
 
-        public async Task<IEnumerable<GetQuestions>> GetFormQuestions()
+        public async Task<IEnumerable<GetQuestions>> GetFormQuestions(string RoleName)
         {
             var result = await _masterDataAccess.GetFormQuestions();
-            return result;
+            var filteredResult = result.Where( o=> RoleName==o.rolesToShow);
+            // result.Where()
+            return filteredResult;
         }
         #endregion
 

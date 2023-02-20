@@ -335,11 +335,11 @@ namespace BCMCH.OTM.API.Controllers
         // Question section Fetch START
         [HttpGet]
         [Route("get-form-questions")]
-        public async Task<IActionResult> GetFormQuestions()
+        public async Task<IActionResult> GetFormQuestions(string RoleName)
         {
             try
             {
-                var result = await _masterService.GetFormQuestions();
+                var result = await _masterService.GetFormQuestions(RoleName);
                 return Ok(new ResponseVM<IEnumerable<GetQuestions>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)
