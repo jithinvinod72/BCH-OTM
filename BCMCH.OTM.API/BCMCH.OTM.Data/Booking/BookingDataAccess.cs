@@ -22,13 +22,12 @@ namespace BCMCH.OTM.Data.Booking
         }
         #endregion
 
-        public async Task<IEnumerable<Bookings>> GetBookingList(int departmentId , string? fromDate,string? toDate)
+        public async Task<IEnumerable<Bookings>> GetBookingList(string? fromDate,string? toDate)
         {
             const string StoredProcedure = "[OTM].[SelectBookingsWithDepartment]";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@FromDate", fromDate);
             SqlParameters.Add("@ToDate",   toDate );
-            SqlParameters.Add("@DepartmentId", departmentId );
             var result= await _sqlHelper.QueryAsync<Bookings>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }

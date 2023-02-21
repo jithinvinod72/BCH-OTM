@@ -24,11 +24,19 @@ namespace BCMCH.OTM.Domain.Booking
         
         public async Task<IEnumerable<Bookings>> GetBookingList(int departmentId, string? fromDate,string? toDate)
         {
-            var result = await _bookingDataAccess.GetBookingList(departmentId, fromDate, toDate);
-            // result = result.Where(booking=>booking.OperationTheatreId==operationTheatreId);
+            var result = await _bookingDataAccess.GetBookingList(fromDate, toDate);
+            var filteredWithDepartment = result.Where(booking=>booking.BookedByDepartment==departmentId);
+            // filters the bookings with given otid 
+            return filteredWithDepartment;
+        }
+        public async Task<IEnumerable<Bookings>> GetBookingListWithOtId(int otId, string? fromDate,string? toDate)
+        {
+            var result = await _bookingDataAccess.GetBookingList(fromDate, toDate);
+            result = result.Where(booking=>booking.OperationTheatreId==otId);
             // filters the bookings with given otid 
             return result;
         }
+        
         public async Task<EventFields> GetEventEquipmentsAndEmployees(int bookingId)
         {
             var equipments = await _bookingDataAccess.GetEventEquipments(bookingId);
@@ -151,15 +159,27 @@ namespace BCMCH.OTM.Domain.Booking
             // operationTheatreId
             // fromDate
             // toDate
-            var bookings = await _bookingDataAccess.GetBookingList(departmentId, fromDate, toDate);
-            bookings = bookings.Where(booking=>booking.OperationTheatreId==operationTheatreId);
-            // filters the bookings with given otid 
+            var bookings = await _bookingDataAccess.GetBookingList(fromDate, toDate);
+            bookings = bookings.Where(
+                                        booking => (
+                                                    (booking.OperationTheatreId == operationTheatreId) 
+                                                    && 
+                                                    (departmentId == booking.BookedByDepartment)
+                                                 )
+                                     );
+            // filters the bookings with given otid and department id 
+            // 
 
             var allocations = await _bookingDataAccess.GetAllocation(fromDate, toDate);
             // fetches allocation details of the given departments
-            var filteredAllocations = allocations.Where( o=> operationTheatreId==o.OperationTheatreId);
-            filteredAllocations = allocations.Where( o=> departmentId==o.AssignedDepartmentId);
-            // filter allocations for given operation theatre id 
+            var filteredAllocations = allocations.Where( 
+                                                            o=> (
+                                                                    (operationTheatreId==o.OperationTheatreId)
+                                                                    &&
+                                                                    (departmentId==o.AssignedDepartmentId)
+                                                                ) 
+                                                        );
+            // filter allocations for given operation theatre id and AssignedDepartmentId
             var result = new BookingsAndAllocations();
             result.Bookings = bookings;
             result.Allocations = filteredAllocations;

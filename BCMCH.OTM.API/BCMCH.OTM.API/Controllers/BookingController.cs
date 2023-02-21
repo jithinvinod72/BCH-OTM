@@ -33,8 +33,22 @@ namespace BCMCH.OTM.API.Controllers
         {
             try
             {
-                // bla
-                var result = await _bookingService.GetBookingList(departmentId, fromDate, toDate);
+                var result = await _bookingService.GetBookingList(departmentId,fromDate, toDate);
+                return Ok(new ResponseVM<IEnumerable<Bookings>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+        [HttpGet]
+        [Route("get-events-with-otid")]
+        public async Task<IActionResult> SelectEventsWithOtId(int otId=1 ,string? fromDate="",string? toDate="")
+        {
+            try
+            {
+                var result = await _bookingService.GetBookingListWithOtId(otId, fromDate, toDate);
                 return Ok(new ResponseVM<IEnumerable<Bookings>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)
