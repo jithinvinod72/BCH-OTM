@@ -304,11 +304,11 @@ namespace BCMCH.OTM.API.Controllers
 
         [HttpPost]
         [Route("post-question-type")]
-        public async Task<IActionResult> PostQuestionType(string questionType)
+        public async Task<IActionResult> PostQuestionType(string name,string label)
         {
             try
             {
-                var result = await _masterService.PostQuestionType(questionType);
+                var result = await _masterService.PostQuestionType(name, label);
                 return Ok(new ResponseVM<IEnumerable<string>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)
@@ -318,12 +318,12 @@ namespace BCMCH.OTM.API.Controllers
         }
 
         [HttpPost]
-        [Route("post-form-section")]
-        public async Task<IActionResult> PostFormSections(string section)
+        [Route("post-form-stages")]
+        public async Task<IActionResult>PostOtStages(string name,string label)
         {
             try
             {
-                var result = await _masterService.PostFormSections(section);
+                var result = await _masterService. PostOtStages(name,label);
                 return Ok(new ResponseVM<IEnumerable<string>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)
@@ -335,11 +335,11 @@ namespace BCMCH.OTM.API.Controllers
         // Question section Fetch START
         [HttpGet]
         [Route("get-form-questions")]
-        public async Task<IActionResult> GetFormQuestions(string RoleName)
+        public async Task<IActionResult> GetFormQuestions(int otStageId)
         {
             try
             {
-                var result = await _masterService.GetFormQuestions(RoleName);
+                var result = await _masterService.GetFormQuestions(otStageId);
                 return Ok(new ResponseVM<IEnumerable<GetQuestions>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)
@@ -348,6 +348,24 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
         // Question section Fetch END
+
+        // Question section Fetch START
+        [HttpGet]
+        [Route("get-form-masters")]
+        public async Task<IActionResult> GetFormMasters()
+        {
+            try
+            {
+                var result = await _masterService.GetFormMasters();
+                return Ok(new ResponseVM<FormMasters>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        // Question section Fetch END
+
         #endregion
 
         #region FORM_ANSWER_HANDLE

@@ -8,15 +8,16 @@ namespace BCMCH.OTM.API.Shared.Master
 {
     public class PostQuestionsModel
     {
-        public int FormsectionId {get;set;}
+        public int otStageId {get;set;}
         public int FormQuestionTypeId {get;set;}
         public int order {get;set;}
         public string name {get;set;}
         public string question {get;set;}
         public int parentId {get;set;}
-        public string rolesToShow {get;set;}
+        public string accessibleTo {get;set;}
         public string Options {get;set;}
         public int IsRequired {get;set;}
         public int IsDisabled {get;set;}
+        public int ModifiedBy {get;set;}
     }
 }

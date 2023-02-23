@@ -269,24 +269,34 @@ namespace BCMCH.OTM.Domain.Master
             var result = await _masterDataAccess.PostQuestion(question);
             return result;
         }
-        public async Task<IEnumerable<string>> PostQuestionType(string questionType)
+        public async Task<IEnumerable<string>> PostQuestionType(string name,string label)
         {
-            var result = await _masterDataAccess.PostQuestionType(questionType);
+            var result = await _masterDataAccess.PostQuestionType(name,label);
             return result;
         }
-        public async Task<IEnumerable<string>> PostFormSections(string section)
+        public async Task<IEnumerable<string>> PostOtStages(string name,string label)
         {
-            var result = await _masterDataAccess.PostFormSections(section);
+            var result = await _masterDataAccess.PostOtStages(name,label);
             return result;
         }
         // insert question section END
 
-        public async Task<IEnumerable<GetQuestions>> GetFormQuestions(string RoleName)
+        public async Task<IEnumerable<GetQuestions>> GetFormQuestions(int otStageId)
         {
             var result = await _masterDataAccess.GetFormQuestions();
-            var filteredResult = result.Where( o=> RoleName==o.rolesToShow);
+            var filteredResult = result.Where( o=> otStageId==o.otStageId);
             // result.Where()
             return filteredResult;
+        }
+        #endregion
+
+        #region QUESTION_MASTERS_FETCHING
+        public async Task<FormMasters> GetFormMasters()
+        {
+            FormMasters masters= new FormMasters();
+            masters.sections = await _masterDataAccess.GetFormSections();
+            masters.types = await _masterDataAccess.GetFormQuestionType();
+            return masters;
         }
         #endregion
 

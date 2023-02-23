@@ -21,10 +21,11 @@ namespace BCMCH.OTM.Domain.Contract.Master
 
         // QUESTION SECTIION START
         Task<IEnumerable<PostQuestionsModel>> PostQuestion(PostQuestionsModel question);
-        Task<IEnumerable<string>> PostQuestionType(string questionType);
-        Task<IEnumerable<string>> PostFormSections(string section);
-        Task<IEnumerable<GetQuestions>> GetFormQuestions(string RoleName);
+        Task<IEnumerable<string>> PostQuestionType(string name,string label);
+        Task<IEnumerable<string>>  PostOtStages(string name,string label);
+        Task<IEnumerable<GetQuestions>> GetFormQuestions(int otStageId);
         // QUESTION SECTIION END
+        Task<FormMasters> GetFormMasters();
         Task<IEnumerable<PostAnswer>> PostFormAnswer(PostAnswer answer);
         Task<IEnumerable<GetAnswer>> GetFormAnswer(int eventId);
     }

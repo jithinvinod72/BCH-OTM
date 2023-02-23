@@ -177,87 +177,97 @@ namespace BCMCH.OTM.Data.Master
         // this section handles form questions
         #region QUESTION_HANDLES
         // Insert section START
+
         public async Task<IEnumerable<PostQuestionsModel>> PostQuestion(PostQuestionsModel question)
         {
             string Query =  @"
                                 INSERT INTO [OTM].[FormQuestions]
                                 (
-                                    [FormsectionId],
+                                    [otStageId],
                                     [FormQuestionTypeId],
                                     [order],
                                     [name],
                                     [question],
                                     [parentId],
-                                    [rolesToShow],
+                                    [accessibleTo],
                                     [Options], 
                                     [IsRequired],
-                                    [IsDisabled]
+                                    [IsDisabled],
+                                    [ModifiedBy]
                                 )
                                 VALUES 
                                 ( 
-                                    @formSectionId   ,
+                                    @otStageId   ,
                                     @FormQuestionTypeId  ,
                                     @order ,
                                     @name ,
                                     @question ,
                                     @parentId    ,
-                                    @rolesToShow  ,
+                                    @accessibleTo  ,
                                     @Options  ,
                                     @IsRequired,
-                                    @IsDisabled
+                                    @IsDisabled,
+                                    @ModifiedBy
                                 )
                             ";
             
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@FormsectionId"      , question.FormsectionId.ToString() );
+            SqlParameters.Add("@otStageId"          , question.otStageId.ToString() );
             SqlParameters.Add("@FormQuestionTypeId" , question.FormQuestionTypeId.ToString() );
             SqlParameters.Add("@order"              , question.order.ToString() );
             SqlParameters.Add("@name"               , question.name );
             SqlParameters.Add("@question"           , question.question );
             SqlParameters.Add("@parentId"           , question.parentId.ToString() );
-            SqlParameters.Add("@rolesToShow"        , question.rolesToShow );
+            SqlParameters.Add("@accessibleTo"       , question.accessibleTo );
             SqlParameters.Add("@Options"            , question.Options);
-            SqlParameters.Add("@rolesToShow"        , question.rolesToShow );
             SqlParameters.Add("@IsRequired"         , question.IsRequired);
             SqlParameters.Add("@IsDisabled"         , question.IsDisabled);
+            SqlParameters.Add("@ModifiedBy"         , question.ModifiedBy);
+            
             
             Console.WriteLine(SqlParameters);
 
             var result= await _sqlHelper.QueryAsync<PostQuestionsModel>(Query, SqlParameters, CommandType.Text);
             return result;
         }
-        public async Task<IEnumerable<string>> PostQuestionType(string questionType)
+        public async Task<IEnumerable<string>> PostQuestionType(string name,string label)
         {
             string Query =  @"
                                 INSERT INTO [OTM].[FormQuestionType] 
                                 (
-                                    [Name]
+                                    [Name],
+                                    [Label]
                                 )
                                 VALUES 
                                 ( 
-                                    @questionType
+                                    @name,
+                                    @Label
                                 ) 
                             ";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@questionType"    , questionType);
+            SqlParameters.Add("@name"    , name  );
+            SqlParameters.Add("@label"   , label );
             var result= await _sqlHelper.QueryAsync<string>(Query, SqlParameters, CommandType.Text);
             return result;
         }
-        public async Task<IEnumerable<string>> PostFormSections(string section)
+        public async Task<IEnumerable<string>> PostOtStages(string name,string label)
         {   
             string Query =  @"
-                                INSERT INTO [OTM].[FormSections] 
+                                INSERT INTO [OTM].[OtStages] 
                                 (
-                                    [sectionName]
+                                    [Name]
+                                    [Label]
                                 )
                                 VALUES 
                                 ( 
-                                    @section
+                                    @name,
+                                    @label
                                 ) 
                             ";
 
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@section"    , section);
+            SqlParameters.Add("@name"    , name);
+            SqlParameters.Add("@label"   , label);
 
             var result= await _sqlHelper.QueryAsync<string>(Query, SqlParameters, CommandType.Text);
             return result;
@@ -273,6 +283,38 @@ namespace BCMCH.OTM.Data.Master
             return result;
         }
         // SELECT section END
+
+        // SELECT section START
+        public async Task<IEnumerable<FormSections>> GetFormSections()
+        {
+            string Query =  @"
+                                    SELECT 
+                                        [Id],
+                                        [Name],
+                                        [Label]
+                                    FROM 
+                                    [OTM].[OtStages]
+                             ";
+            var SqlParameters = new DynamicParameters();
+            var result= await _sqlHelper.QueryAsync<FormSections>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+        public async Task<IEnumerable<FormSections>> GetFormQuestionType()
+        {
+            string Query =  @"
+                                    SELECT 
+                                        [Id],
+                                        [Name],
+                                        [Label]
+                                    FROM 
+                                        [OTM].[FormQuestionType]
+                             ";
+            var SqlParameters = new DynamicParameters();
+            var result= await _sqlHelper.QueryAsync<FormSections>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+        // SELECT section END
+        
 
         #endregion
         // QUESTION_HANDLES SECTION END
