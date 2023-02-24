@@ -13,7 +13,8 @@ namespace BCMCH.OTM.API.Shared.Master
         public int order {get;set;}
         public string name {get;set;}
         public string question {get;set;}
-        public int parentId {get;set;}
+        public bool hasSubQuestion {get;set;}
+        public string? subQuestion {get;set;}
         public string accessibleTo {get;set;}
         public string Options {get;set;}
         public int IsRequired {get;set;}

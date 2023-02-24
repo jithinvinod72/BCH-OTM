@@ -180,36 +180,25 @@ namespace BCMCH.OTM.Data.Master
 
         public async Task<IEnumerable<PostQuestionsModel>> PostQuestion(PostQuestionsModel question)
         {
-            string Query =  @"
-                                INSERT INTO [OTM].[FormQuestions]
-                                (
-                                    [otStageId],
-                                    [FormQuestionTypeId],
-                                    [order],
-                                    [name],
-                                    [question],
-                                    [parentId],
-                                    [accessibleTo],
-                                    [Options], 
-                                    [IsRequired],
-                                    [IsDisabled],
-                                    [ModifiedBy]
-                                )
-                                VALUES 
-                                ( 
-                                    @otStageId   ,
-                                    @FormQuestionTypeId  ,
-                                    @order ,
-                                    @name ,
-                                    @question ,
-                                    @parentId    ,
-                                    @accessibleTo  ,
-                                    @Options  ,
-                                    @IsRequired,
-                                    @IsDisabled,
-                                    @ModifiedBy
-                                )
-                            ";
+            const string StoredProcedure = "[OTM].[InsertFormQuestion]";
+            // OTM.InsertFormQuestion
+            // (
+            //     @otStageId   AS INT,
+            //     @FormQuestionTypeId  AS INT,
+            //     @order AS INT ,
+            //     @name AS VARCHAR(1000) ,
+            //     @question AS VARCHAR(1000),
+            //     @accessibleTo  AS VARCHAR(1000),
+            //     @Options  AS VARCHAR(2000),
+            //     @IsRequired AS BIT,
+            //     @IsDisabled AS BIT,
+            //     @HasSubQuestion AS BIT,
+            //     @ModifiedBy AS VARCHAR(255),
+            //     @SubQuestionTypeId AS INT,
+            //     @SubQuestion AS VARCHAR(1000),
+            //     @SubQuestionOptions AS VARCHAR(1000)
+            // )
+            
             
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@otStageId"          , question.otStageId.ToString() );
@@ -217,18 +206,19 @@ namespace BCMCH.OTM.Data.Master
             SqlParameters.Add("@order"              , question.order.ToString() );
             SqlParameters.Add("@name"               , question.name );
             SqlParameters.Add("@question"           , question.question );
-            SqlParameters.Add("@parentId"           , question.parentId.ToString() );
             SqlParameters.Add("@accessibleTo"       , question.accessibleTo );
             SqlParameters.Add("@Options"            , question.Options);
             SqlParameters.Add("@IsRequired"         , question.IsRequired);
             SqlParameters.Add("@IsDisabled"         , question.IsDisabled);
-            SqlParameters.Add("@ModifiedBy"         , question.ModifiedBy);
-            
-            
-            Console.WriteLine(SqlParameters);
+            SqlParameters.Add("@HasSubQuestion"     , question.hasSubQuestion );
+            SqlParameters.Add("@SubQuestionTypeId"  , 4 );
+            SqlParameters.Add("@SubQuestion"        , question.subQuestion );
+            SqlParameters.Add("@SubQuestionOptions" , "");
+            SqlParameters.Add("@ModifiedBy" , question.ModifiedBy);
 
-            var result= await _sqlHelper.QueryAsync<PostQuestionsModel>(Query, SqlParameters, CommandType.Text);
+            var result= await _sqlHelper.QueryAsync<PostQuestionsModel>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
+            
         }
         public async Task<IEnumerable<string>> PostQuestionType(string name,string label)
         {
