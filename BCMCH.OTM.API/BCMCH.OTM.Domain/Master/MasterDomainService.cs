@@ -281,10 +281,11 @@ namespace BCMCH.OTM.Domain.Master
         }
         // insert question section END
 
-        public async Task<IEnumerable<GetQuestions>> GetFormQuestions(int otStageId)
+        public async Task<IEnumerable<GetQuestions>> GetFormQuestions(int otStageId, string accessibleTo)
         {
             var result = await _masterDataAccess.GetFormQuestions();
             var filteredResult = result.Where( o=> otStageId==o.otStageId);
+            filteredResult = result.Where( o=> accessibleTo==o.accessibleTo);
             // result.Where()
             return filteredResult;
         }
