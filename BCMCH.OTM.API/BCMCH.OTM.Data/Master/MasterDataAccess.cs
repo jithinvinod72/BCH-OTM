@@ -30,7 +30,7 @@ namespace BCMCH.OTM.Data.Master
                                     [Name],
                                     [Description]
                                   FROM 
-                                    [BeHiveCoreDev].[OTM].[EquipmentsMaster]
+                                    [OTM].[EquipmentsMaster]
                                  ";
             var SqlParameters = new DynamicParameters();
             var result= await _sqlHelper.QueryAsync<Equipments>(Query, SqlParameters, CommandType.Text);
@@ -91,7 +91,7 @@ namespace BCMCH.OTM.Data.Master
                                         [DepartmentId]            ,
                                         [CleaningTime]            ,
                                         [ModifiedBy]
-                                    FROM [BeHiveCoreDev].[OTM].[OperationTheatreMaster]                     
+                                    FROM [OTM].[OperationTheatreMaster]                     
                                  ";
             var SqlParameters = new DynamicParameters();
             var result= await _sqlHelper.QueryAsync<OperationTheatre>(Query, SqlParameters, CommandType.Text);
