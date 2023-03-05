@@ -79,7 +79,41 @@ namespace BCMCH.OTM.Data.Master
             return result;
         }
 
+        public async Task<IEnumerable<UserRole>> GetOTUserRole(int employeeId)
+        {
+            const string Query = @"
+                                    SELECT
+                                        [OtmUser].[Id]                   AS OtmUserId           ,
+                                        [OtmUser].[userId]               AS EmployeeId          ,
+                                        [OtmUser].[UserRoleId]           AS UserRoleId          ,
+                                        [UserRoles].[name]               AS RoleName            ,
+                                        [dboUsers].[userName]            AS UserName            ,
+                                        [Employees].[FirstName]          AS FirstName           ,
+                                        [Employees].[LastName]           AS LastName            ,
+                                        [Employees].[MiddleName]         AS MiddleName          ,
+                                        [Employees].[DepartmentID]       AS DepartmentID        ,
+                                        [dbo].[Departments].[TypeCode]   AS DepartmentTypeCode  ,
+                                        [dbo].[Departments].[Name]       AS DepartmentName
+                                    FROM 
+                                        [behive-dev-otm].[OTM].[Users] AS OtmUser 
+                                    LEFT JOIN  
+                                        [dbo].[Users] AS dboUsers ON OtmUser.userId = dboUsers.EmployeeId
+                                    LEFT JOIN 
+                                        [HR].[Employees] as Employees ON OtmUser.userId = Employees.Id
+                                    LEFT JOIN 
+                                        [dbo].[Departments] ON [Employees].[DepartmentID]= [dbo].[Departments].[Id]
+                                    LEFT JOIN 
+                                        [OTM].[UserRoles] as UserRoles ON OtmUser.userRoleId = UserRoles.Id
+                                    WHERE 
+                                        [OtmUser].[userId]=@EmployeeId
+                                 ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@EmployeeId", employeeId);
 
+            var result= await _sqlHelper.QueryAsync<UserRole>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+        
         public async Task<IEnumerable<OperationTheatre>> GetOperationTheatres()
         {
             const string Query = @"
