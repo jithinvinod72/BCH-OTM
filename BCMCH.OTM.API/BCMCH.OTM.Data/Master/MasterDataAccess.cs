@@ -79,7 +79,7 @@ namespace BCMCH.OTM.Data.Master
             return result;
         }
 
-        public async Task<IEnumerable<UserRole>> GetOTUserRole(int employeeId)
+        public async Task<IEnumerable<UserRoleDetails>> GetOTUserRole(int employeeId)
         {
             const string Query = @"
                                     SELECT
@@ -110,7 +110,29 @@ namespace BCMCH.OTM.Data.Master
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@EmployeeId", employeeId);
 
-            var result= await _sqlHelper.QueryAsync<UserRole>(Query, SqlParameters, CommandType.Text);
+            var result= await _sqlHelper.QueryAsync<UserRoleDetails>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+        public async Task<IEnumerable<UserResources>> GetOTRolePermissions(int? roleId)
+        {
+            const string Query = @"
+                                    SELECT
+                                         [Permissions].[Id]           AS PermissionId
+                                        ,[Permissions].[UserRoleId]   AS UserRoleId
+                                        ,[Permissions].[ResourceId]   AS ResourceId
+                                        ,[Resources].[name]           AS ResourceName
+                                        ,[Resources].[Description]    AS ResourceDescription
+                                        ,[Permissions].[AccessType]   AS AccessType
+                                    FROM 
+                                        [behive-dev-otm].[OTM].[RoleHasPermissions] as Permissions
+                                    LEFT JOIN
+                                        [OTM].[Resources] AS Resources ON Permissions.Id = Resources.Id
+                                    WHERE UserRoleId =@roleId
+                                 ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@roleId", roleId);
+
+            var result= await _sqlHelper.QueryAsync<UserResources>(Query, SqlParameters, CommandType.Text);
             return result;
         }
         
