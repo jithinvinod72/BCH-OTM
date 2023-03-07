@@ -65,10 +65,16 @@ namespace BCMCH.OTM.Domain.Master
             var result = await _masterDataAccess.GetEmployeeDetails(employeeCode);
             return result;
         }
-        public async Task<IEnumerable<UserRole>> GetOTUserRole(int employeeId)
+        public async Task<UserRole> GetOTUserRole(int employeeId)
         {
             var result = await _masterDataAccess.GetOTUserRole(employeeId);
-            return result;
+            var data = result.ElementAt(0);
+            var resources =await _masterDataAccess.GetOTRolePermissions(data.UserRoleId);
+
+            UserRole userRole = new UserRole();
+            userRole.UserDetails = result;
+            userRole.UserResources = resources;
+            return userRole;
         }
 
         public async Task<IEnumerable<OperationTheatre>> GetOperationTheatres()

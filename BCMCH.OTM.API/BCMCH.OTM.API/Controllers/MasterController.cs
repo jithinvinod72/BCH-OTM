@@ -108,7 +108,7 @@ namespace BCMCH.OTM.API.Controllers
             try
             {
                 var result = await _masterService.GetOTUserRole(employeeId);
-                return Ok(new ResponseVM<IEnumerable<UserRole>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+                return Ok(new ResponseVM<UserRole>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)
             {
