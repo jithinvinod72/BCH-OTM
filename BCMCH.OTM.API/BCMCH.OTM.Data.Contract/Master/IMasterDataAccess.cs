@@ -11,6 +11,10 @@ namespace BCMCH.OTM.Data.Contract.Master
         Task<IEnumerable<Employee>> GetEmployees(string searchOption , string departmentArray, int pageNumber, int rowsOfPage );
         Task<IEnumerable<UserRoleDetails>> GetOTUserRole(int employeeId);
         Task<IEnumerable<UserResources>> GetOTRolePermissions(int? roleId);
+        Task<IEnumerable<AvailableRoles>> GetOTRoles();
+        Task<IEnumerable<int>> PostNewOTUser(int userId, int roleId);
+        Task<IEnumerable<int>> CreateAdminRolesAndRigthts(PostAdminRolesAndRights otAdminAndRights);
+        Task<IEnumerable<Resources>> GetOTResources();
         Task<IEnumerable<Employee>> GetEmployeeDetails(int employeeCode);
         Task<IEnumerable<OperationTheatre>> GetOperationTheatres();
         Task<IEnumerable<Surgery>> GetSurgeryList(int _pageNumber, int _rowsPerPage, string? _searchKeyword="");

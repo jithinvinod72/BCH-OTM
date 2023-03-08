@@ -65,6 +65,11 @@ namespace BCMCH.OTM.Domain.Master
             var result = await _masterDataAccess.GetEmployeeDetails(employeeCode);
             return result;
         }
+        public async Task<IEnumerable<AvailableRoles>> GetOTRoles()
+        {
+            var result = await _masterDataAccess.GetOTRoles();
+            return result;
+        }
         public async Task<UserRole> GetOTUserRole(int employeeId)
         {
             var result = await _masterDataAccess.GetOTUserRole(employeeId);
@@ -75,6 +80,22 @@ namespace BCMCH.OTM.Domain.Master
             userRole.UserDetails = result;
             userRole.UserResources = resources;
             return userRole;
+        }
+
+        public async Task<IEnumerable<int>> PostNewOTUser(UserRoleDetails userRoleDetails)
+        {
+            var result = await _masterDataAccess.PostNewOTUser(userRoleDetails.EmployeeId,userRoleDetails.UserRoleId);
+            return result;
+        }
+        public async Task<IEnumerable<int>> CreateAdminRolesAndRigthts(PostAdminRolesAndRights otAdminAndRights)
+        {
+            var result = await _masterDataAccess.CreateAdminRolesAndRigthts(otAdminAndRights);
+            return result;
+        }
+        public async Task<IEnumerable<Resources>> GetOTResources()
+        {
+            var result = await _masterDataAccess.GetOTResources();
+            return result;
         }
 
         public async Task<IEnumerable<OperationTheatre>> GetOperationTheatres()
