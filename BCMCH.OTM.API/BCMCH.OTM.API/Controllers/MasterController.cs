@@ -115,6 +115,20 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
+        [HttpGet]
+        [Route("get-available-roles")]
+        public async Task<IActionResult> GetOTRoles()
+        {
+            try
+            {
+                var result = await _masterService.GetOTRoles();
+                return Ok(new ResponseVM<IEnumerable<AvailableRoles>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
 
         [HttpGet]
         [Route("get-departments")]
@@ -146,6 +160,54 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
+
+        [HttpPost]
+        [Route("post-new-ot-user")]
+        public async Task<IActionResult> PostNewOTUser(UserRoleDetails userRole)
+        {
+            try
+            {
+                var result = await _masterService.PostNewOTUser(userRole);                
+                return Ok(new ResponseVM<IEnumerable<int>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+        [HttpPost]
+        [Route("post-new-admin-roles-and-rights")]
+        public async Task<IActionResult> CreateAdminRolesAndRigthts(PostAdminRolesAndRights otAdminAndRights)
+        {
+            try
+            {
+                var result = await _masterService.CreateAdminRolesAndRigthts(otAdminAndRights);                
+                return Ok(new ResponseVM<IEnumerable<int>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        // Task<IEnumerable<int>> CreateNewOTAdminAndRights(PostOtAdminAndRights otAdminAndRights)
+
+        [HttpGet]
+        [Route("get-resources")]
+        public async Task<IActionResult> GetOTResources()
+        {
+            try
+            {
+                var result = await _masterService.GetOTResources();
+                return Ok(new ResponseVM<IEnumerable<Resources>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+        // Task<IEnumerable<Resources>> GetOTResources();
 
         [HttpGet]
         [Route("get-employees")]

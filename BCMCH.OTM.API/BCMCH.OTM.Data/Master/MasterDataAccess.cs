@@ -113,6 +113,89 @@ namespace BCMCH.OTM.Data.Master
             var result= await _sqlHelper.QueryAsync<UserRoleDetails>(Query, SqlParameters, CommandType.Text);
             return result;
         }
+
+        public async Task<IEnumerable<AvailableRoles>> GetOTRoles()
+        {
+            const string Query = @"
+                                    SELECT 
+                                         [Id]
+                                        ,[name]
+                                    FROM 
+                                        [behive-dev-otm].[OTM].[UserRoles]
+                                 ";
+            var SqlParameters = new DynamicParameters();
+            var result= await _sqlHelper.QueryAsync<AvailableRoles>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+        public async Task<IEnumerable<int>> PostNewOTUser(int userId, int roleId)
+        {
+            const string Query = @"
+                                    INSERT INTO [behive-dev-otm].[OTM].[Users]
+                                    (
+                                        [userId] ,
+                                        [UserRoleId]
+                                    )
+                                    VALUES
+                                    (
+                                        @userId,
+                                        @userRoleId
+                                    )
+                                 ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@userId", userId);
+            SqlParameters.Add("@userRoleId", roleId);
+            var result= await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+        public async Task<IEnumerable<int>> CreateAdminRolesAndRigthts(PostAdminRolesAndRights otAdminAndRights)
+        {
+            const string Query = @"
+                                        INSERT INTO [behive-dev-otm].[OTM].[UserRoles]
+                                        (
+                                             [name]
+                                            ,[Active]
+                                            ,[DisplayName]
+                                        )
+                                        VALUES
+                                        (
+                                            @UserRoleName,1,@UserRoleName
+                                        );
+                                        
+
+
+                                        -- fetch new user id
+                                        DECLARE @NewRoleId AS INT;
+                                        SET @NewRoleId = SCOPE_IDENTITY();
+
+                                        -- insert role permissions start
+                                        INSERT INTO [behive-dev-otm].[OTM].[RoleHasPermissions]
+                                        (
+                                            [ResourceId],
+                                            [AccessType],
+                                            [UserRoleId]
+                                        )
+                                        SELECT 
+                                            [ResourceId],
+                                            [AccessType],
+                                            [UserRoleId]=@NewRoleId
+                                        FROM 
+                                            OPENJSON(@ResourceAndAccess)
+                                            WITH  
+                                            (
+                                                ResourceId        int     '$.resourceId',  
+                                                AccessType        int     '$.PermissionId'
+                                            );
+                                        -- insert role permissions end
+
+                                        -- add new user role end
+
+                                 ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@UserRoleName",      otAdminAndRights.UserRoleName);
+            SqlParameters.Add("@ResourceAndAccess", otAdminAndRights.ResourceAndAccess);
+            var result= await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
         public async Task<IEnumerable<UserResources>> GetOTRolePermissions(int? roleId)
         {
             const string Query = @"
@@ -126,13 +209,28 @@ namespace BCMCH.OTM.Data.Master
                                     FROM 
                                         [behive-dev-otm].[OTM].[RoleHasPermissions] as Permissions
                                     LEFT JOIN
-                                        [OTM].[Resources] AS Resources ON Permissions.Id = Resources.Id
+                                        [OTM].[Resources] AS Resources ON ResourceId = Resources.Id
                                     WHERE UserRoleId =@roleId
                                  ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@roleId", roleId);
 
             var result= await _sqlHelper.QueryAsync<UserResources>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+        public async Task<IEnumerable<Resources>> GetOTResources()
+        {
+            const string Query = @"
+                                    SELECT
+                                         [Id]
+                                        ,[name]
+                                        ,[Description]
+                                        ,[Active]
+                                    FROM 
+                                        [behive-dev-otm].[OTM].[Resources]
+                                 ";
+            var SqlParameters = new DynamicParameters();
+            var result= await _sqlHelper.QueryAsync<Resources>(Query, SqlParameters, CommandType.Text);
             return result;
         }
         
