@@ -3,6 +3,7 @@ using BCMCH.OTM.API.Shared.General;
 using BCMCH.OTM.Data.Contract.Master;
 using BCMCH.OTM.Domain.Contract.Master;
 using System.Globalization;
+using OfficeOpenXml;
 
 namespace BCMCH.OTM.Domain.Master
 {
@@ -16,19 +17,10 @@ namespace BCMCH.OTM.Domain.Master
         public MasterDomainService(IMasterDataAccess masterDataAccess)
         {
             _masterDataAccess = masterDataAccess;
+            ExcelPackage.LicenseContext=LicenseContext.NonCommercial;
+            
         }
         #endregion
-
-
-
-
-        #region PRIVATE-FUNCTIONS
-        private string DatetimeCovetsion()
-        {
-            return "";
-        }
-        #endregion
-
 
 
         #region PUBLIC
@@ -346,6 +338,8 @@ namespace BCMCH.OTM.Domain.Master
             return result;
         }
         #endregion
+
+        
         
     }
 }

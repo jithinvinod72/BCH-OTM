@@ -6,6 +6,7 @@ using BCMCH.OTM.API.ViewModels.Generic;
 using BCMCH.OTM.API.ViewModels.ResponseMessage;
 using Microsoft.AspNetCore.Authorization;
 using BCMCH.OTM.API.Shared.General;
+using Microsoft.Net.Http.Headers;
 
 namespace BCMCH.OTM.API.Controllers
 {
@@ -29,11 +30,94 @@ namespace BCMCH.OTM.API.Controllers
 
         [HttpGet]
         [Route("get-events")]
-        public async Task<IActionResult> SelectEvents(int departmentId=1 ,string? fromDate="",string? toDate="")
+        public async Task<IActionResult> SelectAllEvents(string? fromDate="",string? toDate="")
         {
             try
             {
-                var result = await _bookingService.GetBookingList(departmentId,fromDate, toDate);
+                var result = await _bookingService.GetBookingList(fromDate, toDate);
+                return Ok(new ResponseVM<IEnumerable<Bookings>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+        [HttpGet]
+        [Route("get-events-sorted")]
+        public async Task<IActionResult> SelectEventsSorted(bool PaginationEnabled=false, int pageNumber=0,string? sortValue="",string? sortType="",string? fromDate="",string? toDate="")
+        {
+            // @params
+            // bool PaginationEnabled=false,
+            // int pageNumber=0,
+            // string? sortValue="",
+            // string? sortType="",
+            // string? fromDate="",
+            // string? toDate=""
+
+            try
+            {
+                var result = await _bookingService.GetBookingsSorted(PaginationEnabled, pageNumber, sortValue, sortType, fromDate, toDate);
+                return Ok(new ResponseVM<IEnumerable<Bookings>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+
+        [HttpGet]
+        [Route("get-events-exported")]
+        public async Task<IActionResult> ExportEvents( string? sortValue="",string? sortType="",string fromDate="",string toDate="")
+        {
+            // @params
+            // bool PaginationEnabled=false,
+            // int pageNumber=0,
+            // string? sortValue="",
+            // string? sortType="",
+            // string? fromDate="",
+            // string? toDate=""
+            Console.WriteLine();
+            Console.Write("controller fromdate : ");
+            Console.Write(fromDate);
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.Write("controller todate: ");
+            Console.Write(toDate);
+            Console.WriteLine();
+            try
+            {
+                var result = await _bookingService.ExportEvents(sortValue, sortType, fromDate, toDate);
+                return File(result, "application/octet-stream", "test.xlsx");
+                // return Ok(new ResponseVM<IEnumerable<Bookings>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        [Route("excel-test")]
+        public async Task<IActionResult> ExportEventstest()
+        {
+            try
+            {
+                var result =await _bookingService.ExcelTest2();
+                return File(result, "application/octet-stream", "test.xlsx");
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+        [HttpGet]
+        [Route("get-events-with-department")]
+        public async Task<IActionResult> SelectEventsWithDepartment(string departmentIds ,string? fromDate="",string? toDate="")
+        {
+            try
+            {
+                var result = await _bookingService.GetBookingListWithDepartment(departmentIds,fromDate, toDate);
                 return Ok(new ResponseVM<IEnumerable<Bookings>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)
@@ -44,11 +128,12 @@ namespace BCMCH.OTM.API.Controllers
 
         [HttpGet]
         [Route("get-events-with-otid")]
-        public async Task<IActionResult> SelectEventsWithOtId(int otId=1 ,string? fromDate="",string? toDate="")
+        public async Task<IActionResult> SelectEventsWithOtId(string otIds,string? fromDate="",string? toDate="")
         {
             try
             {
-                var result = await _bookingService.GetBookingListWithOtId(otId, fromDate, toDate);
+                // Task<IEnumerable<Bookings>> GetBookingListWithOtId(string otIds, string? fromDate,string? toDate)
+                var result = await _bookingService.GetBookingListWithOtId(otIds, fromDate, toDate);
                 return Ok(new ResponseVM<IEnumerable<Bookings>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)

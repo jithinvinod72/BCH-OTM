@@ -13,6 +13,7 @@
             Success = success;
             Response = key;
         }
+        
         public ResponseVM(bool success, string key, Exception exception) : this(success, key)
         {
             ExceptionMessage = exception.Message;

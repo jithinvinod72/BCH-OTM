@@ -12,5 +12,8 @@
     <ProjectReference Include="..\BCMCH.OTM.Domain.Contract\BCMCH.OTM.Domain.Contract.csproj" />
     <ProjectReference Include="..\BCMCH.OTM.Infrastucture\BCMCH.OTM.Infrastucture.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="EPPlus" Version="6.1.3" />
+  </ItemGroup>
 
 </Project>

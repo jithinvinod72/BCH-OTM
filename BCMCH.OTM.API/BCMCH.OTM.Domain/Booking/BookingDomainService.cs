@@ -1,8 +1,10 @@
-﻿using BCMCH.OTM.API.Shared.Booking;
+﻿using System.Text.Json;
+using BCMCH.OTM.API.Shared.Booking;
 using BCMCH.OTM.API.Shared.General;
 using BCMCH.OTM.Data.Contract.Booking;
 using BCMCH.OTM.Domain.Contract.Booking;
 using BCMCH.OTM.Infrastucture.Generic;
+using OfficeOpenXml;
 
 namespace BCMCH.OTM.Domain.Booking
 {
@@ -16,27 +18,181 @@ namespace BCMCH.OTM.Domain.Booking
         public BookingDomainService(IBookingDataAccess bookingDataAccess)
         {
             _bookingDataAccess = bookingDataAccess;
+            ExcelPackage.LicenseContext=LicenseContext.NonCommercial;
         }
         #endregion
 
 
-
-        
-        public async Task<IEnumerable<Bookings>> GetBookingList(int departmentId, string? fromDate,string? toDate)
+        public async Task<IEnumerable<Bookings>> GetBookingList(string fromDate, string toDate)
         {
             var result = await _bookingDataAccess.GetBookingList(fromDate, toDate);
-            var filteredWithDepartment = result.Where(booking=>booking.BookedByDepartment==departmentId);
-            // filters the bookings with given otid 
-            return filteredWithDepartment;
-        }
-        public async Task<IEnumerable<Bookings>> GetBookingListWithOtId(int otId, string? fromDate,string? toDate)
-        {
-            var result = await _bookingDataAccess.GetBookingList(fromDate, toDate);
-            result = result.Where(booking=>booking.OperationTheatreId==otId);
-            // filters the bookings with given otid 
             return result;
         }
+
+        public async Task<IEnumerable<Bookings>> GetBookingListWithDepartment(string departmentIds, string? fromDate,string? toDate)
+        {
+            var departments = JsonSerializer.Deserialize<List<int>>(departmentIds);
+            // the input departmentIds will be a json array convert it into c# array 
+            var result = await _bookingDataAccess.GetBookingList(fromDate, toDate);
+            // then ge the bookings with start and end date
+            var filteredWithDepartment = result.Where(booking=> departments.Contains((int)booking.BookedByDepartment) );
+            // then filter the bookings with the department ids array 
+            return filteredWithDepartment;
+        }
+        public async Task<IEnumerable<Bookings>> GetBookingListWithOtId(string otIds, string? fromDate,string? toDate)
+        {
+            var otsSelected = JsonSerializer.Deserialize<List<int>>(otIds);
+
+            var result = await _bookingDataAccess.GetBookingList(fromDate, toDate);
+            var filteredWithOtId = result.Where(booking=> otsSelected.Contains(booking.OperationTheatreId));
+            return filteredWithOtId;
+        }
         
+        public async Task<IEnumerable<Bookings>> GetBookingsSorted(bool PaginationEnabled=false, int pageNumber=0,string? sortValue="",string? sortType="",string? fromDate="",string? toDate="")
+        {
+            
+            var result = await _bookingDataAccess.GetBookingList(fromDate, toDate);
+            var queryResultPage = result;
+
+            // if pagination is enabled we will add the functions for that
+            if(PaginationEnabled==true){
+                int numberOfObjectsPerPage = 20;
+                queryResultPage = result
+                    .Skip(numberOfObjectsPerPage * pageNumber)
+                    .Take(numberOfObjectsPerPage);
+            }
+            // if pagination is enabled we will add the functions for that
+
+
+            switch (sortValue)
+            {
+                case "PATIENT_NAME":
+                    if(sortType=="DESCENDING"){
+                        return queryResultPage.OrderByDescending(s => s.PatientFirstName);
+                    }
+                    return queryResultPage.OrderBy(s => s.PatientFirstName);
+
+                case "PATIENT_AGE":
+                    if(sortType=="DESCENDING"){
+                        return queryResultPage.OrderByDescending(s => s.PatientDateOfBirth);
+                    }
+                    return queryResultPage.OrderBy(s => s.PatientDateOfBirth);
+                    
+                case "SURGERY_NAME":
+                    if(sortType=="DESCENDING"){
+                        return queryResultPage.OrderByDescending(s => s.SurgeryName);
+                    }
+                    return queryResultPage.OrderBy(s => s.SurgeryName);
+
+                case "DEPARTMENT":
+                    if(sortType=="DESCENDING"){
+                        return queryResultPage.OrderByDescending(s => s.DepartmentName);
+                    }
+                    return queryResultPage.OrderBy(s => s.DepartmentName);
+
+                case "OPERATION_THEATRE_NAME":
+                    if(sortType=="DESCENDING"){
+                        return queryResultPage.OrderByDescending(s => s.TheatreName);
+                    }
+                    return queryResultPage.OrderBy(s => s.TheatreName);
+                case "OPERATION_TIME":
+                    if(sortType=="ASCENDING"){
+                        var StartDateOrderAsc = queryResultPage.OrderBy(s => s.StartDate);
+                        return StartDateOrderAsc;
+                    }
+                    var StartDateOrderDes = queryResultPage.OrderByDescending(s => s.StartDate);
+                    return StartDateOrderDes;
+                default:
+                    return queryResultPage;
+            }
+            
+        }
+        // EXCEL Handlers START
+        public async Task<Stream> ExportEvents( string? sortValue="",string? sortType="",string? fromDate="",string? toDate="")
+        {
+            Console.WriteLine("fromdate : ", fromDate);
+            Console.WriteLine("todate : ", toDate);
+            var result = await GetBookingsSorted(false, 0,sortValue , sortType , fromDate, toDate);
+            // here there will not be any paginations applied 
+            
+            var stream = new MemoryStream();
+            var package = new OfficeOpenXml.ExcelPackage(stream);
+            var worksheet = package.Workbook.Worksheets.FirstOrDefault(x => x.Name == "Attempts");
+            worksheet = package.Workbook.Worksheets.Add("Assessment Attempts");
+            int rowCounter =1;
+            // UHID 	Name 	Age 	Gender 	Surgery 	Department 	Operation Treater 	Date Time
+            worksheet.Cells[rowCounter, 1].Value = "event id ";
+            worksheet.Cells[rowCounter, 2].Value = "UHID";
+            worksheet.Cells[rowCounter, 3].Value = "Name";
+            worksheet.Cells[rowCounter, 4].Value = "Age";
+            worksheet.Cells[rowCounter, 5].Value = "Gender";
+            worksheet.Cells[rowCounter, 6].Value = "Surgery";
+            worksheet.Cells[rowCounter, 7].Value = "Department";
+            worksheet.Cells[rowCounter, 8].Value = "Operation Theatre";
+            worksheet.Cells[rowCounter, 9].Value = "Start Time";
+            
+            foreach (Bookings item in result)
+            {
+                rowCounter++;
+                worksheet.Cells[rowCounter, 1].Value = item.event_id;
+                worksheet.Cells[rowCounter, 2].Value = item.PatientRegistrationNo;
+                worksheet.Cells[rowCounter, 3].Value = item.PatientFirstName+" "+item.PatientMiddleName+" "+item.PatientLastName;
+                worksheet.Cells[rowCounter, 4].Value = item.PatientDateOfBirth;
+                worksheet.Cells[rowCounter, 5].Value = item.PatientGender==1?"Female":"Male";
+                worksheet.Cells[rowCounter, 6].Value = item.SurgeryPrintName;
+                worksheet.Cells[rowCounter, 7].Value = item.DepartmentName;
+                worksheet.Cells[rowCounter, 8].Value = item.TheatreName;
+                worksheet.Cells[rowCounter, 9].Value = item.StartDate.ToString();
+            }
+            
+            for (int i = 1; i <= 9; i++) {
+                worksheet.Column(i).AutoFit(); 
+            }
+
+            package.Workbook.Properties.Title = "summary";
+            package.Save();
+            stream.Position=0;
+            return stream;
+        }
+
+        public async Task<Stream> ExcelTest2()
+        {
+            var stream = new MemoryStream();
+            var package = new OfficeOpenXml.ExcelPackage(stream);
+            // using (var package = new OfficeOpenXml.ExcelPackage(fileName))
+            // {
+                var worksheet = package.Workbook.Worksheets.FirstOrDefault(x => x.Name == "Attempts");
+                worksheet = package.Workbook.Worksheets.Add("Assessment Attempts");
+                worksheet.Row(1).Height = 20;
+
+                // worksheet.TabColor = Color.Gold;
+                worksheet.DefaultRowHeight = 12;
+                worksheet.Row(1).Height = 20;
+
+                worksheet.Cells[1, 1].Value = "Employee Number";
+                worksheet.Cells[1, 2].Value = "Course Code";
+
+                var cells = worksheet.Cells["A1:J1"];
+                // var rowCounter = 2;
+                
+                worksheet.Cells[1, 1].Value = "bla";
+                worksheet.Cells[2, 2].Value = "bla";
+                // foreach (var v in userAssessmentsData)
+                // {
+                //     worksheet.Cells[rowCounter, 1].Value = v.CompanyNumber;
+                //     worksheet.Cells[rowCounter, 2].Value = v.CourseCode;
+
+                //     rowCounter++;
+                // }
+                worksheet.Column(1).AutoFit();
+                worksheet.Column(2).AutoFit();
+                package.Workbook.Properties.Title = "Attempts";
+                package.Save();
+            stream.Position=0;
+            // strea.SaveAs(new FileInfo(@"./a.elsx"));
+            return stream;
+            // }
+        }
         public async Task<EventFields> GetEventEquipmentsAndEmployees(int bookingId)
         {
             var equipments = await _bookingDataAccess.GetEventEquipments(bookingId);
@@ -55,11 +211,6 @@ namespace BCMCH.OTM.Domain.Booking
             
             return fields;
         }
-        // public async Task<IEnumerable<Employee>> GetEventEmployees(int bookingId)
-        // {
-        //     var result = await _bookingDataAccess.GetEventEmployees(bookingId);
-        //     return result;
-        // }
 
         public async Task<IEnumerable<Bookings>> DeleteBooking(string IdArray="")
         {
@@ -168,7 +319,6 @@ namespace BCMCH.OTM.Domain.Booking
                                                  )
                                      );
             // filters the bookings with given otid and department id 
-            // 
 
             var allocations = await _bookingDataAccess.GetAllocation(fromDate, toDate);
             // fetches allocation details of the given departments
