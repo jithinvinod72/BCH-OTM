@@ -54,7 +54,7 @@ namespace BCMCH.OTM.Data.Booking
 
             SqlParameters.Add("@RequestForSpecialMeterial", booking.RequestForSpecialMeterial );
             SqlParameters.Add("@DepartmentId", booking.DepartmentId );
-            SqlParameters.Add("@Type", booking.Type );
+            // SqlParameters.Add("@Type", booking.Type );
             SqlParameters.Add("@EmployeeIdArray", booking.EmployeeIdArray );
             SqlParameters.Add("@EquipmentsIdArray", booking.EquipmentsIdArray );
 
@@ -236,7 +236,6 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@EndDate", blocking.EndDate);
             SqlParameters.Add("@Duration",   blocking.Duration );
             SqlParameters.Add("@ModifiedBy", blocking.ModifiedBy );
-            SqlParameters.Add("@Type", "BLOCKED" );
             
             var result= await _sqlHelper.QueryAsync<Blocking>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;

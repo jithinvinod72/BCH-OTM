@@ -31,11 +31,11 @@ namespace BCMCH.OTM.Domain.Booking
 
         public async Task<IEnumerable<Bookings>> GetBookingListWithDepartment(string departmentIds, string? fromDate,string? toDate)
         {
-            var departments = JsonSerializer.Deserialize<List<int>>(departmentIds);
+            var departments = JsonSerializer.Deserialize<List<int?>>(departmentIds);
             // the input departmentIds will be a json array convert it into c# array 
             var result = await _bookingDataAccess.GetBookingList(fromDate, toDate);
             // then ge the bookings with start and end date
-            var filteredWithDepartment = result.Where(booking=> departments.Contains((int)booking.BookedByDepartment) );
+            var filteredWithDepartment = result.Where(booking=> departments.Contains(booking.BookedByDepartment) );
             // then filter the bookings with the department ids array 
             return filteredWithDepartment;
         }
@@ -44,7 +44,7 @@ namespace BCMCH.OTM.Domain.Booking
             var otsSelected = JsonSerializer.Deserialize<List<int>>(otIds);
 
             var result = await _bookingDataAccess.GetBookingList(fromDate, toDate);
-            var filteredWithOtId = result.Where(booking=> otsSelected.Contains(booking.OperationTheatreId));
+            var filteredWithOtId = result.Where(booking=> otsSelected.Contains(booking.OperationTheatreId) );
             return filteredWithOtId;
         }
         
@@ -315,7 +315,7 @@ namespace BCMCH.OTM.Domain.Booking
                                         booking => (
                                                     (booking.OperationTheatreId == operationTheatreId) 
                                                     && 
-                                                    (departmentId == booking.BookedByDepartment)
+                                                    ((departmentId == booking.BookedByDepartment) || (booking.StatusName=="BLOCKED") )
                                                  )
                                      );
             // filters the bookings with given otid and department id 

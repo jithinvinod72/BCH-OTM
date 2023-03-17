@@ -24,7 +24,7 @@ namespace BCMCH.OTM.API.Shared.Booking
         public string? InstructionToAnaesthetist {get; set; }
         public string? InstructionToOperationTeatrePersons {get; set; }
         public string? RequestForSpecialMeterial {get; set; }
-        public string? Type {get; set; }
+        // public string? Type {get; set; }
         public string? EmployeeIdArray {get; set; }
         public string? EquipmentsIdArray {get; set; }
     }
