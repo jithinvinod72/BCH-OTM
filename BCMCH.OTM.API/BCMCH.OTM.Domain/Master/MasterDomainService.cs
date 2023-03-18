@@ -98,8 +98,10 @@ namespace BCMCH.OTM.Domain.Master
 
         public async  Task<IEnumerable<Surgery>> GetSurgeryList(int _pageNumber, int _rowsPerPage, string? _searchKeyword="")
         {
-            _searchKeyword.Replace(" ", "%");
-            _searchKeyword = "%"+_searchKeyword+"%";
+            // Console.WriteLine(_searchKeyword);
+            // _searchKeyword = _searchKeyword.Replace(" ", "%");
+            // _searchKeyword = "%"+_searchKeyword+"%";
+            _searchKeyword="%%";
             var result = await _masterDataAccess.GetSurgeryList(_pageNumber, _rowsPerPage, _searchKeyword);
             return result;
         }
