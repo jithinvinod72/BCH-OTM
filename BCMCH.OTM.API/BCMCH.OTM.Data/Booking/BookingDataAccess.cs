@@ -155,7 +155,6 @@ namespace BCMCH.OTM.Data.Booking
 
             SqlParameters.Add("@RequestForSpecialMeterial", booking.RequestForSpecialMeterial);
             SqlParameters.Add("@DepartmentId", booking.DepartmentId);
-            SqlParameters.Add("@Type", booking.Type);
             SqlParameters.Add("@EmployeeIdArray", booking.EmployeeIdArray);
             SqlParameters.Add("@EquipmentsIdArray", booking.EquipmentsIdArray);
 

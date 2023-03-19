@@ -199,8 +199,6 @@ namespace BCMCH.OTM.Domain.Booking
             var employees  = await _bookingDataAccess.GetEventEmployees(bookingId);
             var departmentIds = employees.Select(o => o.DepartmentID).Distinct();
 
-            // Console.WriteLine(departmentIds.Contains(11));
-
             var allDepartments = await _bookingDataAccess.GetDepartments();
             var filteredDepartments = allDepartments.Where(o=>  departmentIds.Contains(o.Id));
             
@@ -227,22 +225,20 @@ namespace BCMCH.OTM.Domain.Booking
             var OTAllocationStatus = await _bookingDataAccess.IsOperationTheatreAllocated(booking.OperationTheatreId, booking.DepartmentId, booking.StartDate, booking.EndDate);
             if (OTAllocationStatus < 1)
             {
-                return new Envelope<IEnumerable<int>>(false, $"OT {booking.OperationTheatreId} is not allocated forthis time");
+                return new Envelope<IEnumerable<int>>(false, $"Selected Operation theatre is not allocated for this time");
             }
 
             var OTBlockStatus = await _bookingDataAccess.IsOperationTheatreBloked(booking.OperationTheatreId, booking.StartDate, booking.EndDate);
             if (OTBlockStatus > 0)
             {
-                return new Envelope<IEnumerable<int>>(false, $"Operation Theatre {booking.OperationTheatreId} is blocked");
+                return new Envelope<IEnumerable<int>>(false, $"The selected operation theatre is blocked in the given time");
             }
 
             var OTBookingStatus = await _bookingDataAccess.IsOperationTheatreBooked(0, booking.OperationTheatreId, booking.StartDate, booking.EndDate);
             if (OTBookingStatus > 0)
             {
-                return new Envelope<IEnumerable<int>>(false, $"Operation Theatre {booking.OperationTheatreId} is already booked for the slot ${booking.StartDate} to ${booking.EndDate}");
+                return new Envelope<IEnumerable<int>>(false, $"Operation Theatre is already booked for the slot ${booking.StartDate} to ${booking.EndDate}");
             }
-
-
             // END - VALIDATION SECTION
             #endregion        
 
@@ -264,25 +260,23 @@ namespace BCMCH.OTM.Domain.Booking
 
         public async Task<Envelope<IEnumerable<UpdateBookingModel>>> UpdateBooking(UpdateBookingModel booking)
         {
-            
-            
             #region VALIDATION  
             var OTAllocationStatus = await _bookingDataAccess.IsOperationTheatreAllocated(booking.OperationTheatreId, booking.DepartmentId, booking.StartDate, booking.EndDate);
             if(OTAllocationStatus < 1)
             {
-               return new Envelope<IEnumerable<UpdateBookingModel>>(false,$"OT {booking.OperationTheatreId} is not allocated for this time");
+               return new Envelope<IEnumerable<UpdateBookingModel>>(false,$"Selected Operation theatre is not allocated for this time");
             }
 
             var OTBlockStatus = await _bookingDataAccess.IsOperationTheatreBloked(booking.OperationTheatreId, booking.StartDate, booking.EndDate);
             if(OTBlockStatus > 0)
             {
-                return new Envelope<IEnumerable<UpdateBookingModel>>(false, $"Operation Theatre {booking.OperationTheatreId} is blocked");
+                return new Envelope<IEnumerable<UpdateBookingModel>>(false, $"The selected operation theatre is blocked in the given slot");
             }
 
             var OTBookingStatus    = await _bookingDataAccess.IsOperationTheatreBooked(booking.Id, booking.OperationTheatreId, booking.StartDate, booking.EndDate);
             if(OTBookingStatus > 0)
             {
-                return new Envelope<IEnumerable<UpdateBookingModel>>(false, $"Operation Theatre {booking.OperationTheatreId} is already booked for the slot ${booking.StartDate} to ${booking.EndDate}");
+                return new Envelope<IEnumerable<UpdateBookingModel>>(false, $"Operation Theatre is already booked for the slot {booking.StartDate} to {booking.EndDate}");
             }
             #endregion
 
