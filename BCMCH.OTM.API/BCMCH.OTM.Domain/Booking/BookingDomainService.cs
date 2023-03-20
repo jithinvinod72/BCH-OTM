@@ -212,7 +212,7 @@ namespace BCMCH.OTM.Domain.Booking
 
         public async Task<IEnumerable<Bookings>> DeleteBooking(string IdArray="")
         {
-            var result = await _bookingDataAccess.DeleteBooking("["+IdArray+"]");
+            var result = await _bookingDataAccess.DeleteBooking(IdArray);
             return result;
         }
 
