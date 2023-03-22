@@ -264,7 +264,7 @@ namespace BCMCH.OTM.Domain.Master
 
                 var isAllocationAlreadyExists = await _masterDataAccess.CheckAllocationByOperationThearter(_postAllocation_format.StartDate, _postAllocation_format.EndDate, (int)_postAllocation_format.OperationTheatreId);
                 var legnth = isAllocationAlreadyExists.Count();
-                if (legnth > 0)
+                if (legnth == 0)
                 {
                     await PostAllocation(_postAllocation_format);
                 }
