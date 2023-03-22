@@ -262,8 +262,12 @@ namespace BCMCH.OTM.Domain.Master
                 _postAllocation_format.EndDate = date_time_end;
                 _postAllocation_format.ModifiedBy = _allocation.ModifiedBy;
 
-
-                await PostAllocation(_postAllocation_format);
+                var isAllocationAlreadyExists = await _masterDataAccess.CheckAllocationByOperationThearter(_postAllocation_format.StartDate, _postAllocation_format.EndDate, (int)_postAllocation_format.OperationTheatreId);
+                var legnth = isAllocationAlreadyExists.Count();
+                if (legnth > 0)
+                {
+                    await PostAllocation(_postAllocation_format);
+                }
 
                 // public int?      OperationTheatreId {get; set; }
                 // public int?      AssignedDepartmentId {get; set; }

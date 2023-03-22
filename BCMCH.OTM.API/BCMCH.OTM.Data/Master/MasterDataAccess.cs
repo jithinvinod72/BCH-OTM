@@ -499,11 +499,23 @@ namespace BCMCH.OTM.Data.Master
             var result= await _sqlHelper.QueryAsync<GetAnswer>(Query, SqlParameters, CommandType.Text);
             return result;
         }
-        
+
         // ANSWER HANDLE SECTION END
 
+        public async Task<IEnumerable<OTValidation>> CheckAllocationByOperationThearter(string startDate, string endDate, int operationId)
+        {
+            const string StoredProcedure = "[OTM].[CheckifAllocationExistsForOperationTheaterInRange]";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@operationTheatreId", operationId);
+            SqlParameters.Add("@StartDateToSearch", startDate);
+            SqlParameters.Add("@@EndDateToSearch", endDate);
+            var result = await _sqlHelper.QueryAsync<OTValidation>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            return result;
+        }
 
-        
+
+
 
     }
+
 }
