@@ -211,7 +211,7 @@ namespace BCMCH.OTM.Domain.Master
         }
         public async Task<IEnumerable<int>> DeleteAllocations(string allocationIds)
         {
-            allocationIds="["+allocationIds+"]";
+            // allocationIds="["+allocationIds+"]";
             var result = await _masterDataAccess.DeleteAllocations(allocationIds);
             return result;
         }

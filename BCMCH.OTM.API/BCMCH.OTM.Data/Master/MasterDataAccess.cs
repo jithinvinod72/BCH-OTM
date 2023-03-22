@@ -310,6 +310,7 @@ namespace BCMCH.OTM.Data.Master
                             ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@IdArray", allocationIds );
+            
             var result= await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
             return result;
         }
