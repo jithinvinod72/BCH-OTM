@@ -27,6 +27,8 @@ namespace BCMCH.OTM.Domain.Contract.Booking
         Task<IEnumerable<Bookings>> DeleteBooking(string IdArray="");
         
         Task<IEnumerable<Blocking>> AddBlocking(Blocking blocking);
+        Task<IEnumerable<Blocking>> EditBlocking(Blocking blocking);
+
         Task<Envelope<IEnumerable<int>>> AddWaitingList(PostBookingModel booking);
         Task<IEnumerable<Patient>> GetPatientData(string registrationNo);
     }

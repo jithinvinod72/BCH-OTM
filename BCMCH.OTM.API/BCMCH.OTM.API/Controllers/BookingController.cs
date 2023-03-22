@@ -234,6 +234,21 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
+
+        [HttpPost]
+        [Route("edit-blocking")]
+        public async Task<IActionResult> EditBlocking(Blocking _blocking)
+        {
+            try
+            {
+                var result = await _bookingService.EditBlocking(_blocking);
+                return Ok(new ResponseVM<IEnumerable<Blocking>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
         #endregion
 
 

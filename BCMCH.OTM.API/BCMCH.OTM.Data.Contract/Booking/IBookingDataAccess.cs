@@ -31,6 +31,7 @@ namespace BCMCH.OTM.Data.Contract.Booking
 
         // OT blocking
         Task<IEnumerable<Blocking>> AddBlocking(Blocking blocking);
+        Task<IEnumerable<Blocking>> EditBlocking(Blocking blocking);
         // OT blocking
 
         Task<IEnumerable<Patient>> GetPatientData(string registrationNo);

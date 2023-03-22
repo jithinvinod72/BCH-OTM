@@ -227,7 +227,28 @@ namespace BCMCH.OTM.Data.Booking
         #region BLOCKING
         public async Task<IEnumerable<Blocking>> AddBlocking(Blocking blocking)
         {
-            const string StoredProcedure = "[OTM].[InsertBlocking]";
+            string Query =@"
+                            INSERT INTO [OTM].[Bookings]
+                            (
+                                [OperationTheatreId],
+                                [StatusId],
+                                [StartDate],
+                                [EndDate],
+                                [Duration],
+                                [ModifiedBy],
+                                [IsDeleted]
+                            )
+                            VALUES
+                            (
+                                @OperationTheatreId,
+                                @StatusId,
+                                @StartDate,
+                                @EndDate,
+                                @Duration,
+                                @ModifiedBy,
+                                0
+                            )
+                           ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@OperationTheatreId", blocking.OperationTheatreId);
             SqlParameters.Add("@StatusId",   3 );
@@ -236,7 +257,32 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@Duration",   blocking.Duration );
             SqlParameters.Add("@ModifiedBy", blocking.ModifiedBy );
             
-            var result= await _sqlHelper.QueryAsync<Blocking>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            var result= await _sqlHelper.QueryAsync<Blocking>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
+        public async Task<IEnumerable<Blocking>> EditBlocking(Blocking blocking)
+        {
+            string Query =@"
+                            UPDATE [OTM].[Bookings]
+                            SET
+                                [OperationTheatreId] = @OperationTheatreId,
+                                [StatusId] = @StatusId,
+                                [StartDate] = @StartDate,
+                                [EndDate] = @EndDate,
+                                [Duration] = @Duration,
+                                [ModifiedBy] = @ModifiedBy,
+                            WHERE Id=@Id
+                           ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@OperationTheatreId", blocking.OperationTheatreId);
+            SqlParameters.Add("@StatusId",   3 );
+            SqlParameters.Add("@StartDate", blocking.StartDate );
+            SqlParameters.Add("@EndDate", blocking.EndDate);
+            SqlParameters.Add("@Duration",   blocking.Duration );
+            SqlParameters.Add("@ModifiedBy", blocking.ModifiedBy );
+            SqlParameters.Add("@Id", blocking.Id);
+            var result= await _sqlHelper.QueryAsync<Blocking>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 

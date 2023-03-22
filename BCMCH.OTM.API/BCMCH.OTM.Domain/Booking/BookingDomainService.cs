@@ -295,6 +295,11 @@ namespace BCMCH.OTM.Domain.Booking
             var result = await _bookingDataAccess.AddBlocking(blocking);
             return result;
         }
+        public async Task<IEnumerable<Blocking>> EditBlocking(Blocking blocking)
+        {
+            var result = await _bookingDataAccess.EditBlocking(blocking);
+            return result;
+        }
 
 
         public async Task<BookingsAndAllocations> SelectBookingsAndAllocations(int departmentId,int operationTheatreId , string? fromDate,string? toDate)

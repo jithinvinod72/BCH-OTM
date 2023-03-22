@@ -13,6 +13,7 @@ namespace BCMCH.OTM.API.Shared.Booking
         public string EndDate {get; set;}
         public float? Duration {get; set;}
         public string? ModifiedBy {get; set;}
+        public int? Id {get; set;}
         
     }
 }
