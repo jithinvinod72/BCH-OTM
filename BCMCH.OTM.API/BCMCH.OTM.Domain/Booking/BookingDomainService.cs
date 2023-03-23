@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Globalization;
+using System.Text.Json;
 using BCMCH.OTM.API.Shared.Booking;
 using BCMCH.OTM.API.Shared.General;
 using BCMCH.OTM.Data.Contract.Booking;
@@ -133,16 +134,21 @@ namespace BCMCH.OTM.Domain.Booking
             
             foreach (Bookings item in result)
             {
-                rowCounter++;
-                worksheet.Cells[rowCounter, 1].Value = item.event_id;
-                worksheet.Cells[rowCounter, 2].Value = item.PatientRegistrationNo;
-                worksheet.Cells[rowCounter, 3].Value = item.PatientFirstName+" "+item.PatientMiddleName+" "+item.PatientLastName;
-                worksheet.Cells[rowCounter, 4].Value = item.PatientDateOfBirth;
-                worksheet.Cells[rowCounter, 5].Value = item.PatientGender==1?"Female":"Male";
-                worksheet.Cells[rowCounter, 6].Value = item.SurgeryPrintName;
-                worksheet.Cells[rowCounter, 7].Value = item.DepartmentName;
-                worksheet.Cells[rowCounter, 8].Value = item.TheatreName;
-                worksheet.Cells[rowCounter, 9].Value = item.StartDate.ToString();
+                if (item.PatientRegistrationNo != null)
+                {
+                    rowCounter++;
+
+                    worksheet.Cells[rowCounter, 1].Value = item.event_id;
+
+                    worksheet.Cells[rowCounter, 2].Value = item.PatientRegistrationNo;
+                    worksheet.Cells[rowCounter, 3].Value = item.PatientFirstName + " " + item.PatientMiddleName + " " + item.PatientLastName;
+                    worksheet.Cells[rowCounter, 4].Value = FindAgeFromDOB(item.PatientDateOfBirth);
+                    worksheet.Cells[rowCounter, 5].Value = item.PatientGender == 1 ? "Female" : "Male";
+                    worksheet.Cells[rowCounter, 6].Value = item.SurgeryPrintName;
+                    worksheet.Cells[rowCounter, 7].Value = item.DepartmentName;
+                    worksheet.Cells[rowCounter, 8].Value = item.TheatreName;
+                    worksheet.Cells[rowCounter, 9].Value = item.StartDate.ToString();
+                }
             }
             
             for (int i = 1; i <= 9; i++) {
@@ -353,5 +359,16 @@ namespace BCMCH.OTM.Domain.Booking
             var result = await _bookingDataAccess.GetPatientData(registrationNo);
             return result;
         }
+
+        private string FindAgeFromDOB(string DOB) {
+            if(DOB == null) {
+                return "NA";
+            }
+
+            var year = DateTime.ParseExact(DOB, "MM/dd/yyyy hh:mm:ss", CultureInfo.InvariantCulture).Date.Year;
+            var currentYear = DateTime.Now.Year;
+            return (currentYear - year).ToString();
+        }
+
     }
 }
