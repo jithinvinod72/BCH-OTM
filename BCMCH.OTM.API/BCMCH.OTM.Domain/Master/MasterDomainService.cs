@@ -229,6 +229,9 @@ namespace BCMCH.OTM.Domain.Master
             // usingthese we filter out the dates of the days given in between the range that is given.
             List<DateTime> filteredDatesWithDay = FilterDatesOfDay(start, end, _allocation.day);
             // The above function will filter the dates of the day number that we have given within a given start and end dates.
+            if (filteredDatesWithDay.Count() < 1) {
+                return new List<int> { 1 };
+            }
 
             // we loop through the filteredDatesWithDay and allocate the start and end time with ot and department ids using the PostAllocation function
             foreach (DateTime dateRecurring in filteredDatesWithDay)
@@ -262,8 +265,14 @@ namespace BCMCH.OTM.Domain.Master
                 _postAllocation_format.EndDate = date_time_end;
                 _postAllocation_format.ModifiedBy = _allocation.ModifiedBy;
 
-
+                var isAllocationAlreadyExists = await _masterDataAccess.CheckAllocationByOperationThearter(_postAllocation_format.StartDate, _postAllocation_format.EndDate, (int)_postAllocation_format.OperationTheatreId);
+                var legnth = isAllocationAlreadyExists.Count();
+                if (legnth >0)
+                {
+                    return new List<int> { 2};
+                }
                 await PostAllocation(_postAllocation_format);
+
 
                 // public int?      OperationTheatreId {get; set; }
                 // public int?      AssignedDepartmentId {get; set; }

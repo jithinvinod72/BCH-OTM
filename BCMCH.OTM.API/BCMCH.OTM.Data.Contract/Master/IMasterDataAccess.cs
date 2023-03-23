@@ -34,5 +34,9 @@ namespace BCMCH.OTM.Data.Contract.Master
          // QUESTION SECTION END
          Task<IEnumerable<PostAnswer>> PostFormAnswer(PostAnswer answer);
          Task<IEnumerable<GetAnswer>> GetFormAnswer(int eventId);
+
+        //validation- ot allocation
+        Task<IEnumerable<OTValidation>> CheckAllocationByOperationThearter(string startDate, string endDate, int operationId);
+
     }
 }
