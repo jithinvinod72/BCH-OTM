@@ -271,7 +271,7 @@ namespace BCMCH.OTM.Data.Booking
                                 [StartDate] = @StartDate,
                                 [EndDate] = @EndDate,
                                 [Duration] = @Duration,
-                                [ModifiedBy] = @ModifiedBy,
+                                [ModifiedBy] = @ModifiedBy
                             WHERE Id=@Id
                            ";
             var SqlParameters = new DynamicParameters();
