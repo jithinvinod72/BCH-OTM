@@ -56,6 +56,9 @@ namespace BCMCH.OTM.Domain.Booking
         {
             
             var result = await _bookingDataAccess.GetBookingList(fromDate, toDate);
+            // remove waitinglist 
+            result = result.Where(booking=> booking.StatusCode != 4 );
+            
             var queryResultPage = result;
 
             // if pagination is enabled we will add the functions for that
@@ -66,7 +69,6 @@ namespace BCMCH.OTM.Domain.Booking
                     .Take(numberOfObjectsPerPage);
             }
             // if pagination is enabled we will add the functions for that
-
 
             switch (sortValue)
             {
@@ -162,45 +164,6 @@ namespace BCMCH.OTM.Domain.Booking
             package.Save();
             stream.Position=0;
             return stream;
-        }
-
-        public async Task<Stream> ExcelTest2()
-        {
-            var stream = new MemoryStream();
-            var package = new OfficeOpenXml.ExcelPackage(stream);
-            // using (var package = new OfficeOpenXml.ExcelPackage(fileName))
-            // {
-                var worksheet = package.Workbook.Worksheets.FirstOrDefault(x => x.Name == "Attempts");
-                worksheet = package.Workbook.Worksheets.Add("Assessment Attempts");
-                worksheet.Row(1).Height = 20;
-
-                // worksheet.TabColor = Color.Gold;
-                worksheet.DefaultRowHeight = 12;
-                worksheet.Row(1).Height = 20;
-
-                worksheet.Cells[1, 1].Value = "Employee Number";
-                worksheet.Cells[1, 2].Value = "Course Code";
-
-                var cells = worksheet.Cells["A1:J1"];
-                // var rowCounter = 2;
-                
-                worksheet.Cells[1, 1].Value = "bla";
-                worksheet.Cells[2, 2].Value = "bla";
-                // foreach (var v in userAssessmentsData)
-                // {
-                //     worksheet.Cells[rowCounter, 1].Value = v.CompanyNumber;
-                //     worksheet.Cells[rowCounter, 2].Value = v.CourseCode;
-
-                //     rowCounter++;
-                // }
-                worksheet.Column(1).AutoFit();
-                worksheet.Column(2).AutoFit();
-                package.Workbook.Properties.Title = "Attempts";
-                package.Save();
-            stream.Position=0;
-            // strea.SaveAs(new FileInfo(@"./a.elsx"));
-            return stream;
-            // }
         }
         public async Task<EventFields> GetEventEquipmentsAndEmployees(int bookingId)
         {

@@ -97,19 +97,7 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
-        [Route("excel-test")]
-        public async Task<IActionResult> ExportEventstest()
-        {
-            try
-            {
-                var result =await _bookingService.ExcelTest2();
-                return File(result, "application/octet-stream", "test.xlsx");
-            }
-            catch (Exception ex)
-            {
-                return Ok(new ResponseVM<bool>(false, ex.Message));
-            }
-        }
+
 
         [HttpGet]
         [Route("get-events-with-department")]
