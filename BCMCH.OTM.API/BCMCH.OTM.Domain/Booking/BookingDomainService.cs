@@ -9,12 +9,10 @@ using OfficeOpenXml;
 
 namespace BCMCH.OTM.Domain.Booking
 {
+    
     public class BookingDomainService : IBookingDomainService
     {
-        #region PRIVATE
         private readonly IBookingDataAccess _bookingDataAccess;
-        #endregion
-
         #region CONSTRUCTOR
         public BookingDomainService(IBookingDataAccess bookingDataAccess)
         {
@@ -23,6 +21,11 @@ namespace BCMCH.OTM.Domain.Booking
         }
         #endregion
 
+        private DateTime StringToDateTimeConverter( string dateTime )
+        {
+            var parsedDate = DateTime.ParseExact(dateTime, "yyyy-MM-ddTHH:mm:ss.fff", CultureInfo.InvariantCulture);
+            return parsedDate;
+        }
 
         public async Task<IEnumerable<Bookings>> GetBookingList(string fromDate, string toDate)
         {
@@ -231,19 +234,20 @@ namespace BCMCH.OTM.Domain.Booking
             var OTAllocationStatus = await _bookingDataAccess.IsOperationTheatreAllocated(booking.OperationTheatreId, booking.DepartmentId, booking.StartDate, booking.EndDate);
             if (OTAllocationStatus < 1)
             {
-                return new Envelope<IEnumerable<int>>(false, $"Selected Operation theatre is not allocated for this time");
+                return new Envelope<IEnumerable<int>>(false, $"Selected Operation theatre is not allocated for this time {StringToDateTimeConverter(booking.StartDate)} and {StringToDateTimeConverter(booking.EndDate)}");
             }
 
             var OTBlockStatus = await _bookingDataAccess.IsOperationTheatreBloked(booking.OperationTheatreId, booking.StartDate, booking.EndDate);
             if (OTBlockStatus > 0)
             {
-                return new Envelope<IEnumerable<int>>(false, $"The selected operation theatre is blocked in the given time");
+                return new Envelope<IEnumerable<int>>(false, $"The selected operation theatre is blocked in the given time {StringToDateTimeConverter(booking.StartDate)} and {StringToDateTimeConverter(booking.EndDate)}");
             }
 
             var OTBookingStatus = await _bookingDataAccess.IsOperationTheatreBooked(0, booking.OperationTheatreId, booking.StartDate, booking.EndDate);
             if (OTBookingStatus > 0)
             {
-                return new Envelope<IEnumerable<int>>(false, $"Operation Theatre is already booked for the slot ${booking.StartDate} to ${booking.EndDate}");
+                
+                return new Envelope<IEnumerable<int>>(false, $"Operation Theatre is already booked for the slot {StringToDateTimeConverter(booking.StartDate)} to {StringToDateTimeConverter(booking.EndDate)}");
             }
             // END - VALIDATION SECTION
             #endregion        
