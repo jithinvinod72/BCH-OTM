@@ -227,7 +227,7 @@ namespace BCMCH.OTM.API.Controllers
             try
             {
                 var result = await _bookingService.AddBlocking(_blocking);
-                return Ok(new ResponseVM<IEnumerable<Blocking>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -242,7 +242,8 @@ namespace BCMCH.OTM.API.Controllers
             try
             {
                 var result = await _bookingService.EditBlocking(_blocking);
-                return Ok(new ResponseVM<IEnumerable<Blocking>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+                return Ok(result);
+                // return Ok(new ResponseVM<IEnumerable<Blocking>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
             }
             catch (Exception ex)
             {

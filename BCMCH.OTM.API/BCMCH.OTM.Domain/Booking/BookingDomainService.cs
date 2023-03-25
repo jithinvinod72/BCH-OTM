@@ -300,15 +300,23 @@ namespace BCMCH.OTM.Domain.Booking
 
       
 
-        public async Task<IEnumerable<Blocking>> AddBlocking(Blocking blocking)
+        public async Task<Envelope<IEnumerable<Blocking>>> AddBlocking(Blocking blocking)
         {
+            if( StringToDateTimeConverter(blocking.StartDate)> StringToDateTimeConverter(blocking.EndDate)){
+                return new Envelope<IEnumerable<Blocking>>(false, $"given star time is less than end time. Please choose valid start and end time.");
+            }
             var result = await _bookingDataAccess.AddBlocking(blocking);
-            return result;
+            return new Envelope<IEnumerable<Blocking>>(true,"data-update-success", result);
         }
-        public async Task<IEnumerable<Blocking>> EditBlocking(Blocking blocking)
+        public async Task<Envelope<IEnumerable<Blocking>>> EditBlocking(Blocking blocking)
         {
+            if( StringToDateTimeConverter(blocking.StartDate)> StringToDateTimeConverter(blocking.EndDate)){
+                return new Envelope<IEnumerable<Blocking>>(false, $"given star time is less than end time. Please choose valid start and end time.");
+            }
+
             var result = await _bookingDataAccess.EditBlocking(blocking);
-            return result;
+            return new Envelope<IEnumerable<Blocking>>(true,"data-update-success", result);
+            // return result;
         }
 
 
