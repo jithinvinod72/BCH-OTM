@@ -43,12 +43,6 @@ namespace BCMCH.OTM.Domain.Master
         
         public async Task<IEnumerable<Employee>> GetEmployees(string searchOption , string departmentArray,  int pageNumber, int rowsOfPage)
         {
-            searchOption.Replace(" ", "%");
-            searchOption = "%"+searchOption+"%";
-            // replace space with % for sp and 
-            // adds % as first and last charecter
-            // GetEmployees(string searchOption , string departmentArray, int pageNumber, int rowsOfPage )
-
             var result = await _masterDataAccess.GetEmployees(searchOption ,departmentArray, pageNumber,rowsOfPage);
             return result;
         }

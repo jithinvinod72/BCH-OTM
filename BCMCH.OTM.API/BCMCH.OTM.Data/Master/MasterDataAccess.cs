@@ -63,9 +63,9 @@ namespace BCMCH.OTM.Data.Master
         {
             const string StoredProcedure = "[OTM].[SelectEmployeesWithDepartmentsMapping]";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@PageNumber", pageNumber);
-            SqlParameters.Add("@RowsOfPage", rowsOfPage);
-            SqlParameters.Add("@Search", searchOption);
+            // SqlParameters.Add("@PageNumber", pageNumber);
+            // SqlParameters.Add("@RowsOfPage", rowsOfPage);
+            // SqlParameters.Add("@Search", searchOption);
             SqlParameters.Add("@DepartmentsToFetchFrom", departmentArray);
             var result= await _sqlHelper.QueryAsync<Employee>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
