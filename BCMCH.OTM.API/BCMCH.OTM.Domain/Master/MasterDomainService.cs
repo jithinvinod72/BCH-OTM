@@ -41,9 +41,9 @@ namespace BCMCH.OTM.Domain.Master
             return result;
         }
         
-        public async Task<IEnumerable<Employee>> GetEmployees(string searchOption , string departmentArray,  int pageNumber, int rowsOfPage)
+        public async Task<IEnumerable<Employee>> GetEmployees(string departmentArray)
         {
-            var result = await _masterDataAccess.GetEmployees(searchOption ,departmentArray, pageNumber,rowsOfPage);
+            var result = await _masterDataAccess.GetEmployees(departmentArray);
             return result;
         }
         public async Task<IEnumerable<Employee>> GetEmployeeDetails(int employeeCode)
@@ -104,7 +104,7 @@ namespace BCMCH.OTM.Domain.Master
             AllMasters allMasters = new AllMasters();
             
             allMasters.EquipmentList = await _masterDataAccess.GetEquipments();
-            allMasters.AnaesthetistList = await _masterDataAccess.GetEmployees("%%", "[2]", 1, 100 ); // 2 is the department of anaesthetists
+            allMasters.AnaesthetistList = await _masterDataAccess.GetEmployees("[2]"); // 2 is the department of anaesthetists
             allMasters.OperationTheatreList = await _masterDataAccess.GetOperationTheatres();
             allMasters.AnaesthesiaList = await _masterDataAccess.GetAnaesthesiaList();
             allMasters.DepartmentsList = await _masterDataAccess.GetDepartments();

@@ -215,7 +215,7 @@ namespace BCMCH.OTM.API.Controllers
         {
             try
             {
-                var result = await _masterService.GetEmployees(searchKeyword,departments, pageNumber, rowsOfPage);
+                var result = await _masterService.GetEmployees(departments);
                 return Ok(new ResponseVM<IEnumerable<Employee>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)

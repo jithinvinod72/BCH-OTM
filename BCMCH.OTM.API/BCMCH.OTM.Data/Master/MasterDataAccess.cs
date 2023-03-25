@@ -59,13 +59,10 @@ namespace BCMCH.OTM.Data.Master
             var result= await _sqlHelper.QueryAsync<Anaesthesia>(Query, SqlParameters, CommandType.Text);
             return result;
         }
-        public async Task<IEnumerable<Employee>> GetEmployees(string searchOption , string departmentArray, int pageNumber, int rowsOfPage )
+        public async Task<IEnumerable<Employee>> GetEmployees(string departmentArray)
         {
             const string StoredProcedure = "[OTM].[SelectEmployeesWithDepartmentsMapping]";
             var SqlParameters = new DynamicParameters();
-            // SqlParameters.Add("@PageNumber", pageNumber);
-            // SqlParameters.Add("@RowsOfPage", rowsOfPage);
-            // SqlParameters.Add("@Search", searchOption);
             SqlParameters.Add("@DepartmentsToFetchFrom", departmentArray);
             var result= await _sqlHelper.QueryAsync<Employee>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
