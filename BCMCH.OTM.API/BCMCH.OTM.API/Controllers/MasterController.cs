@@ -304,7 +304,7 @@ namespace BCMCH.OTM.API.Controllers
                 {
                     return Ok(new ResponseVM<IEnumerable<int>>(false, ResponseMessages.IS_ALLOCATION_DAY_VALIDATION, result));
                 }
-                else if (result.Contains(1))
+                else if (result.Contains(2))
                 {
                     return Ok(new ResponseVM<IEnumerable<int>>(false, ResponseMessages.IS_ALLOCATION_EXISTS, result));
                 }
