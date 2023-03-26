@@ -233,7 +233,15 @@ namespace BCMCH.OTM.Domain.Booking
 
         public async Task<Envelope<IEnumerable<UpdateBookingModel>>> UpdateBooking(UpdateBookingModel booking)
         {
+
             #region VALIDATION  
+            if(booking.StatusId==5){
+                booking.EmployeeIdArray="["+booking.EmployeeIdArray+"]";
+                booking.EquipmentsIdArray="["+booking.EquipmentsIdArray+"]";
+                var emerGencyResult = await _bookingDataAccess.UpdateBooking(booking);
+                return new Envelope<IEnumerable<UpdateBookingModel>>(true,"data-update-success", emerGencyResult);
+            }
+
             var OTAllocationStatus = await _bookingDataAccess.IsOperationTheatreAllocated(booking.OperationTheatreId, booking.DepartmentId, booking.StartDate, booking.EndDate);
             if(OTAllocationStatus < 1)
             {
@@ -257,8 +265,7 @@ namespace BCMCH.OTM.Domain.Booking
             booking.EmployeeIdArray="["+booking.EmployeeIdArray+"]";
             booking.EquipmentsIdArray="["+booking.EquipmentsIdArray+"]";
             var result = await _bookingDataAccess.UpdateBooking(booking);
-
-            return new Envelope<IEnumerable<UpdateBookingModel>>(true,"data-update-success", result); ;
+            return new Envelope<IEnumerable<UpdateBookingModel>>(true,"data-update-success", result);
         }
 
       
