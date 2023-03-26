@@ -23,7 +23,8 @@ namespace BCMCH.OTM.Domain.Contract.Master
         Task<IEnumerable<Surgery>> GetSurgeryList(int _pageNumber, int _rowsPerPage, string? _searchKeyword="");
         Task<AllMasters> GetMasters();
         Task<IEnumerable<GetAllocationModel>> GetAllocations(string startDate, string endDate);
-        Task<IEnumerable<Allocation>> PostAllocation(Allocation _allocation);
+        // Task<IEnumerable<Allocation>> PostAllocation(Allocation _allocation);
+        Task<IEnumerable<int>> PostAllocation(Allocation _allocation);
         Task<IEnumerable<int>> PostAllocationInARange(AllocateInRange _allocation);
         Task<IEnumerable<int>> DeleteAllocations(string allocationIds);
         Task<DateTime>GetDateToday();

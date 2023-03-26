@@ -197,11 +197,17 @@ namespace BCMCH.OTM.Domain.Master
             var result = await _masterDataAccess.GetAllocations(startDate,endDate);
             return result;
         }
-        public async Task<IEnumerable<Allocation>> PostAllocation(Allocation _allocation)
+        public async Task<IEnumerable<int>> PostAllocation(Allocation _allocation)
         {
             // used to post allocation with only a startdate,enddate,otid and department id
+            var isAllocationAlreadyExists = await _masterDataAccess.CheckAllocationByOperationThearter(_allocation.StartDate, _allocation.EndDate, (int)_allocation.OperationTheatreId);
+            var legnth = isAllocationAlreadyExists.Count();
+            if (legnth >0)
+            {
+                return new List<int> { 2};
+            }
             var result = await _masterDataAccess.PostAllocation(_allocation);
-            return result;
+            return new List<int> { 0 };
         }
         public async Task<IEnumerable<int>> DeleteAllocations(string allocationIds)
         {
@@ -265,9 +271,11 @@ namespace BCMCH.OTM.Domain.Master
                 {
                     return new List<int> { 2};
                 }
-                await PostAllocation(_postAllocation_format);
 
 
+                var result = await _masterDataAccess.PostAllocation(_postAllocation_format);
+
+                // await PostAllocation(_postAllocation_format);
                 // public int?      OperationTheatreId {get; set; }
                 // public int?      AssignedDepartmentId {get; set; }
                 // public string    StartDate {get; set; }
