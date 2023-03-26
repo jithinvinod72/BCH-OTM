@@ -57,7 +57,9 @@ namespace BCMCH.OTM.Domain.Booking
             
             var result = await _bookingDataAccess.GetBookingList(fromDate, toDate);
             // remove waitinglist 
-            result = result.Where(booking=> booking.StatusCode != 4 );
+            result = result.Where(booking=> booking.StatusCode!=4 );
+            result = result.Where(booking=> booking.StatusCode!=3 );
+            
             
             var queryResultPage = result;
 
