@@ -51,12 +51,12 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@InstructionToNurse", booking.InstructionToNurse );
             SqlParameters.Add("@InstructionToAnaesthetist", booking.InstructionToAnaesthetist );
             SqlParameters.Add("@InstructionToOperationTeatrePersons", booking.InstructionToOperationTeatrePersons );
-
             SqlParameters.Add("@RequestForSpecialMeterial", booking.RequestForSpecialMeterial );
             SqlParameters.Add("@DepartmentId", booking.DepartmentId );
             // SqlParameters.Add("@Type", booking.Type );
             SqlParameters.Add("@EmployeeIdArray", booking.EmployeeIdArray );
             SqlParameters.Add("@EquipmentsIdArray", booking.EquipmentsIdArray );
+            SqlParameters.Add("@SurgeriesIdArray", booking.SurgeriesIdArray );
 
             var result= await _sqlHelper.QueryAsync<int>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
@@ -112,15 +112,38 @@ namespace BCMCH.OTM.Data.Booking
             var result= await _sqlHelper.QueryAsync<Employee>(Query, SqlParameters, CommandType.Text);
             return result;
         }
+
+        public async Task<IEnumerable<Surgeries>> GetEventSurgeries(int bookingId)
+        {
+            string Query =  @"
+                                SELECT
+                                    SurgeryMapping.[SurgeryId]              AS SurgeryId,
+                                    SurgeryDetails.[Name]                   AS SurgeryName,
+                                    SurgeryDetails.[PrintName]              AS SurgeryPrintName,
+                                    SurgeryDetails.[AliasName]              AS SurgeryAliasName,
+                                    SurgeryDetails.[InstructionsToPatient]  AS SurgeryInstructionsToPatient
+                                FROM 
+                                    [behive-dev-otm].[OTM].[SurgeriesMapping] AS SurgeryMapping
+                                LEFT JOIN 
+                                    [behive-dev-otm].[dbo].[View_SurgeryServices] AS SurgeryDetails ON SurgeryMapping.SurgeryId = SurgeryDetails.Id
+                                WHERE BookingId=@bookingId
+                            ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@bookingId"    , bookingId.ToString() );
+            var result= await _sqlHelper.QueryAsync<Surgeries>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
+
         public async Task<IEnumerable<Departments>> GetDepartments()
         {
             string Query =  @"
                                 SELECT 
-                                        [Id],
-                                        [Code],
-                                        [DivisionId],
-                                        [TypeCode],
-                                        [Name]
+                                    [Id],
+                                    [Code],
+                                    [DivisionId],
+                                    [TypeCode],
+                                    [Name]
                                 FROM 
                                     dbo.Departments
                             ";
@@ -128,8 +151,6 @@ namespace BCMCH.OTM.Data.Booking
             var result= await _sqlHelper.QueryAsync<Departments>(Query, SqlParameters, CommandType.Text);
             return result;
         }
-
-
 
 
         public async Task<IEnumerable<UpdateBookingModel>> UpdateBooking(UpdateBookingModel booking)

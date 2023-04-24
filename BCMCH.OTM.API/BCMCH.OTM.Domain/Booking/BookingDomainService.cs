@@ -219,6 +219,8 @@ namespace BCMCH.OTM.Domain.Booking
 
             booking.EmployeeIdArray="["+booking.EmployeeIdArray+"]";
             booking.EquipmentsIdArray="["+booking.EquipmentsIdArray+"]";
+            booking.SurgeriesIdArray="["+booking.SurgeriesIdArray+"]";
+            
             var result = await _bookingDataAccess.AddBooking(booking);
             return new Envelope<IEnumerable<int>>(true, "booking created", result); ;
         }
@@ -231,7 +233,10 @@ namespace BCMCH.OTM.Domain.Booking
             var result = await _bookingDataAccess.AddBooking(booking);
             return new Envelope<IEnumerable<int>>(true, "booking created", result); ;
         }
-
+        public async Task<IEnumerable<Surgeries>> GetEventSurgeries(int bookingId){
+            var result = await _bookingDataAccess.GetEventSurgeries(bookingId);
+            return result;
+        }
 
         public async Task<Envelope<IEnumerable<UpdateBookingModel>>> UpdateBooking(UpdateBookingModel booking)
         {
@@ -319,8 +324,22 @@ namespace BCMCH.OTM.Domain.Booking
                                                                 ) 
                                                         );
             // filter allocations for given operation theatre id and AssignedDepartmentId
+            // var surgeryMapping = new IEnumerable<Surgeries>();
+            // List<Surgeries> list = new List<Surgeries>();
+            foreach (var item in bookings)
+            {
+                var surgeriesMapping = await _bookingDataAccess.GetEventSurgeries(item.event_id);
+                // list.Add((Surgeries)surgeriesMapping);
+                item.SurgeriesMapping = (List<Surgeries>)surgeriesMapping;
+            }
+            
+            // var surgeriesMapping = await _bookingDataAccess.GetEventSurgeries(bookingId);
+
+            // return result;
+
             var result = new BookingsAndAllocations();
             result.Bookings = bookings;
+            // result.Bookings.
             result.Allocations = filteredAllocations;
             return result;
         }

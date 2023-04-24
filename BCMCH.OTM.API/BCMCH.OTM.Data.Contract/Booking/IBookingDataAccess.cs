@@ -15,6 +15,7 @@ namespace BCMCH.OTM.Data.Contract.Booking
         Task<IEnumerable<Bookings>> GetBookingList(string? fromDate,string? toDate);
         Task<IEnumerable<Equipments>> GetEventEquipments(int bookingId);
         Task<IEnumerable<Employee>> GetEventEmployees(int bookingId);
+        Task<IEnumerable<Surgeries>> GetEventSurgeries(int bookingId);
         Task<IEnumerable<Departments>> GetDepartments();
         Task<IEnumerable<GetAllocationModel>> GetAllocation(string? startDate, string? endDate);
         Task<IEnumerable<int>> AddBooking(PostBookingModel booking);

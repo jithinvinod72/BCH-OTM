@@ -48,12 +48,12 @@ namespace BCMCH.OTM.API.Shared.Booking
         public string? AnaesthesiaType {get; set; }
         public int? StatusCode  {get; set; }
         public string? StatusName  {get; set; }
-
         public string? PatientFirstName   {get; set; }
         public string? PatientMiddleName {get;set;}
         public string? PatientLastName {get;set;}
         public string? PatientDateOfBirth {get;set;}
         public int? PatientGender {get;set;}
+        public List<Surgeries> SurgeriesMapping {get; set; }
     }
     
 }
