@@ -117,11 +117,11 @@ namespace BCMCH.OTM.Data.Booking
         {
             string Query =  @"
                                 SELECT
-                                    SurgeryMapping.[SurgeryId]              AS SurgeryId,
-                                    SurgeryDetails.[Name]                   AS SurgeryName,
-                                    SurgeryDetails.[PrintName]              AS SurgeryPrintName,
-                                    SurgeryDetails.[AliasName]              AS SurgeryAliasName,
-                                    SurgeryDetails.[InstructionsToPatient]  AS SurgeryInstructionsToPatient
+                                    SurgeryMapping.[SurgeryId]              AS Id,
+                                    SurgeryDetails.[Name]                   AS Name,
+                                    SurgeryDetails.[PrintName]              AS PrintName,
+                                    SurgeryDetails.[AliasName]              AS AliasName,
+                                    SurgeryDetails.[InstructionsToPatient]  AS InstructionsToPatient
                                 FROM 
                                     [behive-dev-otm].[OTM].[SurgeriesMapping] AS SurgeryMapping
                                 LEFT JOIN 
@@ -178,6 +178,7 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@DepartmentId", booking.DepartmentId);
             SqlParameters.Add("@EmployeeIdArray", booking.EmployeeIdArray);
             SqlParameters.Add("@EquipmentsIdArray", booking.EquipmentsIdArray);
+            SqlParameters.Add("@SurgeriesIdArray", booking.SurgeriesIdArray);
 
             var result = await _sqlHelper.QueryAsync<UpdateBookingModel>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;

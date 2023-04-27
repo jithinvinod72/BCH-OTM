@@ -12,11 +12,11 @@ namespace BCMCH.OTM.API.Shared.Booking
         // public int Id {get; set; }
         // public string? Name {get; set; }
         // public string? AliasName {get; set; }
-        public int SurgeryId {get;set;}
-        public string? SurgeryName {get;set;}
-        public string? SurgeryPrintName {get;set;}
-        public string? SurgeryAliasName {get;set;}
-        public string? SurgeryInstructionsToPatient {get;set;}
+        public int Id {get;set;}
+        public string? Name {get;set;}
+        public string? PrintName {get;set;}
+        public string? AliasName {get;set;}
+        public string? InstructionsToPatient {get;set;}
     }
 }
 
