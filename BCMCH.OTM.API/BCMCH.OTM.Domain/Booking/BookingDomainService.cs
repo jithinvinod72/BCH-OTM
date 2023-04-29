@@ -21,6 +21,20 @@ namespace BCMCH.OTM.Domain.Booking
         }
         #endregion
 
+
+        // used to fetch surgery id using booking id and populate the booking ienumerable 
+        private async Task<IEnumerable<Bookings>> PopulateBookingsWithSurgeries(IEnumerable<Bookings> bookings)
+        {
+            // used to fetch details of each operations with operation id from booking id and adds to each operations
+            foreach (var item in bookings)
+            {
+                var surgeriesMapping = await _bookingDataAccess.GetEventSurgeries(item.event_id);
+                item.SurgeriesMapping = (List<Surgeries>)surgeriesMapping;
+            }
+            return bookings;
+        }
+        
+
         private DateTime StringToDateTimeConverter( string dateTime )
         {
             var parsedDate = DateTime.ParseExact(dateTime, "yyyy-MM-ddTHH:mm:ss.fff", CultureInfo.InvariantCulture);
@@ -40,6 +54,7 @@ namespace BCMCH.OTM.Domain.Booking
             var result = await _bookingDataAccess.GetBookingList(fromDate, toDate);
             // then ge the bookings with start and end date
             var filteredWithDepartment = result.Where(booking=> departments.Contains(booking.BookedByDepartment) );
+            filteredWithDepartment = (IEnumerable<Bookings>) await PopulateBookingsWithSurgeries(filteredWithDepartment);
             // then filter the bookings with the department ids array 
             return filteredWithDepartment;
         }
@@ -299,7 +314,6 @@ namespace BCMCH.OTM.Domain.Booking
             // return result;
         }
 
-
         public async Task<BookingsAndAllocations> SelectBookingsAndAllocations(int departmentId,int operationTheatreId , string? fromDate,string? toDate)
         {
             // selects bookings and allocations in accordance with given 
@@ -327,15 +341,7 @@ namespace BCMCH.OTM.Domain.Booking
                                                                 ) 
                                                         );
             // filter allocations for given operation theatre id and AssignedDepartmentId
-            // var surgeryMapping = new IEnumerable<Surgeries>();
-            // List<Surgeries> list = new List<Surgeries>();
-            foreach (var item in bookings)
-            {
-                var surgeriesMapping = await _bookingDataAccess.GetEventSurgeries(item.event_id);
-                // list.Add((Surgeries)surgeriesMapping);
-                item.SurgeriesMapping = (List<Surgeries>)surgeriesMapping;
-            }
-            
+            bookings = (IEnumerable<Bookings>) await PopulateBookingsWithSurgeries(bookings);
             // var surgeriesMapping = await _bookingDataAccess.GetEventSurgeries(bookingId);
 
             // return result;
