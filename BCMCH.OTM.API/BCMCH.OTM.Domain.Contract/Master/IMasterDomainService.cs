@@ -1,5 +1,6 @@
 ﻿using BCMCH.OTM.API.Shared.Master;
 using BCMCH.OTM.API.Shared.General;
+using BCMCH.OTM.Infrastucture.Generic;
 
 namespace BCMCH.OTM.Domain.Contract.Master
 {
@@ -38,5 +39,8 @@ namespace BCMCH.OTM.Domain.Contract.Master
         Task<FormMasters> GetFormMasters();
         Task<IEnumerable<PostAnswer>> PostFormAnswer(PostAnswer answer);
         Task<IEnumerable<GetAnswer>> GetFormAnswer(int eventId);
+
+        Task<Envelope<IEnumerable<NonOP>>> AddNonOPRequest(NonOP nonOP);
+        Task<IEnumerable<NonOP>> GetNonOPRequests();
     }
 }

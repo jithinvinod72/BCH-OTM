@@ -3,11 +3,16 @@ namespace BCMCH.OTM.API.Shared.Master
 {
 	public class NonOP
 	{
-        public string patientUHID { get; set; }
-        public int procedure { get; set; }
-        public int priority { get; set; }
-        public string provisionalDiagnosis { get; set; }
-        public string comments { get; set; }
+        public string PatientUHID { get; set; }
+        public string PatientName { get; set; }
+        public int PatientAge { get; set; }
+        public string Sex { get; set; }
+        public string AdmittedLocation { get; set; }
+        public int ProcedureToPerform { get; set; }
+        public int PriorityLevel { get; set; }
+        public string ProvisionalDiagnosis { get; set; }
+        public string Comments { get; set; }
+        public DateTime CreatedDate { get; set; }
 
     }
 }

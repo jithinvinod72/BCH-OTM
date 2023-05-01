@@ -5,6 +5,7 @@ using BCMCH.OTM.Infrastucture.AppSettings.Abstracts;
 using Dapper;
 using System.Data;
 using System.Numerics;
+using BCMCH.OTM.API.Shared.Booking;
 
 namespace BCMCH.OTM.Data.Master
 {
@@ -33,17 +34,17 @@ namespace BCMCH.OTM.Data.Master
                                     [OTM].[EquipmentsMaster]
                                  ";
             var SqlParameters = new DynamicParameters();
-            var result= await _sqlHelper.QueryAsync<Equipments>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<Equipments>(Query, SqlParameters, CommandType.Text);
             return result;
         }
-        
+
         public async Task<IEnumerable<Departments>> GetDepartments()
         {
             const string StoredProcedure = "[OTM].[SelectDepartments]";
             var SqlParameters = new DynamicParameters();
-            var result= await _sqlHelper.QueryAsync<Departments>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            var result = await _sqlHelper.QueryAsync<Departments>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
-        
+
         }
         public async Task<IEnumerable<Anaesthesia>> GetAnaesthesiaList()
         {
@@ -56,7 +57,7 @@ namespace BCMCH.OTM.Data.Master
                                         Name
                                  ";
             var SqlParameters = new DynamicParameters();
-            var result= await _sqlHelper.QueryAsync<Anaesthesia>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<Anaesthesia>(Query, SqlParameters, CommandType.Text);
             return result;
         }
         public async Task<IEnumerable<Employee>> GetEmployees(string departmentArray)
@@ -64,7 +65,7 @@ namespace BCMCH.OTM.Data.Master
             const string StoredProcedure = "[OTM].[SelectEmployeesWithDepartmentsMapping]";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@DepartmentsToFetchFrom", departmentArray);
-            var result= await _sqlHelper.QueryAsync<Employee>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            var result = await _sqlHelper.QueryAsync<Employee>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
         public async Task<IEnumerable<Employee>> GetEmployeeDetails(int employeeCode)
@@ -72,7 +73,7 @@ namespace BCMCH.OTM.Data.Master
             const string StoredProcedure = "[OTM].[SelectEmployeeDetails]";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@EmployeeCode", employeeCode);
-            var result= await _sqlHelper.QueryAsync<Employee>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            var result = await _sqlHelper.QueryAsync<Employee>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
 
@@ -107,7 +108,7 @@ namespace BCMCH.OTM.Data.Master
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@EmployeeId", employeeId);
 
-            var result= await _sqlHelper.QueryAsync<UserRoleDetails>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<UserRoleDetails>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 
@@ -121,7 +122,7 @@ namespace BCMCH.OTM.Data.Master
                                         [behive-dev-otm].[OTM].[UserRoles]
                                  ";
             var SqlParameters = new DynamicParameters();
-            var result= await _sqlHelper.QueryAsync<AvailableRoles>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<AvailableRoles>(Query, SqlParameters, CommandType.Text);
             return result;
         }
         public async Task<IEnumerable<int>> PostNewOTUser(int userId, int roleId)
@@ -141,7 +142,7 @@ namespace BCMCH.OTM.Data.Master
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@userId", userId);
             SqlParameters.Add("@userRoleId", roleId);
-            var result= await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
             return result;
         }
         public async Task<IEnumerable<int>> CreateAdminRolesAndRigthts(PostAdminRolesAndRights otAdminAndRights)
@@ -188,9 +189,9 @@ namespace BCMCH.OTM.Data.Master
 
                                  ";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@UserRoleName",      otAdminAndRights.UserRoleName);
+            SqlParameters.Add("@UserRoleName", otAdminAndRights.UserRoleName);
             SqlParameters.Add("@ResourceAndAccess", otAdminAndRights.ResourceAndAccess);
-            var result= await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
             return result;
         }
         public async Task<IEnumerable<UserResources>> GetOTRolePermissions(int? roleId)
@@ -212,7 +213,7 @@ namespace BCMCH.OTM.Data.Master
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@roleId", roleId);
 
-            var result= await _sqlHelper.QueryAsync<UserResources>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<UserResources>(Query, SqlParameters, CommandType.Text);
             return result;
         }
         public async Task<IEnumerable<Resources>> GetOTResources()
@@ -227,10 +228,10 @@ namespace BCMCH.OTM.Data.Master
                                         [behive-dev-otm].[OTM].[Resources]
                                  ";
             var SqlParameters = new DynamicParameters();
-            var result= await _sqlHelper.QueryAsync<Resources>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<Resources>(Query, SqlParameters, CommandType.Text);
             return result;
         }
-        
+
         public async Task<IEnumerable<OperationTheatre>> GetOperationTheatres()
         {
             const string Query = @"
@@ -245,34 +246,34 @@ namespace BCMCH.OTM.Data.Master
                                     FROM [OTM].[OperationTheatreMaster]                     
                                  ";
             var SqlParameters = new DynamicParameters();
-            var result= await _sqlHelper.QueryAsync<OperationTheatre>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<OperationTheatre>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 
-        public async Task<IEnumerable<Surgery>> GetSurgeryList(int _pageNumber, int _rowsPerPage, string? _searchKeyword="")
+        public async Task<IEnumerable<Surgery>> GetSurgeryList(int _pageNumber, int _rowsPerPage, string? _searchKeyword = "")
         {
             const string StoredProcedure = "[OTM].[SelectSurgeries]";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@PageNumber", _pageNumber);
-            SqlParameters.Add("@RowsOfPage", _rowsPerPage );
-            SqlParameters.Add("@Search", _searchKeyword );
+            SqlParameters.Add("@RowsOfPage", _rowsPerPage);
+            SqlParameters.Add("@Search", _searchKeyword);
 
-            var result= await _sqlHelper.QueryAsync<Surgery>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            var result = await _sqlHelper.QueryAsync<Surgery>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
-        
+
         public async Task<IEnumerable<GetAllocationModel>> GetAllocations(string startDate, string endDate)
         {
             const string StoredProcedure = "[OTM].[SelectAllocation]";
             var SqlParameters = new DynamicParameters();
             // SqlParameters.Add("@DeartmentId"    , departmentId );
-            SqlParameters.Add("@StartDate"      , startDate );
-            SqlParameters.Add("@EndDate"        , endDate );
-            var result= await _sqlHelper.QueryAsync<GetAllocationModel>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            SqlParameters.Add("@StartDate", startDate);
+            SqlParameters.Add("@EndDate", endDate);
+            var result = await _sqlHelper.QueryAsync<GetAllocationModel>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
-        
-        
+
+
         public async Task<IEnumerable<Allocation>> PostAllocation(Allocation _allocation)
         {
             string Query = @"
@@ -287,13 +288,13 @@ namespace BCMCH.OTM.Data.Master
                             ";
             var SqlParameters = new DynamicParameters();
 
-            SqlParameters.Add("@OperationTheatreId"     , _allocation.OperationTheatreId );
-            SqlParameters.Add("@AssignedDepartmentId"   , _allocation.AssignedDepartmentId );
-            SqlParameters.Add("@StartDate"              , _allocation.StartDate );
-            SqlParameters.Add("@EndDate"                , _allocation.EndDate );
-            SqlParameters.Add("@ModifiedBy"             , _allocation.ModifiedBy );
+            SqlParameters.Add("@OperationTheatreId", _allocation.OperationTheatreId);
+            SqlParameters.Add("@AssignedDepartmentId", _allocation.AssignedDepartmentId);
+            SqlParameters.Add("@StartDate", _allocation.StartDate);
+            SqlParameters.Add("@EndDate", _allocation.EndDate);
+            SqlParameters.Add("@ModifiedBy", _allocation.ModifiedBy);
 
-            var result= await _sqlHelper.QueryAsync<Allocation>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<Allocation>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 
@@ -306,9 +307,9 @@ namespace BCMCH.OTM.Data.Master
                                     [Id] IN (SELECT value FROM OPENJSON(@IdArray))
                             ";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@IdArray", allocationIds );
-            
-            var result= await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
+            SqlParameters.Add("@IdArray", allocationIds);
+
+            var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 
@@ -316,10 +317,10 @@ namespace BCMCH.OTM.Data.Master
         public async Task<IEnumerable<DateTime>> GetDateToday()
         {
             const string Query = "SELECT GETDATE()";
-            
+
             var SqlParameters = new DynamicParameters();
 
-            var result= await _sqlHelper.QueryAsync<DateTime>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<DateTime>(Query, SqlParameters, CommandType.Text);
             return result;
         }
         #endregion
@@ -333,30 +334,30 @@ namespace BCMCH.OTM.Data.Master
         public async Task<IEnumerable<PostQuestionsModel>> PostQuestion(PostQuestionsModel question)
         {
             const string StoredProcedure = "[OTM].[InsertFormQuestion]";
-            
-            var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@otStageId"                      , question.otStageId.ToString() );
-            SqlParameters.Add("@FormQuestionTypeId"             , question.FormQuestionTypeId.ToString() );
-            SqlParameters.Add("@SubQuestionDisplayOptionId"     , question.SubQuestionDisplayOptionId.ToString() );
-            SqlParameters.Add("@name"                           , question.name );
-            SqlParameters.Add("@question"                       , question.question );
-            SqlParameters.Add("@accessibleTo"                   , question.accessibleTo );
-            SqlParameters.Add("@Options"                        , question.Options);
-            SqlParameters.Add("@IsRequired"                     , question.IsRequired);
-            SqlParameters.Add("@IsDisabled"                     , question.IsDisabled);
-            SqlParameters.Add("@HasSubQuestion"                 , question.hasSubQuestion );
-            SqlParameters.Add("@SubQuestionTypeId"              , 4 );
-            SqlParameters.Add("@SubQuestion"                    , question.subQuestion );
-            SqlParameters.Add("@SubQuestionOptions"             , "");
-            SqlParameters.Add("@ModifiedBy"                     , question.ModifiedBy);
 
-            var result= await _sqlHelper.QueryAsync<PostQuestionsModel>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@otStageId", question.otStageId.ToString());
+            SqlParameters.Add("@FormQuestionTypeId", question.FormQuestionTypeId.ToString());
+            SqlParameters.Add("@SubQuestionDisplayOptionId", question.SubQuestionDisplayOptionId.ToString());
+            SqlParameters.Add("@name", question.name);
+            SqlParameters.Add("@question", question.question);
+            SqlParameters.Add("@accessibleTo", question.accessibleTo);
+            SqlParameters.Add("@Options", question.Options);
+            SqlParameters.Add("@IsRequired", question.IsRequired);
+            SqlParameters.Add("@IsDisabled", question.IsDisabled);
+            SqlParameters.Add("@HasSubQuestion", question.hasSubQuestion);
+            SqlParameters.Add("@SubQuestionTypeId", 4);
+            SqlParameters.Add("@SubQuestion", question.subQuestion);
+            SqlParameters.Add("@SubQuestionOptions", "");
+            SqlParameters.Add("@ModifiedBy", question.ModifiedBy);
+
+            var result = await _sqlHelper.QueryAsync<PostQuestionsModel>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
-            
+
         }
-        public async Task<IEnumerable<string>> PostQuestionType(string name,string label)
+        public async Task<IEnumerable<string>> PostQuestionType(string name, string label)
         {
-            string Query =  @"
+            string Query = @"
                                 INSERT INTO [OTM].[FormQuestionType] 
                                 (
                                     [Name],
@@ -369,14 +370,14 @@ namespace BCMCH.OTM.Data.Master
                                 ) 
                             ";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@name"    , name  );
-            SqlParameters.Add("@label"   , label );
-            var result= await _sqlHelper.QueryAsync<string>(Query, SqlParameters, CommandType.Text);
+            SqlParameters.Add("@name", name);
+            SqlParameters.Add("@label", label);
+            var result = await _sqlHelper.QueryAsync<string>(Query, SqlParameters, CommandType.Text);
             return result;
         }
-        public async Task<IEnumerable<string>> PostOtStages(string name,string label)
-        {   
-            string Query =  @"
+        public async Task<IEnumerable<string>> PostOtStages(string name, string label)
+        {
+            string Query = @"
                                 INSERT INTO [OTM].[OtStages] 
                                 (
                                     [Name]
@@ -390,10 +391,10 @@ namespace BCMCH.OTM.Data.Master
                             ";
 
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@name"    , name);
-            SqlParameters.Add("@label"   , label);
+            SqlParameters.Add("@name", name);
+            SqlParameters.Add("@label", label);
 
-            var result= await _sqlHelper.QueryAsync<string>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<string>(Query, SqlParameters, CommandType.Text);
             return result;
         }
         // Insert section END
@@ -403,7 +404,7 @@ namespace BCMCH.OTM.Data.Master
         {
             const string StoredProcedure = "[OTM].[SelectFormQuestions]";
             var SqlParameters = new DynamicParameters();
-            var result= await _sqlHelper.QueryAsync<GetQuestions>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            var result = await _sqlHelper.QueryAsync<GetQuestions>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
         // SELECT section END
@@ -411,7 +412,7 @@ namespace BCMCH.OTM.Data.Master
         // SELECT section START
         public async Task<IEnumerable<FormSections>> GetFormSections()
         {
-            string Query =  @"
+            string Query = @"
                                     SELECT 
                                         [Id],
                                         [Name],
@@ -420,12 +421,12 @@ namespace BCMCH.OTM.Data.Master
                                     [OTM].[OtStages]
                              ";
             var SqlParameters = new DynamicParameters();
-            var result= await _sqlHelper.QueryAsync<FormSections>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<FormSections>(Query, SqlParameters, CommandType.Text);
             return result;
         }
         public async Task<IEnumerable<FormSections>> GetFormQuestionType()
         {
-            string Query =  @"
+            string Query = @"
                                     SELECT 
                                         [Id],
                                         [Name],
@@ -434,11 +435,11 @@ namespace BCMCH.OTM.Data.Master
                                         [OTM].[FormQuestionType]
                              ";
             var SqlParameters = new DynamicParameters();
-            var result= await _sqlHelper.QueryAsync<FormSections>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<FormSections>(Query, SqlParameters, CommandType.Text);
             return result;
         }
         // SELECT section END
-        
+
 
         #endregion
         // QUESTION_HANDLES SECTION END
@@ -447,7 +448,7 @@ namespace BCMCH.OTM.Data.Master
         public async Task<IEnumerable<PostAnswer>> PostFormAnswer(PostAnswer answer)
         {
             // Id IN (SELECT value FROM OPENJSON(@IdArray))
-            string Query =  @"
+            string Query = @"
 
                                 -- delete start
                                 DELETE FROM [OTM].[FormAnswer]
@@ -471,15 +472,15 @@ namespace BCMCH.OTM.Data.Master
 
                             ";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@eventId"    , answer.eventId );
-            SqlParameters.Add("@josnAnswers"    , answer.answersJsonString );
-            SqlParameters.Add("@questionIdArray"    , answer.questionIdArray );
-            var result= await _sqlHelper.QueryAsync<PostAnswer>(Query, SqlParameters, CommandType.Text);
+            SqlParameters.Add("@eventId", answer.eventId);
+            SqlParameters.Add("@josnAnswers", answer.answersJsonString);
+            SqlParameters.Add("@questionIdArray", answer.questionIdArray);
+            var result = await _sqlHelper.QueryAsync<PostAnswer>(Query, SqlParameters, CommandType.Text);
             return result;
         }
         public async Task<IEnumerable<GetAnswer>> GetFormAnswer(int eventId)
         {
-            string Query =  @"
+            string Query = @"
                                 SELECT
                                     [Id],
                                     [eventId],
@@ -492,8 +493,8 @@ namespace BCMCH.OTM.Data.Master
                                     [eventId]=@eventId
                             ";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@eventId"    , eventId );
-            var result= await _sqlHelper.QueryAsync<GetAnswer>(Query, SqlParameters, CommandType.Text);
+            SqlParameters.Add("@eventId", eventId);
+            var result = await _sqlHelper.QueryAsync<GetAnswer>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 
@@ -510,9 +511,43 @@ namespace BCMCH.OTM.Data.Master
             return result;
         }
 
+        public async Task<IEnumerable<NonOP>> AddNonOPRequest(NonOP nonOP)
+        {
+            try
+            {
+                const string StoredProcedure = "[OTM].[InsertNonOP]";
+                var SqlParameters = new DynamicParameters();
+                SqlParameters.Add("@PatientUHID", nonOP.PatientUHID);
+                SqlParameters.Add("@PatientName", nonOP.PatientName);
+                SqlParameters.Add("@PatientAge", nonOP.PatientAge);
+                SqlParameters.Add("@Sex", nonOP.Sex);
+                SqlParameters.Add("@PriorityLevel", nonOP.PriorityLevel);
+                SqlParameters.Add("@createdDate", nonOP.CreatedDate);
+                SqlParameters.Add("@Comments", nonOP.Comments);
+                SqlParameters.Add("@ProcedureToPerform", nonOP.ProcedureToPerform);
+                SqlParameters.Add("@ProvisionalDiagnosis", nonOP.ProvisionalDiagnosis);
+                SqlParameters.Add("@AdmittedLocation", nonOP.AdmittedLocation);
+                var result = await _sqlHelper.QueryAsync<NonOP>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+                return result;
+            }
+            catch(Exception ex) {
+                Console.WriteLine(ex);
+                throw ex;
+            }
 
 
+        }
 
+        public async Task<IEnumerable<NonOP>> GetNonOPRequests()
+        {
+            const string Query = @"
+                                    SELECT 
+                                    *
+                                    FROM [OTM].[NonOP]                     
+                                 ";
+            var SqlParameters = new DynamicParameters();
+            var result = await _sqlHelper.QueryAsync<NonOP>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
     }
-
 }
