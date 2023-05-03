@@ -320,6 +320,63 @@ namespace BCMCH.OTM.Data.Booking
 
         
 
+
+        // PATHOLOGY START
+        #region PATHOLOGY
+        public async Task<IEnumerable<PathologySample>> PostPathology(PathologySample pathologySample)
+        {
+            string Query =@"
+                            INSERT INTO [OTM].[Pathology]
+                                (
+                                    [RegistrationNo] ,
+                                    [status] ,
+                                    [IsDeleted]
+                                )
+                            VALUES
+                                (
+                                    @RegNo,
+                                    @status,
+                                    @IsDeleted
+                                )
+
+                            DECLARE @PathologyId  AS BIGINT;
+                            SET @PathologyId = SCOPE_IDENTITY();
+
+                            INSERT INTO [OTM].[PathologySamples]
+                                (
+                                    [PathologyId] ,
+                                    [ProcedureId] ,
+                                    [HistopathologyId] ,
+                                    [SpecimenNature] ,
+                                    [BiposySite]
+                                )
+                            SELECT
+                                @PathologyId        ,
+                                ProcedureId         ,
+                                HistopathologyId    ,
+                                natureOfSpecimen    ,
+                                siteOfBiopsy
+                            FROM OPENJSON(@nestedData)
+                            WITH (
+                                ProcedureId INT,
+                                HistopathologyId INT,
+                                natureOfSpecimen NVARCHAR(50),
+                                siteOfBiopsy NVARCHAR(50)
+                            );
+                           ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@RegNo", pathologySample.RegistrationNo);
+            SqlParameters.Add("@nestedData", pathologySample.NestedData);
+            SqlParameters.Add("@status", 1);
+            SqlParameters.Add("@IsDeleted", 0);
+        
+            var result= await _sqlHelper.QueryAsync<PathologySample>(Query, SqlParameters, CommandType.Text);
+            return result;
+            
+        }
+        #endregion
+        // PATHOLOGY END
+
     }
     
 }

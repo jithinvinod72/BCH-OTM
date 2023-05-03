@@ -31,5 +31,8 @@ namespace BCMCH.OTM.Domain.Contract.Booking
 
         Task<Envelope<IEnumerable<int>>> AddWaitingList(PostBookingModel booking);
         Task<IEnumerable<Patient>> GetPatientData(string registrationNo);
+
+        // Pathology smaple
+        Task<IEnumerable<PathologySample>> PostPathology(PathologySample pathologySample);
     }
 }

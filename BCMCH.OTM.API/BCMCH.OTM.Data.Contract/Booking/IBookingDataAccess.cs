@@ -36,5 +36,8 @@ namespace BCMCH.OTM.Data.Contract.Booking
         // OT blocking
 
         Task<IEnumerable<Patient>> GetPatientData(string registrationNo);
+
+        // PATHOLOGY SAMPLES
+        Task<IEnumerable<PathologySample>> PostPathology(PathologySample pathologySample);
     }
 }

@@ -382,5 +382,14 @@ namespace BCMCH.OTM.Domain.Booking
             return (currentYear - year).ToString();
         }
 
+
+        // PATHOLOGY Sample START
+        public async Task<IEnumerable<PathologySample>> PostPathology(PathologySample pathologySample)
+        {
+            var result = await _bookingDataAccess.PostPathology(pathologySample);
+            return result;
+        }
+        // PATHOLOGY Sample END
+
     }
 }
