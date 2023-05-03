@@ -33,6 +33,7 @@ namespace BCMCH.OTM.Domain.Contract.Booking
         Task<IEnumerable<Patient>> GetPatientData(string registrationNo);
 
         // Pathology smaple
+        Task<IEnumerable<PathologySample>> GetPathology();
         Task<IEnumerable<PathologySample>> PostPathology(PathologySample pathologySample);
     }
 }

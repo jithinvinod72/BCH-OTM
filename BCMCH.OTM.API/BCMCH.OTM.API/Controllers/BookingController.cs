@@ -297,6 +297,21 @@ namespace BCMCH.OTM.API.Controllers
 
 
         #region PATHOLOGY-SECTION
+        [HttpGet]
+        [Route("get-pathology")]
+        public async Task<IActionResult> GetPatient()
+        {
+            try
+            {
+                var result = await _bookingService.GetPathology();
+                return Ok(new ResponseVM<IEnumerable<PathologySample>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
         [HttpPost]
         [Route("post-pathology")]
         public async Task<IActionResult> GetPatient( PathologySample pathologySample )

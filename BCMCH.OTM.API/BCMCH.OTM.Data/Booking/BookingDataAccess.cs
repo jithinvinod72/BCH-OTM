@@ -323,6 +323,47 @@ namespace BCMCH.OTM.Data.Booking
 
         // PATHOLOGY START
         #region PATHOLOGY
+        public async Task<IEnumerable<PathologySample>> GetPathology()
+        {
+            string Query =@"
+                            SELECT 
+                                Pathology.[Id],
+                                Pathology.[RegistrationNo],
+                                Pathology.[datetime]                AS Datetime,
+                                Pathology.[status]                  AS Status,
+                                Pathology.[IsDeleted],
+                                Pathology.[PostedBy],
+                                PatientMaster.FirstName             AS PatientFirstName,
+                                PatientMaster.MiddleName            AS PatientMiddleName,
+                                PatientMaster.LastName              AS PatientLastName,
+                                EmployeeTable.[DepartmentID]        AS BookedDepartment,
+                                SurgeonTable.[FullName]             AS BookedByName,
+                                DepartmentTable.Name                AS DepartmentName
+                            FROM 
+                                [behive-dev-otm].[OTM].[Pathology] AS Pathology
+                            LEFT JOIN 
+                                [behive-dev-otm].dbo.PatientMaster 
+                                AS PatientMaster ON 
+                                Pathology.RegistrationNo = PatientMaster.RegistrationNo
+                            LEFT JOIN 
+                                [dbo].[Users] AS SurgeonTable 
+                                ON 
+                                Pathology.PostedBy = [SurgeonTable].EmployeeId 
+                            LEFT JOIN 
+                                [HR].[Employees] AS EmployeeTable 
+                                ON 
+                                Pathology.[PostedBy] = [EmployeeTable].Id 
+                            LEFT JOIN 
+                                [dbo].[Departments] AS DepartmentTable 
+                                ON 
+                                EmployeeTable.[DepartmentID] = DepartmentTable.Id
+                           ";
+            var SqlParameters = new DynamicParameters();
+            // SqlParameters.Add("@RegNo", pathologySample.RegistrationNo);
+            var result= await _sqlHelper.QueryAsync<PathologySample>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
         public async Task<IEnumerable<PathologySample>> PostPathology(PathologySample pathologySample)
         {
             string Query =@"
@@ -330,12 +371,14 @@ namespace BCMCH.OTM.Data.Booking
                                 (
                                     [RegistrationNo] ,
                                     [status] ,
+                                    [PostedBy],
                                     [IsDeleted]
                                 )
                             VALUES
                                 (
                                     @RegNo,
                                     @status,
+                                    @PostedBy,
                                     @IsDeleted
                                 )
 
@@ -366,6 +409,7 @@ namespace BCMCH.OTM.Data.Booking
                            ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@RegNo", pathologySample.RegistrationNo);
+            SqlParameters.Add("@PostedBy", pathologySample.PostedBy);
             SqlParameters.Add("@nestedData", pathologySample.NestedData);
             SqlParameters.Add("@status", 1);
             SqlParameters.Add("@IsDeleted", 0);

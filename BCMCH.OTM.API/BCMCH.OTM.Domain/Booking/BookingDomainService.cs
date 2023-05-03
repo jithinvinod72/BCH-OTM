@@ -384,6 +384,11 @@ namespace BCMCH.OTM.Domain.Booking
 
 
         // PATHOLOGY Sample START
+        public async Task<IEnumerable<PathologySample>> GetPathology()
+        {
+            var result = await _bookingDataAccess.GetPathology();
+            return result;
+        }
         public async Task<IEnumerable<PathologySample>> PostPathology(PathologySample pathologySample)
         {
             var result = await _bookingDataAccess.PostPathology(pathologySample);
