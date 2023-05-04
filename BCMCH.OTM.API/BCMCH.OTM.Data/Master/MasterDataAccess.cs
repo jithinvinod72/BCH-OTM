@@ -522,7 +522,7 @@ namespace BCMCH.OTM.Data.Master
                 SqlParameters.Add("@PatientAge", nonOP.PatientAge);
                 SqlParameters.Add("@Sex", nonOP.Sex);
                 SqlParameters.Add("@PriorityLevel", nonOP.PriorityLevel);
-                SqlParameters.Add("@createdDate", nonOP.CreatedDate);
+                SqlParameters.Add("@DateToBePerformed", nonOP.DateToBePerformed);
                 SqlParameters.Add("@Comments", nonOP.Comments);
                 SqlParameters.Add("@ProcedureToPerform", nonOP.ProcedureToPerform);
                 SqlParameters.Add("@ProvisionalDiagnosis", nonOP.ProvisionalDiagnosis);

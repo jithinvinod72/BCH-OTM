@@ -12,7 +12,7 @@ namespace BCMCH.OTM.API.Shared.Master
         public int PriorityLevel { get; set; }
         public string ProvisionalDiagnosis { get; set; }
         public string Comments { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime DateToBePerformed { get; set; }
 
     }
 }
