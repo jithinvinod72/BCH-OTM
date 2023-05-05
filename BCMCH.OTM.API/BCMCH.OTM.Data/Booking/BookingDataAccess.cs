@@ -323,7 +323,7 @@ namespace BCMCH.OTM.Data.Booking
 
         // PATHOLOGY START
         #region PATHOLOGY
-        public async Task<IEnumerable<PathologySample>> GetPathology()
+        public async Task<IEnumerable<Pathology>> GetPathology()
         {
             string Query =@"
                             SELECT 
@@ -359,12 +359,32 @@ namespace BCMCH.OTM.Data.Booking
                                 EmployeeTable.[DepartmentID] = DepartmentTable.Id
                            ";
             var SqlParameters = new DynamicParameters();
-            // SqlParameters.Add("@RegNo", pathologySample.RegistrationNo);
+            // SqlParameters.Add("@RegNo", Pathology.RegistrationNo);
+            var result= await _sqlHelper.QueryAsync<Pathology>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
+        public async Task<IEnumerable<PathologySample>> GetPathologyDataWithId(int id)
+        {
+            string Query =@"
+                SELECT TOP (1000) [Id]
+                    ,[PathologyId]
+                    ,[ProcedureId]
+                    ,[HistopathologyId]
+                    ,[SpecimenNature]
+                    ,[BiposySite]
+                FROM 
+                    [behive-dev-otm].[OTM].[PathologySamples]
+                WHERE 
+                    PathologyId=@PathologyId
+            ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@PathologyId", id);
             var result= await _sqlHelper.QueryAsync<PathologySample>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 
-        public async Task<IEnumerable<PathologySample>> PostPathology(PathologySample pathologySample)
+        public async Task<IEnumerable<Pathology>> PostPathology(Pathology Pathology)
         {
             string Query =@"
                             INSERT INTO [OTM].[Pathology]
@@ -408,13 +428,13 @@ namespace BCMCH.OTM.Data.Booking
                             );
                            ";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@RegNo", pathologySample.RegistrationNo);
-            SqlParameters.Add("@PostedBy", pathologySample.PostedBy);
-            SqlParameters.Add("@nestedData", pathologySample.NestedData);
+            SqlParameters.Add("@RegNo", Pathology.RegistrationNo);
+            SqlParameters.Add("@PostedBy", Pathology.PostedBy);
+            SqlParameters.Add("@nestedData", Pathology.NestedData);
             SqlParameters.Add("@status", 1);
             SqlParameters.Add("@IsDeleted", 0);
         
-            var result= await _sqlHelper.QueryAsync<PathologySample>(Query, SqlParameters, CommandType.Text);
+            var result= await _sqlHelper.QueryAsync<Pathology>(Query, SqlParameters, CommandType.Text);
             return result;
             
         }

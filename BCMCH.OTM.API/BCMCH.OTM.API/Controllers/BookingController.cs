@@ -299,11 +299,25 @@ namespace BCMCH.OTM.API.Controllers
         #region PATHOLOGY-SECTION
         [HttpGet]
         [Route("get-pathology")]
-        public async Task<IActionResult> GetPatient()
+        public async Task<IActionResult> GetPathology()
         {
             try
             {
                 var result = await _bookingService.GetPathology();
+                return Ok(new ResponseVM<IEnumerable<Pathology>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        [HttpGet]
+        [Route("get-pathology-samples")]
+        public async Task<IActionResult> GetPathologySamples(int id )
+        {
+            try
+            {
+                var result = await _bookingService.GetPathologyDataWithId(id);
                 return Ok(new ResponseVM<IEnumerable<PathologySample>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
             }
             catch (Exception ex)
@@ -311,16 +325,17 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
+        
 
         [HttpPost]
         [Route("post-pathology")]
-        public async Task<IActionResult> GetPatient( PathologySample pathologySample )
+        public async Task<IActionResult> GetPatient( Pathology Pathology )
         {
             try
             {
-                // Task<IEnumerable<PathologySample>> PostPathology(PathologySample pathologySample);
-                var result = await _bookingService.PostPathology(pathologySample);
-                return Ok(new ResponseVM<IEnumerable<PathologySample>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+                // Task<IEnumerable<Pathology>> PostPathology(Pathology Pathology);
+                var result = await _bookingService.PostPathology(Pathology);
+                return Ok(new ResponseVM<IEnumerable<Pathology>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
             }
             catch (Exception ex)
             {
