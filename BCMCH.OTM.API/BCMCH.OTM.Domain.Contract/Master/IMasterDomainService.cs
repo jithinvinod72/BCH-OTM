@@ -42,5 +42,6 @@ namespace BCMCH.OTM.Domain.Contract.Master
 
         Task<Envelope<IEnumerable<NonOP>>> AddNonOPRequest(NonOP nonOP);
         Task<IEnumerable<NonOP>> GetNonOPRequests();
+        Task<Envelope<IEnumerable<NonOP>>> EditNonOPRequests(NonOP nonOP);
     }
 }

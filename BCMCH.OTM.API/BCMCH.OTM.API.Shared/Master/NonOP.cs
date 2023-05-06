@@ -3,6 +3,7 @@ namespace BCMCH.OTM.API.Shared.Master
 {
 	public class NonOP
 	{
+        public int? Id { get; set; }
         public string PatientUHID { get; set; }
         public string PatientName { get; set; }
         public int PatientAge { get; set; }

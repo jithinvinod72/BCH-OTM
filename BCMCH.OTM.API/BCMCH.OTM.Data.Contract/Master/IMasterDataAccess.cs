@@ -41,5 +41,6 @@ namespace BCMCH.OTM.Data.Contract.Master
         //NonOp
         Task<IEnumerable<NonOP>> AddNonOPRequest(NonOP nonOP);
         Task<IEnumerable<NonOP>> GetNonOPRequests();
+        Task<IEnumerable<NonOP>> EditNonOPRequests(NonOP nonOP);
     }
 }

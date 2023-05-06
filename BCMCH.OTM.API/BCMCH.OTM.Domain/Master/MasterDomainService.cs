@@ -367,6 +367,12 @@ namespace BCMCH.OTM.Domain.Master
             var result = await _masterDataAccess.GetNonOPRequests();
             return result;
         }
+
+        public async Task<Envelope<IEnumerable<NonOP>>> EditNonOPRequests(NonOP nonOP)
+        {           
+            var result = await _masterDataAccess.EditNonOPRequests(nonOP);
+            return new Envelope<IEnumerable<NonOP>>(true, "data-update-success", result);
+        }
         #endregion
 
     }

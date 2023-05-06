@@ -541,6 +541,20 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("edit-non-op-requests")]
+        public async Task<IActionResult> EditBlocking(NonOP nonOP)
+        {
+            try
+            {
+                var result = await _masterService.EditNonOPRequests(nonOP);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
         #endregion
     }
 }
