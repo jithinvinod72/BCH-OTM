@@ -329,19 +329,36 @@ namespace BCMCH.OTM.API.Controllers
 
         [HttpPost]
         [Route("post-pathology")]
-        public async Task<IActionResult> GetPatient( Pathology Pathology )
+        public async Task<IActionResult> PostPathology( Pathology Pathology )
         {
             try
             {
                 // Task<IEnumerable<Pathology>> PostPathology(Pathology Pathology);
                 var result = await _bookingService.PostPathology(Pathology);
-                return Ok(new ResponseVM<IEnumerable<Pathology>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+                return Ok(new ResponseVM<IEnumerable<int>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
             }
             catch (Exception ex)
             {
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
+
+
+        [HttpPost]
+        [Route("edit-pathology")]
+        public async Task<IActionResult> PatchPathology( Pathology pathology )
+        {
+            try
+            {
+                var result = await _bookingService.PatchPathology(pathology);
+                return Ok(new ResponseVM<IEnumerable<int>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
         #endregion
     }
 }

@@ -394,9 +394,15 @@ namespace BCMCH.OTM.Domain.Booking
             var result = await _bookingDataAccess.GetPathologyDataWithId(id);
             return result;
         }
-        public async Task<IEnumerable<Pathology>> PostPathology(Pathology Pathology)
+        public async Task<IEnumerable<int>> PostPathology(Pathology Pathology)
         {
             var result = await _bookingDataAccess.PostPathology(Pathology);
+            return result;
+        }
+
+        public async Task<IEnumerable<int>> PatchPathology(Pathology pathology)
+        {
+            var result = await _bookingDataAccess.PatchPathology(pathology);
             return result;
         }
         // PATHOLOGY Sample END

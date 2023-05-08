@@ -356,7 +356,7 @@ namespace BCMCH.OTM.Data.Booking
                             LEFT JOIN 
                                 [dbo].[Departments] AS DepartmentTable 
                                 ON 
-                                EmployeeTable.[DepartmentID] = DepartmentTable.Id
+                                EmployeeTable.[DepartmentID] = DepartmentTable.Id;
                            ";
             var SqlParameters = new DynamicParameters();
             // SqlParameters.Add("@RegNo", Pathology.RegistrationNo);
@@ -384,7 +384,7 @@ namespace BCMCH.OTM.Data.Booking
             return result;
         }
 
-        public async Task<IEnumerable<Pathology>> PostPathology(Pathology Pathology)
+        public async Task<IEnumerable<int>> PostPathology(Pathology Pathology)
         {
             string Query =@"
                             INSERT INTO [OTM].[Pathology]
@@ -426,6 +426,8 @@ namespace BCMCH.OTM.Data.Booking
                                 natureOfSpecimen NVARCHAR(50),
                                 siteOfBiopsy NVARCHAR(50)
                             );
+
+                            SELECT @PathologyId
                            ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@RegNo", Pathology.RegistrationNo);
@@ -434,7 +436,61 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@status", 1);
             SqlParameters.Add("@IsDeleted", 0);
         
-            var result= await _sqlHelper.QueryAsync<Pathology>(Query, SqlParameters, CommandType.Text);
+            var result= await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
+            return result;
+            
+        }
+
+
+
+        public async Task<IEnumerable<int>> PatchPathology(Pathology pathology)
+        {
+            string Query =@"
+                            UPDATE [OTM].[Pathology]
+                            SET
+                                [RegistrationNo]    = @RegNo    ,
+                                [status]            = @status    ,
+                                [PostedBy]          = @PostedBy    ,
+                                [IsDeleted]         = @IsDeleted
+                            WHERE
+                                Id=@PathologyId
+
+                            DELETE FROM [OTM].[PathologySamples]
+                            WHERE PathologyId=@PathologyId
+
+
+                            INSERT INTO [OTM].[PathologySamples]
+                                (
+                                    [PathologyId] ,
+                                    [ProcedureId] ,
+                                    [HistopathologyId] ,
+                                    [SpecimenNature] ,
+                                    [BiposySite]
+                                )
+                            SELECT
+                                @PathologyId        ,
+                                ProcedureId         ,
+                                HistopathologyId    ,
+                                natureOfSpecimen    ,
+                                siteOfBiopsy
+                            FROM OPENJSON(@nestedData)
+                            WITH (
+                                ProcedureId INT,
+                                HistopathologyId INT,
+                                natureOfSpecimen NVARCHAR(50),
+                                siteOfBiopsy NVARCHAR(50)
+                            );
+                            SELECT @PathologyId
+                           ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@PathologyId", pathology.Id);
+            SqlParameters.Add("@RegNo", pathology.RegistrationNo);
+            SqlParameters.Add("@PostedBy", pathology.PostedBy);
+            SqlParameters.Add("@nestedData", pathology.NestedData);
+            SqlParameters.Add("@status", 1);
+            SqlParameters.Add("@IsDeleted", 0);
+        
+            var result= await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
             return result;
             
         }
