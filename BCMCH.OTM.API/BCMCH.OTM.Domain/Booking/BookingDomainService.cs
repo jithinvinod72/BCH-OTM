@@ -405,6 +405,11 @@ namespace BCMCH.OTM.Domain.Booking
             var result = await _bookingDataAccess.PatchPathology(pathology);
             return result;
         }
+        public async Task<IEnumerable<int>> DeletePathology(string idArray)
+        {
+            var result = await _bookingDataAccess.DeletePathology(idArray);
+            return result;
+        }
         // PATHOLOGY Sample END
 
     }

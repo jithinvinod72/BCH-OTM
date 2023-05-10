@@ -356,7 +356,10 @@ namespace BCMCH.OTM.Data.Booking
                             LEFT JOIN 
                                 [dbo].[Departments] AS DepartmentTable 
                                 ON 
-                                EmployeeTable.[DepartmentID] = DepartmentTable.Id;
+                                EmployeeTable.[DepartmentID] = DepartmentTable.Id
+                            WHERE 
+                                Pathology.[IsDeleted]=0
+                                ;
                            ";
             var SqlParameters = new DynamicParameters();
             // SqlParameters.Add("@RegNo", Pathology.RegistrationNo);
@@ -490,6 +493,22 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@status", 1);
             SqlParameters.Add("@IsDeleted", 0);
         
+            var result= await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
+            return result;
+            
+        }
+
+        public async Task<IEnumerable<int>> DeletePathology(String idArray)
+        {
+            string Query =@"
+                            UPDATE [OTM].[Pathology]
+                            SET
+                                [IsDeleted] = 1
+                            WHERE
+                                Id IN (SELECT value FROM OPENJSON(@IdArray))
+                           ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@IdArray", idArray);
             var result= await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
             return result;
             

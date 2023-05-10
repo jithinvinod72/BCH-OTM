@@ -359,6 +359,21 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("delete-pathology")]
+        public async Task<IActionResult> DeletePathology(string idArray )
+        {
+            try
+            {
+                var result = await _bookingService.DeletePathology(idArray);
+                return Ok(new ResponseVM<IEnumerable<int>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
         #endregion
     }
 }
