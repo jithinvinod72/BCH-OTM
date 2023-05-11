@@ -395,14 +395,16 @@ namespace BCMCH.OTM.Data.Booking
                                     [RegistrationNo] ,
                                     [status] ,
                                     [PostedBy],
-                                    [IsDeleted]
+                                    [IsDeleted],
+                                    [DateTime]
                                 )
                             VALUES
                                 (
                                     @RegNo,
                                     @status,
                                     @PostedBy,
-                                    @IsDeleted
+                                    @IsDeleted,
+                                    @DateTime
                                 )
 
                             DECLARE @PathologyId  AS BIGINT;
@@ -438,6 +440,7 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@nestedData", Pathology.NestedData);
             SqlParameters.Add("@status", 1);
             SqlParameters.Add("@IsDeleted", 0);
+            SqlParameters.Add("@DateTime", Pathology.Datetime);
         
             var result= await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
             return result;
@@ -454,7 +457,9 @@ namespace BCMCH.OTM.Data.Booking
                                 [RegistrationNo]    = @RegNo    ,
                                 [status]            = @status    ,
                                 [PostedBy]          = @PostedBy    ,
-                                [IsDeleted]         = @IsDeleted
+                                [IsDeleted]         = @IsDeleted    ,
+                                [DateTime]          = @DateTime
+
                             WHERE
                                 Id=@PathologyId
 
@@ -490,8 +495,10 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@RegNo", pathology.RegistrationNo);
             SqlParameters.Add("@PostedBy", pathology.PostedBy);
             SqlParameters.Add("@nestedData", pathology.NestedData);
+            SqlParameters.Add("@DateTime", pathology.Datetime);
             SqlParameters.Add("@status", 1);
             SqlParameters.Add("@IsDeleted", 0);
+            
         
             var result= await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
             return result;
