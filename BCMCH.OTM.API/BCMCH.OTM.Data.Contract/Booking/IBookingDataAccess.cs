@@ -43,5 +43,8 @@ namespace BCMCH.OTM.Data.Contract.Booking
         Task<IEnumerable<int>> PostPathology(Pathology Pathology);
         Task<IEnumerable<int>> PatchPathology(Pathology pathology);
         Task<IEnumerable<int>> DeletePathology(String idArray);
+
+        // Removable Devices
+        Task<IEnumerable<int>> PostRemovableDevices(RemovableDevicesMain removableDevicesMain);
     }
 }

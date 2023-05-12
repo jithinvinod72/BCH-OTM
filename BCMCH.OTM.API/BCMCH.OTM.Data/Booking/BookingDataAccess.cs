@@ -523,6 +523,83 @@ namespace BCMCH.OTM.Data.Booking
         #endregion
         // PATHOLOGY END
 
+
+        // Removable Devices START
+        #region RemovableDevices
+
+        public async Task<IEnumerable<int>> PostRemovableDevices(RemovableDevicesMain removableDevicesMain)
+        {
+            string Query =@"
+                            INSERT INTO [OTM].[RemovableDevicesMain]
+                            (
+                                [RegistrationNo],
+                                [status],
+                                [IsDeleted],
+                                [PostedBy],
+                                [DateTime]
+                            )
+                            VALUES
+                            (
+                                @RegistrationNo,
+                                @status,
+                                @IsDeleted,
+                                @PostedBy,
+                                @DateTime
+                            )
+
+                            DECLARE @RemovableDevicesMainId  AS BIGINT;
+                            SET @RemovableDevicesMainId = SCOPE_IDENTITY();
+
+
+                            INSERT INTO [OTM].[RemovableDevicesSelected]
+                            (
+                                [RemovableDeviceMainId],
+                                [RemovableDeviceId],
+                                [RemovableDeviceName],
+                                [Notes],
+                                [PlacedIn],
+                                [PlacedDate],
+                                [DateToRemove],
+                                [IsRemoved]
+                            )
+                            SELECT
+                                @RemovableDevicesMainId ,
+                                deviceId                ,
+                                deviceName              ,
+                                notes                   ,
+                                devicePlaced            ,
+                                placedDate              ,
+                                removedDate             ,
+                                0
+                            FROM OPENJSON(@nestedData)
+                            WITH (
+                                deviceId INT                    ,
+                                deviceName NVARCHAR(800)        ,
+                                notes NVARCHAR(800)             ,
+                                devicePlaced NVARCHAR(800)      ,
+                                removedDate DATETIME            ,
+                                placedDate DATETIME     
+                            );
+                            SELECT @RemovableDevicesMainId
+                            
+                           ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@RegistrationNo", removableDevicesMain.RegistrationNo);
+            SqlParameters.Add("@status", removableDevicesMain.Status);
+            SqlParameters.Add("@IsDeleted", 0);
+            SqlParameters.Add("@PostedBy", removableDevicesMain.PostedBy);
+            SqlParameters.Add("@DateTime", removableDevicesMain.Datetime);
+            SqlParameters.Add("@nestedData", removableDevicesMain.NestedData);
+            
+            
+            var result= await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
+            return result;
+            
+        }
+
+
+        #endregion
+        // Removable Devices END
     }
     
 }

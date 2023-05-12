@@ -375,5 +375,25 @@ namespace BCMCH.OTM.API.Controllers
         }
 
         #endregion
+
+
+        #region REMOVABLE_DEVICES
+        // public async Task<IEnumerable<int>> PostRemovableDevices(RemovableDevicesMain removableDevicesMain)
+        [HttpPost]
+        [Route("post-removable-devices-form")]
+        public async Task<IActionResult> PostRemovableDevices( RemovableDevicesMain removableDevicesMain )
+        {
+            try
+            {
+                // Task<IEnumerable<Pathology>> PostPathology(Pathology Pathology);
+                var result = await _bookingService.PostRemovableDevices(removableDevicesMain);
+                return Ok(new ResponseVM<IEnumerable<int>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        #endregion
     }
 }
