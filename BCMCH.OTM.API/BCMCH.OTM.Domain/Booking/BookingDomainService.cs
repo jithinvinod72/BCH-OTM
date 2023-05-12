@@ -413,11 +413,17 @@ namespace BCMCH.OTM.Domain.Booking
         // PATHOLOGY Sample END
 
         // Removable Devices START
+        public async Task<IEnumerable<RemovableDevicesMain>> GetRemovableDevices()
+        {
+            var result = await _bookingDataAccess.GetRemovableDevices();
+            return result;
+        }
         public async Task<IEnumerable<int>> PostRemovableDevices(RemovableDevicesMain removableDevicesMain)
         {
             var result = await _bookingDataAccess.PostRemovableDevices(removableDevicesMain);
             return result;
         }
+
         // Removable Devices START
 
     }

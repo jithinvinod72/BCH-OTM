@@ -40,6 +40,7 @@ namespace BCMCH.OTM.Domain.Contract.Booking
         Task<IEnumerable<int>> DeletePathology(string idArray);
 
         // Removable Devices
+        Task<IEnumerable<RemovableDevicesMain>> GetRemovableDevices();
         Task<IEnumerable<int>> PostRemovableDevices(RemovableDevicesMain removableDevicesMain);
     }
 }

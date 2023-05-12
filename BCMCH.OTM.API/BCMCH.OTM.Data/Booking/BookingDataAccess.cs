@@ -526,7 +526,6 @@ namespace BCMCH.OTM.Data.Booking
 
         // Removable Devices START
         #region RemovableDevices
-
         public async Task<IEnumerable<int>> PostRemovableDevices(RemovableDevicesMain removableDevicesMain)
         {
             string Query =@"
@@ -594,8 +593,50 @@ namespace BCMCH.OTM.Data.Booking
             
             var result= await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
             return result;
-            
         }
+
+        public async Task<IEnumerable<RemovableDevicesMain>> GetRemovableDevices()
+        {
+            string Query =@"
+                            SELECT
+                                RemovableDevices.[Id],
+                                RemovableDevices.[RegistrationNo],
+                                RemovableDevices.[DateTime]                AS Datetime,
+                                RemovableDevices.[status]                  AS Status,
+                                RemovableDevices.[IsDeleted],
+                                RemovableDevices.[PostedBy],
+                                PatientMaster.FirstName             AS PatientFirstName,
+                                PatientMaster.MiddleName            AS PatientMiddleName,
+                                PatientMaster.LastName              AS PatientLastName,
+                                EmployeeTable.[DepartmentID]        AS BookedDepartment,
+                                SurgeonTable.[FullName]             AS BookedByName,
+                                DepartmentTable.Name                AS DepartmentName
+                            FROM
+                                [behive-dev-otm].[OTM].[RemovableDevicesMain] AS RemovableDevices
+                                LEFT JOIN
+                                    [behive-dev-otm].dbo.PatientMaster 
+                                AS PatientMaster ON 
+                                    RemovableDevices.RegistrationNo = PatientMaster.RegistrationNo
+
+                                LEFT JOIN
+                                [dbo].[Users] AS SurgeonTable ON 
+                                RemovableDevices.PostedBy = [SurgeonTable].EmployeeId
+
+                                LEFT JOIN
+                                [HR].[Employees] AS EmployeeTable ON 
+                                RemovableDevices.[PostedBy] = [EmployeeTable].Id
+
+                                LEFT JOIN
+                                [dbo].[Departments] AS DepartmentTable ON 
+                                EmployeeTable.[DepartmentID] = DepartmentTable.Id
+                            WHERE 
+                                RemovableDevices.[IsDeleted]=0;
+                           ";
+            var SqlParameters = new DynamicParameters();
+            var result= await _sqlHelper.QueryAsync<RemovableDevicesMain>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
 
 
         #endregion
