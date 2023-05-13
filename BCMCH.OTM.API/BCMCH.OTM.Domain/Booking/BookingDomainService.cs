@@ -418,9 +418,19 @@ namespace BCMCH.OTM.Domain.Booking
             var result = await _bookingDataAccess.GetRemovableDevices();
             return result;
         }
+        public async Task<IEnumerable<RemovableDevicesSelcted>> GetRemovableDevicesSelected(int id)
+        {
+            var result = await _bookingDataAccess.GetRemovableDevicesSelected(id);
+            return result;
+        }
         public async Task<IEnumerable<int>> PostRemovableDevices(RemovableDevicesMain removableDevicesMain)
         {
             var result = await _bookingDataAccess.PostRemovableDevices(removableDevicesMain);
+            return result;
+        }
+        public async Task<IEnumerable<int>> EditRemovableDevices(RemovableDevicesMain removableDevicesMain)
+        {
+            var result = await _bookingDataAccess.EditRemovableDevices(removableDevicesMain);
             return result;
         }
 

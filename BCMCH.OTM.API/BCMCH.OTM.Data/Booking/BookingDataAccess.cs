@@ -595,6 +595,68 @@ namespace BCMCH.OTM.Data.Booking
             return result;
         }
 
+        public async Task<IEnumerable<int>> EditRemovableDevices(RemovableDevicesMain removableDevicesMain)
+        {
+            string Query =@"
+                            UPDATE [OTM].[RemovableDevicesMain]
+                            SET
+                                [RegistrationNo] = @RegistrationNo,
+                                [status] = @status,
+                                [IsDeleted] = @IsDeleted,
+                                [PostedBy] = @PostedBy,
+                                [DateTime] = @DateTime
+                            WHERE Id=@RemovableDevicesMainId;
+
+                            DELETE FROM [OTM].[RemovableDevicesSelected] 
+                            WHERE RemovableDeviceMainId=@RemovableDevicesMainId;
+
+                            INSERT INTO [OTM].[RemovableDevicesSelected]
+                            (
+                                [RemovableDeviceMainId],
+                                [RemovableDeviceId],
+                                [RemovableDeviceName],
+                                [Notes],
+                                [PlacedIn],
+                                [PlacedDate],
+                                [DateToRemove],
+                                [IsRemoved]
+                            )
+                            SELECT
+                                @RemovableDevicesMainId ,
+                                deviceId                ,
+                                deviceName              ,
+                                notes                   ,
+                                devicePlaced            ,
+                                placedDate              ,
+                                removedDate             ,
+                                0
+                            FROM OPENJSON(@nestedData)
+                            WITH (
+                                deviceId INT                    ,
+                                deviceName NVARCHAR(800)        ,
+                                notes NVARCHAR(800)             ,
+                                devicePlaced NVARCHAR(800)      ,
+                                removedDate DATETIME            ,
+                                placedDate DATETIME     
+                            );
+                            SELECT @RemovableDevicesMainId
+                            
+                           ";
+            var SqlParameters = new DynamicParameters();
+            
+            SqlParameters.Add("@RemovableDevicesMainId", removableDevicesMain.Id);
+            SqlParameters.Add("@RegistrationNo", removableDevicesMain.RegistrationNo);
+            SqlParameters.Add("@status", removableDevicesMain.Status);
+            SqlParameters.Add("@IsDeleted", 0);
+            SqlParameters.Add("@PostedBy", removableDevicesMain.PostedBy);
+            SqlParameters.Add("@DateTime", removableDevicesMain.Datetime);
+            SqlParameters.Add("@nestedData", removableDevicesMain.NestedData);
+            
+            
+            var result= await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
         public async Task<IEnumerable<RemovableDevicesMain>> GetRemovableDevices()
         {
             string Query =@"
@@ -634,6 +696,29 @@ namespace BCMCH.OTM.Data.Booking
                            ";
             var SqlParameters = new DynamicParameters();
             var result= await _sqlHelper.QueryAsync<RemovableDevicesMain>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
+
+        public async Task<IEnumerable<RemovableDevicesSelcted>> GetRemovableDevicesSelected(int id)
+        {
+            string Query =@"
+                            SELECT TOP (1000) 
+                                [Id]
+                                ,[RemovableDeviceMainId]
+                                ,[RemovableDeviceId]
+                                ,[RemovableDeviceName]
+                                ,[Notes]
+                                ,[PlacedIn]
+                                ,[PlacedDate]
+                                ,[DateToRemove]
+                                ,[IsRemoved]
+                            FROM [behive-dev-otm].[OTM].[RemovableDevicesSelected]
+                            WHERE RemovableDeviceMainId=@RemovableDeviceId
+                           ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@RemovableDeviceId", id);
+            var result= await _sqlHelper.QueryAsync<RemovableDevicesSelcted>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 

@@ -394,6 +394,24 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("get-removable-devices-selected")]
+        public async Task<IActionResult> GetRemovableDevicesSelected(int id )
+        {
+            // public async Task<IEnumerable<RemovableDevicesMain>> GetRemovableDevicesSelected(int id)
+            try
+            {
+                var result = await _bookingService.GetRemovableDevicesSelected(id);
+                return Ok(new ResponseVM<IEnumerable<RemovableDevicesSelcted>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+        
+
         [HttpPost]
         [Route("post-removable-devices-form")]
         public async Task<IActionResult> PostRemovableDevices( RemovableDevicesMain removableDevicesMain )
@@ -402,6 +420,22 @@ namespace BCMCH.OTM.API.Controllers
             {
                 // Task<IEnumerable<Pathology>> PostPathology(Pathology Pathology);
                 var result = await _bookingService.PostRemovableDevices(removableDevicesMain);
+                return Ok(new ResponseVM<IEnumerable<int>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+        [HttpPost]
+        [Route("edit-removable-devices-form")]
+        public async Task<IActionResult> EditRemovableDevices( RemovableDevicesMain removableDevicesMain )
+        {
+            try
+            {
+                // Task<IEnumerable<Pathology>> PostPathology(Pathology Pathology);
+                var result = await _bookingService.EditRemovableDevices(removableDevicesMain);
                 return Ok(new ResponseVM<IEnumerable<int>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
             }
             catch (Exception ex)
