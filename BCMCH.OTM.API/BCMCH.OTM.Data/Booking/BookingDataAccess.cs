@@ -657,6 +657,22 @@ namespace BCMCH.OTM.Data.Booking
             return result;
         }
 
+        public async Task<IEnumerable<int>> DeleteRemovableDeviceMain(string idArray)
+        {
+            string Query =@"
+                            UPDATE [OTM].[RemovableDevicesMain]
+                            SET
+                                [IsDeleted] = 1
+                            WHERE
+                                Id IN (SELECT value FROM OPENJSON(@IdArray))
+                           ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@IdArray", idArray);
+            var result= await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
+            return result;
+            
+        }
+
         public async Task<IEnumerable<RemovableDevicesMain>> GetRemovableDevices()
         {
             string Query =@"

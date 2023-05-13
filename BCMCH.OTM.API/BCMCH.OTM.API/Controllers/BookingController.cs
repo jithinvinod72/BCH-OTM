@@ -428,6 +428,23 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
 
+
+        [HttpDelete]
+        [Route("delete-removable-device-main")]
+        public async Task<IActionResult> DeleteRemovableDeviceMain(string idArray )
+        {
+            try
+            {
+                var result = await _bookingService.DeleteRemovableDeviceMain(idArray);
+                return Ok(new ResponseVM<IEnumerable<int>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        // public async Task<IEnumerable<int>> DeleteRemovableDeviceMain(String idArray)
+
         [HttpPost]
         [Route("edit-removable-devices-form")]
         public async Task<IActionResult> EditRemovableDevices( RemovableDevicesMain removableDevicesMain )

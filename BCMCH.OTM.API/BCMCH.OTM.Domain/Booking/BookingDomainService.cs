@@ -428,6 +428,11 @@ namespace BCMCH.OTM.Domain.Booking
             var result = await _bookingDataAccess.PostRemovableDevices(removableDevicesMain);
             return result;
         }
+        public async Task<IEnumerable<int>> DeleteRemovableDeviceMain(string idArray)
+        {
+            var result = await _bookingDataAccess.DeleteRemovableDeviceMain(idArray);
+            return result;
+        }
         public async Task<IEnumerable<int>> EditRemovableDevices(RemovableDevicesMain removableDevicesMain)
         {
             var result = await _bookingDataAccess.EditRemovableDevices(removableDevicesMain);
