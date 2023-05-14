@@ -552,7 +552,7 @@ namespace BCMCH.OTM.Data.Master
 
         public async Task<IEnumerable<NonOP>> EditNonOPRequests(NonOP nonOP)
         {
-            const string StoredProcedure = "[OTM].[InsertNonOP]";
+            const string StoredProcedure = "[OTM].[UpdateNonOP]";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@PatientUHID", nonOP.PatientUHID);
             SqlParameters.Add("@PatientName", nonOP.PatientName);
