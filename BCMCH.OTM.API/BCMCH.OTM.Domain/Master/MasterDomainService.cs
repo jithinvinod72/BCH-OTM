@@ -354,6 +354,12 @@ namespace BCMCH.OTM.Domain.Master
         }
         #endregion
 
+        public async Task<IEnumerable<NonOperativeProcedureList>> GetNonOperativeProceduresList()
+        {
+            var result = await _masterDataAccess.GetNonOperativeProceduresList();
+            return result;
+        }
+
 
     }
 }

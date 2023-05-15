@@ -507,6 +507,21 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
+
+        [HttpGet]
+        [Route("get-non-operative-procedure-list")]
+        public async Task<IActionResult> GetNonOperativeProceduresList()
+        {
+            try
+            {
+                var result = await _masterService.GetNonOperativeProceduresList();
+                return Ok(new ResponseVM<IEnumerable<NonOperativeProcedureList>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
         #endregion
 
 

@@ -37,6 +37,7 @@ namespace BCMCH.OTM.Data.Contract.Master
 
         //validation- ot allocation
         Task<IEnumerable<OTValidation>> CheckAllocationByOperationThearter(string startDate, string endDate, int operationId);
+        Task<IEnumerable<NonOperativeProcedureList>> GetNonOperativeProceduresList();
 
         
     }

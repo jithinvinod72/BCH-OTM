@@ -511,6 +511,24 @@ namespace BCMCH.OTM.Data.Master
             return result;
         }
 
-        
+        // Non Op maste
+        public async Task<IEnumerable<NonOperativeProcedureList>> GetNonOperativeProceduresList()
+        {
+            string Query = @"
+                                SELECT 
+                                    [Id]
+                                    ,[Name]
+                                    ,[Label]
+                                    ,[Description]
+                                    ,[IsActive]
+                                FROM 
+                                    [behive-dev-otm].[OTM].[NonOperativeProceduresListMaster]
+                            ";
+            var SqlParameters = new DynamicParameters();
+            var result = await _sqlHelper.QueryAsync<NonOperativeProcedureList>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
+
     }
 }

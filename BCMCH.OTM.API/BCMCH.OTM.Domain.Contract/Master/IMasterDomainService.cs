@@ -39,6 +39,7 @@ namespace BCMCH.OTM.Domain.Contract.Master
         Task<FormMasters> GetFormMasters();
         Task<IEnumerable<PostAnswer>> PostFormAnswer(PostAnswer answer);
         Task<IEnumerable<GetAnswer>> GetFormAnswer(int eventId);
+        Task<IEnumerable<NonOperativeProcedureList>> GetNonOperativeProceduresList();
 
     }
 }
