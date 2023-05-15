@@ -22,13 +22,13 @@ namespace BCMCH.OTM.Data.Booking
         }
         #endregion
 
-        public async Task<IEnumerable<Bookings>> GetBookingList(string? fromDate,string? toDate)
+        public async Task<IEnumerable<Bookings>> GetBookingList(string? fromDate, string? toDate)
         {
             const string StoredProcedure = "[OTM].[SelectBookings]";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@FromDate", fromDate);
-            SqlParameters.Add("@ToDate",   toDate );
-            var result= await _sqlHelper.QueryAsync<Bookings>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            SqlParameters.Add("@ToDate", toDate);
+            var result = await _sqlHelper.QueryAsync<Bookings>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
 
@@ -37,28 +37,28 @@ namespace BCMCH.OTM.Data.Booking
             const string StoredProcedure = "[OTM].[InsertBooking]";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@OperationTheatreId", booking.OperationTheatreId);
-            SqlParameters.Add("@DoctorId",   booking.DoctorId );
-            SqlParameters.Add("@AnaesthetistId", booking.AnaesthetistId );
+            SqlParameters.Add("@DoctorId", booking.DoctorId);
+            SqlParameters.Add("@AnaesthetistId", booking.AnaesthetistId);
 
-            SqlParameters.Add("@StatusId", booking.StatusId );
-            SqlParameters.Add("@AnaesthesiaTypeId", booking.AnaesthesiaTypeId );
-            SqlParameters.Add("@SurgeryId", booking.SurgeryId );
+            SqlParameters.Add("@StatusId", booking.StatusId);
+            SqlParameters.Add("@AnaesthesiaTypeId", booking.AnaesthesiaTypeId);
+            SqlParameters.Add("@SurgeryId", booking.SurgeryId);
 
-            SqlParameters.Add("@RegistrationNo", booking.RegistrationNo );
-            SqlParameters.Add("@StartDate", booking.StartDate );
-            SqlParameters.Add("@EndDate", booking.EndDate );
-            SqlParameters.Add("@Duration", booking.Duration );
-            SqlParameters.Add("@InstructionToNurse", booking.InstructionToNurse );
-            SqlParameters.Add("@InstructionToAnaesthetist", booking.InstructionToAnaesthetist );
-            SqlParameters.Add("@InstructionToOperationTeatrePersons", booking.InstructionToOperationTeatrePersons );
-            SqlParameters.Add("@RequestForSpecialMeterial", booking.RequestForSpecialMeterial );
-            SqlParameters.Add("@DepartmentId", booking.DepartmentId );
+            SqlParameters.Add("@RegistrationNo", booking.RegistrationNo);
+            SqlParameters.Add("@StartDate", booking.StartDate);
+            SqlParameters.Add("@EndDate", booking.EndDate);
+            SqlParameters.Add("@Duration", booking.Duration);
+            SqlParameters.Add("@InstructionToNurse", booking.InstructionToNurse);
+            SqlParameters.Add("@InstructionToAnaesthetist", booking.InstructionToAnaesthetist);
+            SqlParameters.Add("@InstructionToOperationTeatrePersons", booking.InstructionToOperationTeatrePersons);
+            SqlParameters.Add("@RequestForSpecialMeterial", booking.RequestForSpecialMeterial);
+            SqlParameters.Add("@DepartmentId", booking.DepartmentId);
             // SqlParameters.Add("@Type", booking.Type );
-            SqlParameters.Add("@EmployeeIdArray", booking.EmployeeIdArray );
-            SqlParameters.Add("@EquipmentsIdArray", booking.EquipmentsIdArray );
-            SqlParameters.Add("@SurgeriesIdArray", booking.SurgeriesIdArray );
+            SqlParameters.Add("@EmployeeIdArray", booking.EmployeeIdArray);
+            SqlParameters.Add("@EquipmentsIdArray", booking.EquipmentsIdArray);
+            SqlParameters.Add("@SurgeriesIdArray", booking.SurgeriesIdArray);
 
-            var result= await _sqlHelper.QueryAsync<int>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            var result = await _sqlHelper.QueryAsync<int>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
 
@@ -67,14 +67,14 @@ namespace BCMCH.OTM.Data.Booking
             const string StoredProcedure = "[OTM].[SelectAllocation]";
             var SqlParameters = new DynamicParameters();
             // SqlParameters.Add("@DeartmentId"    , departmentId );
-            SqlParameters.Add("@StartDate"      , startDate );
-            SqlParameters.Add("@EndDate"        , endDate );
-            var result= await _sqlHelper.QueryAsync<GetAllocationModel>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            SqlParameters.Add("@StartDate", startDate);
+            SqlParameters.Add("@EndDate", endDate);
+            var result = await _sqlHelper.QueryAsync<GetAllocationModel>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
         public async Task<IEnumerable<Equipments>> GetEventEquipments(int bookingId)
         {
-            string Query =@"
+            string Query = @"
                             SELECT 
                                 [EquipmentsMaster].Id ,
                                 [Name],
@@ -83,17 +83,17 @@ namespace BCMCH.OTM.Data.Booking
                             LEFT JOIN  
                                 [OTM].[EquipmentsMaster] ON [EquipmentId] =[OTM].[EquipmentsMaster].[Id]
                             WHERE 
-                                BookingId=@bookingId" ;
+                                BookingId=@bookingId";
 
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@bookingId"    , bookingId );
-            var result= await _sqlHelper.QueryAsync<Equipments>(Query, SqlParameters, CommandType.Text);
+            SqlParameters.Add("@bookingId", bookingId);
+            var result = await _sqlHelper.QueryAsync<Equipments>(Query, SqlParameters, CommandType.Text);
             return result;
         }
         public async Task<IEnumerable<Employee>> GetEventEmployees(int bookingId)
         {
             // used to fetch the employees with their booking Id
-            string Query =  @"
+            string Query = @"
                                 SELECT 
                                     EmployeeId,
                                     FirstName,
@@ -108,14 +108,14 @@ namespace BCMCH.OTM.Data.Booking
                                     BookingId=@bookingId
                             ";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@bookingId"    , bookingId.ToString() );
-            var result= await _sqlHelper.QueryAsync<Employee>(Query, SqlParameters, CommandType.Text);
+            SqlParameters.Add("@bookingId", bookingId.ToString());
+            var result = await _sqlHelper.QueryAsync<Employee>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 
         public async Task<IEnumerable<Surgeries>> GetEventSurgeries(int bookingId)
         {
-            string Query =  @"
+            string Query = @"
                                 SELECT
                                     SurgeryMapping.[SurgeryId]              AS Id,
                                     SurgeryDetails.[Name]                   AS Name,
@@ -129,15 +129,15 @@ namespace BCMCH.OTM.Data.Booking
                                 WHERE BookingId=@bookingId
                             ";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@bookingId"    , bookingId.ToString() );
-            var result= await _sqlHelper.QueryAsync<Surgeries>(Query, SqlParameters, CommandType.Text);
+            SqlParameters.Add("@bookingId", bookingId.ToString());
+            var result = await _sqlHelper.QueryAsync<Surgeries>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 
 
         public async Task<IEnumerable<Departments>> GetDepartments()
         {
-            string Query =  @"
+            string Query = @"
                                 SELECT 
                                     [Id],
                                     [Code],
@@ -148,7 +148,7 @@ namespace BCMCH.OTM.Data.Booking
                                     dbo.Departments
                             ";
             var SqlParameters = new DynamicParameters();
-            var result= await _sqlHelper.QueryAsync<Departments>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<Departments>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 
@@ -185,14 +185,14 @@ namespace BCMCH.OTM.Data.Booking
         }
 
 
-        public async Task<int> IsOperationTheatreAllocated(int operationTheatreId,int departmentId , string startDate, string endDate)
+        public async Task<int> IsOperationTheatreAllocated(int operationTheatreId, int departmentId, string startDate, string endDate)
         {
             const string StoredProcedure = "[OTM].[IsOperationTheatreAllocated]";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@StartDateToSearch", startDate);
-            SqlParameters.Add("@EndDateToSearch",   endDate );
-            SqlParameters.Add("@operationTheatreId",operationTheatreId);
-            SqlParameters.Add("@departmentId",departmentId);
+            SqlParameters.Add("@EndDateToSearch", endDate);
+            SqlParameters.Add("@operationTheatreId", operationTheatreId);
+            SqlParameters.Add("@departmentId", departmentId);
             var result = await _sqlHelper.QueryAsync<UpdateBookingModel>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             // the result has Ienumerable type 
             // what we do is we simply return the count/length of the ienumerable 
@@ -205,10 +205,10 @@ namespace BCMCH.OTM.Data.Booking
         {
             const string StoredProcedure = "[OTM].[IsOperationTheatreBloked]";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@operationTheatreId",   operationTheatreId );
+            SqlParameters.Add("@operationTheatreId", operationTheatreId);
             SqlParameters.Add("@StartDateToSearch", startDate);
-            SqlParameters.Add("@EndDateToSearch",   endDate);
-            var result= await _sqlHelper.ExecuteAsync(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            SqlParameters.Add("@EndDateToSearch", endDate);
+            var result = await _sqlHelper.ExecuteAsync(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
         public async Task<int> IsOperationTheatreBooked(int bookingIdToExcludeFromSearch, int operationTheatreId, string startDate, string endDate)
@@ -218,19 +218,19 @@ namespace BCMCH.OTM.Data.Booking
             // for inserting bookingIdToExcludeFromSearch is 0
             const string StoredProcedure = "[OTM].[IsOperationTheatreBooked]";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@BookingIdToExclude",bookingIdToExcludeFromSearch );
-            SqlParameters.Add("@operationTheatreId",operationTheatreId );
+            SqlParameters.Add("@BookingIdToExclude", bookingIdToExcludeFromSearch);
+            SqlParameters.Add("@operationTheatreId", operationTheatreId);
             SqlParameters.Add("@StartDateToSearch", startDate);
-            SqlParameters.Add("@EndDateToSearch",   endDate);
-            var result= await _sqlHelper.ExecuteAsync(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            SqlParameters.Add("@EndDateToSearch", endDate);
+            var result = await _sqlHelper.ExecuteAsync(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
 
             return result;
         }
-        
+
 
         public async Task<IEnumerable<Bookings>> DeleteBooking(string IdArray)
         {
-            string Query =  @"
+            string Query = @"
                                 UPDATE 
                                     [OTM].[Bookings]
                                 SET 
@@ -239,8 +239,8 @@ namespace BCMCH.OTM.Data.Booking
                                     Id IN (SELECT value FROM OPENJSON(@IdArray))
                             ";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@IdArray"    , IdArray );
-            var result= await _sqlHelper.QueryAsync<Bookings>(Query, SqlParameters, CommandType.Text);
+            SqlParameters.Add("@IdArray", IdArray);
+            var result = await _sqlHelper.QueryAsync<Bookings>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 
@@ -249,7 +249,7 @@ namespace BCMCH.OTM.Data.Booking
         #region BLOCKING
         public async Task<IEnumerable<Blocking>> AddBlocking(Blocking blocking)
         {
-            string Query =@"
+            string Query = @"
                             INSERT INTO [OTM].[Bookings]
                             (
                                 [OperationTheatreId],
@@ -273,19 +273,19 @@ namespace BCMCH.OTM.Data.Booking
                            ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@OperationTheatreId", blocking.OperationTheatreId);
-            SqlParameters.Add("@StatusId",   3 );
-            SqlParameters.Add("@StartDate", blocking.StartDate );
+            SqlParameters.Add("@StatusId", 3);
+            SqlParameters.Add("@StartDate", blocking.StartDate);
             SqlParameters.Add("@EndDate", blocking.EndDate);
-            SqlParameters.Add("@Duration",   blocking.Duration );
-            SqlParameters.Add("@ModifiedBy", blocking.ModifiedBy );
-            
-            var result= await _sqlHelper.QueryAsync<Blocking>(Query, SqlParameters, CommandType.Text);
+            SqlParameters.Add("@Duration", blocking.Duration);
+            SqlParameters.Add("@ModifiedBy", blocking.ModifiedBy);
+
+            var result = await _sqlHelper.QueryAsync<Blocking>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 
         public async Task<IEnumerable<Blocking>> EditBlocking(Blocking blocking)
         {
-            string Query =@"
+            string Query = @"
                             UPDATE [OTM].[Bookings]
                             SET
                                 [OperationTheatreId] = @OperationTheatreId,
@@ -298,13 +298,13 @@ namespace BCMCH.OTM.Data.Booking
                            ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@OperationTheatreId", blocking.OperationTheatreId);
-            SqlParameters.Add("@StatusId",   3 );
-            SqlParameters.Add("@StartDate", blocking.StartDate );
+            SqlParameters.Add("@StatusId", 3);
+            SqlParameters.Add("@StartDate", blocking.StartDate);
             SqlParameters.Add("@EndDate", blocking.EndDate);
-            SqlParameters.Add("@Duration",   blocking.Duration );
-            SqlParameters.Add("@ModifiedBy", blocking.ModifiedBy );
+            SqlParameters.Add("@Duration", blocking.Duration);
+            SqlParameters.Add("@ModifiedBy", blocking.ModifiedBy);
             SqlParameters.Add("@Id", blocking.Id);
-            var result= await _sqlHelper.QueryAsync<Blocking>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<Blocking>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 
@@ -313,19 +313,19 @@ namespace BCMCH.OTM.Data.Booking
             const string StoredProcedure = "[OTM].[SelectPatientDetails]";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@registrationNo", registrationNo);
-            var result= await _sqlHelper.QueryAsync<Patient>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            var result = await _sqlHelper.QueryAsync<Patient>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
         #endregion
 
-        
+
 
 
         // PATHOLOGY START
         #region PATHOLOGY
         public async Task<IEnumerable<Pathology>> GetPathology()
         {
-            string Query =@"
+            string Query = @"
                             SELECT 
                                 Pathology.[Id],
                                 Pathology.[RegistrationNo],
@@ -363,13 +363,13 @@ namespace BCMCH.OTM.Data.Booking
                            ";
             var SqlParameters = new DynamicParameters();
             // SqlParameters.Add("@RegNo", Pathology.RegistrationNo);
-            var result= await _sqlHelper.QueryAsync<Pathology>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<Pathology>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 
         public async Task<IEnumerable<PathologySample>> GetPathologyDataWithId(int id)
         {
-            string Query =@"
+            string Query = @"
                 SELECT TOP (1000) [Id]
                     ,[PathologyId]
                     ,[ProcedureId]
@@ -383,13 +383,13 @@ namespace BCMCH.OTM.Data.Booking
             ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@PathologyId", id);
-            var result= await _sqlHelper.QueryAsync<PathologySample>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<PathologySample>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 
         public async Task<IEnumerable<int>> PostPathology(Pathology Pathology)
         {
-            string Query =@"
+            string Query = @"
                             INSERT INTO [OTM].[Pathology]
                                 (
                                     [RegistrationNo] ,
@@ -441,17 +441,17 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@status", 1);
             SqlParameters.Add("@IsDeleted", 0);
             SqlParameters.Add("@DateTime", Pathology.Datetime);
-        
-            var result= await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
+
+            var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
             return result;
-            
+
         }
 
 
 
         public async Task<IEnumerable<int>> PatchPathology(Pathology pathology)
         {
-            string Query =@"
+            string Query = @"
                             UPDATE [OTM].[Pathology]
                             SET
                                 [RegistrationNo]    = @RegNo    ,
@@ -498,16 +498,16 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@DateTime", pathology.Datetime);
             SqlParameters.Add("@status", 1);
             SqlParameters.Add("@IsDeleted", 0);
-            
-        
-            var result= await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
+
+
+            var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
             return result;
-            
+
         }
 
         public async Task<IEnumerable<int>> DeletePathology(String idArray)
         {
-            string Query =@"
+            string Query = @"
                             UPDATE [OTM].[Pathology]
                             SET
                                 [IsDeleted] = 1
@@ -516,9 +516,9 @@ namespace BCMCH.OTM.Data.Booking
                            ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@IdArray", idArray);
-            var result= await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
             return result;
-            
+
         }
         #endregion
         // PATHOLOGY END
@@ -528,7 +528,7 @@ namespace BCMCH.OTM.Data.Booking
         #region RemovableDevices
         public async Task<IEnumerable<int>> PostRemovableDevices(RemovableDevicesMain removableDevicesMain)
         {
-            string Query =@"
+            string Query = @"
                             INSERT INTO [OTM].[RemovableDevicesMain]
                             (
                                 [RegistrationNo],
@@ -589,15 +589,15 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@PostedBy", removableDevicesMain.PostedBy);
             SqlParameters.Add("@DateTime", removableDevicesMain.Datetime);
             SqlParameters.Add("@nestedData", removableDevicesMain.NestedData);
-            
-            
-            var result= await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
+
+
+            var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 
         public async Task<IEnumerable<int>> EditRemovableDevices(RemovableDevicesMain removableDevicesMain)
         {
-            string Query =@"
+            string Query = @"
                             UPDATE [OTM].[RemovableDevicesMain]
                             SET
                                 [RegistrationNo] = @RegistrationNo,
@@ -643,7 +643,7 @@ namespace BCMCH.OTM.Data.Booking
                             
                            ";
             var SqlParameters = new DynamicParameters();
-            
+
             SqlParameters.Add("@RemovableDevicesMainId", removableDevicesMain.Id);
             SqlParameters.Add("@RegistrationNo", removableDevicesMain.RegistrationNo);
             SqlParameters.Add("@status", removableDevicesMain.Status);
@@ -651,15 +651,15 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@PostedBy", removableDevicesMain.PostedBy);
             SqlParameters.Add("@DateTime", removableDevicesMain.Datetime);
             SqlParameters.Add("@nestedData", removableDevicesMain.NestedData);
-            
-            
-            var result= await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
+
+
+            var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 
         public async Task<IEnumerable<int>> DeleteRemovableDeviceMain(string idArray)
         {
-            string Query =@"
+            string Query = @"
                             UPDATE [OTM].[RemovableDevicesMain]
                             SET
                                 [IsDeleted] = 1
@@ -668,14 +668,14 @@ namespace BCMCH.OTM.Data.Booking
                            ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@IdArray", idArray);
-            var result= await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
             return result;
-            
+
         }
 
         public async Task<IEnumerable<RemovableDevicesMain>> GetRemovableDevices()
         {
-            string Query =@"
+            string Query = @"
                             SELECT
                                 RemovableDevices.[Id],
                                 RemovableDevices.[RegistrationNo],
@@ -711,14 +711,14 @@ namespace BCMCH.OTM.Data.Booking
                                 RemovableDevices.[IsDeleted]=0;
                            ";
             var SqlParameters = new DynamicParameters();
-            var result= await _sqlHelper.QueryAsync<RemovableDevicesMain>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<RemovableDevicesMain>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 
 
         public async Task<IEnumerable<RemovableDevicesSelcted>> GetRemovableDevicesSelected(int id)
         {
-            string Query =@"
+            string Query = @"
                             SELECT TOP (1000) 
                                 [Id]
                                 ,[RemovableDeviceMainId]
@@ -734,7 +734,7 @@ namespace BCMCH.OTM.Data.Booking
                            ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@RemovableDeviceId", id);
-            var result= await _sqlHelper.QueryAsync<RemovableDevicesSelcted>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<RemovableDevicesSelcted>(Query, SqlParameters, CommandType.Text);
             return result;
         }
         #endregion
@@ -764,7 +764,8 @@ namespace BCMCH.OTM.Data.Booking
                 var result = await _sqlHelper.QueryAsync<NonOP>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
                 return result;
             }
-            catch(Exception ex) {
+            catch (Exception ex)
+            {
                 Console.WriteLine(ex);
                 throw ex;
             }
@@ -786,7 +787,7 @@ namespace BCMCH.OTM.Data.Booking
 
         public async Task<IEnumerable<NonOP>> EditNonOPRequests(NonOP nonOP)
         {
-            const string StoredProcedure = "[OTM].[InsertNonOP]";
+            const string StoredProcedure = "[OTM].[UpdateNonOP]";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@PatientUHID", nonOP.PatientUHID);
             SqlParameters.Add("@PatientName", nonOP.PatientName);
@@ -803,5 +804,5 @@ namespace BCMCH.OTM.Data.Booking
             return result;
         }
     }
-    
+
 }

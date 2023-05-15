@@ -506,7 +506,7 @@ namespace BCMCH.OTM.Data.Master
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@operationTheatreId", operationId);
             SqlParameters.Add("@StartDateToSearch", startDate);
-            SqlParameters.Add("@@EndDateToSearch", endDate);
+            SqlParameters.Add("@EndDateToSearch", endDate);
             var result = await _sqlHelper.QueryAsync<OTValidation>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
