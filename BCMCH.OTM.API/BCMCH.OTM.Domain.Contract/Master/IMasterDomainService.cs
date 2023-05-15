@@ -40,8 +40,5 @@ namespace BCMCH.OTM.Domain.Contract.Master
         Task<IEnumerable<PostAnswer>> PostFormAnswer(PostAnswer answer);
         Task<IEnumerable<GetAnswer>> GetFormAnswer(int eventId);
 
-        Task<Envelope<IEnumerable<NonOP>>> AddNonOPRequest(NonOP nonOP);
-        Task<IEnumerable<NonOP>> GetNonOPRequests();
-        Task<Envelope<IEnumerable<NonOP>>> EditNonOPRequests(NonOP nonOP);
     }
 }

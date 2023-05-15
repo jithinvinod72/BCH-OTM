@@ -1,5 +1,5 @@
 ﻿using System;
-namespace BCMCH.OTM.API.Shared.Master
+namespace BCMCH.OTM.API.Shared.Booking
 {
 	public class NonOP
 	{

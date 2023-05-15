@@ -510,52 +510,7 @@ namespace BCMCH.OTM.API.Controllers
         #endregion
 
 
-        #region NON OP
-        [HttpPost]
-        [Route("add-non-op-request")]
-        public async Task<IActionResult> AddNonOPRequest(NonOP nonOP)
-        {
-            try
-            {
-                var result = await _masterService.AddNonOPRequest(nonOP);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return Ok(new ResponseVM<bool>(false, ex.Message));
-            }
-        }
-
-        [Route("get-non-op-requests")]
-        public async Task<IActionResult> GetNoonOPRequests()
-        {
-
-            try
-            {
-                var result = await _masterService.GetNonOPRequests();
-                return Ok(new ResponseVM<IEnumerable<NonOP>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
-            }
-            catch (Exception ex)
-            {
-                return Ok(new ResponseVM<bool>(false, ex.Message));
-            }
-        }
-
-        [HttpPost]
-        [Route("edit-non-op-requests")]
-        public async Task<IActionResult> EditBlocking(NonOP nonOP)
-        {
-            try
-            {
-                var result = await _masterService.EditNonOPRequests(nonOP);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return Ok(new ResponseVM<bool>(false, ex.Message));
-            }
-        }
-        #endregion
+        
     }
 }
 

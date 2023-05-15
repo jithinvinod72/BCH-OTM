@@ -511,62 +511,6 @@ namespace BCMCH.OTM.Data.Master
             return result;
         }
 
-        public async Task<IEnumerable<NonOP>> AddNonOPRequest(NonOP nonOP)
-        {
-            try
-            {
-                const string StoredProcedure = "[OTM].[InsertNonOP]";
-                var SqlParameters = new DynamicParameters();
-                SqlParameters.Add("@PatientUHID", nonOP.PatientUHID);
-                SqlParameters.Add("@PatientName", nonOP.PatientName);
-                SqlParameters.Add("@PatientAge", nonOP.PatientAge);
-                SqlParameters.Add("@Sex", nonOP.Sex);
-                SqlParameters.Add("@PriorityLevel", nonOP.PriorityLevel);
-                SqlParameters.Add("@DateToBePerformed", nonOP.DateToBePerformed);
-                SqlParameters.Add("@Comments", nonOP.Comments);
-                SqlParameters.Add("@ProcedureToPerform", nonOP.ProcedureToPerform);
-                SqlParameters.Add("@ProvisionalDiagnosis", nonOP.ProvisionalDiagnosis);
-                SqlParameters.Add("@AdmittedLocation", nonOP.AdmittedLocation);
-                var result = await _sqlHelper.QueryAsync<NonOP>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
-                return result;
-            }
-            catch(Exception ex) {
-                Console.WriteLine(ex);
-                throw ex;
-            }
-
-
-        }
-
-        public async Task<IEnumerable<NonOP>> GetNonOPRequests()
-        {
-            const string Query = @"
-                                    SELECT 
-                                    *
-                                    FROM [OTM].[NonOP]                     
-                                 ";
-            var SqlParameters = new DynamicParameters();
-            var result = await _sqlHelper.QueryAsync<NonOP>(Query, SqlParameters, CommandType.Text);
-            return result;
-        }
-
-        public async Task<IEnumerable<NonOP>> EditNonOPRequests(NonOP nonOP)
-        {
-            const string StoredProcedure = "[OTM].[InsertNonOP]";
-            var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@PatientUHID", nonOP.PatientUHID);
-            SqlParameters.Add("@PatientName", nonOP.PatientName);
-            SqlParameters.Add("@PatientAge", nonOP.PatientAge);
-            SqlParameters.Add("@Sex", nonOP.Sex);
-            SqlParameters.Add("@PriorityLevel", nonOP.PriorityLevel);
-            SqlParameters.Add("@DateToBePerformed", nonOP.DateToBePerformed);
-            SqlParameters.Add("@Comments", nonOP.Comments);
-            SqlParameters.Add("@ProcedureToPerform", nonOP.ProcedureToPerform);
-            SqlParameters.Add("@ProvisionalDiagnosis", nonOP.ProvisionalDiagnosis);
-            SqlParameters.Add("@AdmittedLocation", nonOP.AdmittedLocation);
-            SqlParameters.Add("@Id", nonOP.Id);
-            var result = await _sqlHelper.QueryAsync<NonOP>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
-            return result;
-        }
+        
     }
 }

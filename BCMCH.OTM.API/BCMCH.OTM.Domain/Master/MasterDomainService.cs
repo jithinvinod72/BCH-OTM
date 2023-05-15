@@ -354,26 +354,6 @@ namespace BCMCH.OTM.Domain.Master
         }
         #endregion
 
-        #region NON OP
-
-        public async Task<Envelope<IEnumerable<NonOP>>> AddNonOPRequest(NonOP nonOP)
-        {
-            var result = await _masterDataAccess.AddNonOPRequest(nonOP);
-            return new Envelope<IEnumerable<NonOP>>(true, "data-update-success", result);
-        }
-
-        public async Task<IEnumerable<NonOP>> GetNonOPRequests()
-        {
-            var result = await _masterDataAccess.GetNonOPRequests();
-            return result;
-        }
-
-        public async Task<Envelope<IEnumerable<NonOP>>> EditNonOPRequests(NonOP nonOP)
-        {           
-            var result = await _masterDataAccess.EditNonOPRequests(nonOP);
-            return new Envelope<IEnumerable<NonOP>>(true, "data-update-success", result);
-        }
-        #endregion
 
     }
 }

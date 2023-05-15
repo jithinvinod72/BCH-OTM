@@ -441,5 +441,27 @@ namespace BCMCH.OTM.Domain.Booking
 
         // Removable Devices START
 
+
+
+        #region NON OP
+        public async Task<Envelope<IEnumerable<NonOP>>> AddNonOPRequest(NonOP nonOP)
+        {
+            var result = await _bookingDataAccess.AddNonOPRequest(nonOP);
+            return new Envelope<IEnumerable<NonOP>>(true, "data-update-success", result);
+        }
+
+        public async Task<IEnumerable<NonOP>> GetNonOPRequests()
+        {
+            var result = await _bookingDataAccess.GetNonOPRequests();
+            return result;
+        }
+
+        public async Task<Envelope<IEnumerable<NonOP>>> EditNonOPRequests(NonOP nonOP)
+        {           
+            var result = await _bookingDataAccess.EditNonOPRequests(nonOP);
+            return new Envelope<IEnumerable<NonOP>>(true, "data-update-success", result);
+        }
+        #endregion
+
     }
 }

@@ -45,5 +45,12 @@ namespace BCMCH.OTM.Domain.Contract.Booking
         Task<IEnumerable<int>> DeleteRemovableDeviceMain(string idArray);
         Task<IEnumerable<int>> PostRemovableDevices(RemovableDevicesMain removableDevicesMain);
         Task<IEnumerable<int>> EditRemovableDevices(RemovableDevicesMain removableDevicesMain);
+
+
+
+        // non op
+        Task<Envelope<IEnumerable<NonOP>>> AddNonOPRequest(NonOP nonOP);
+        Task<IEnumerable<NonOP>> GetNonOPRequests();
+        Task<Envelope<IEnumerable<NonOP>>> EditNonOPRequests(NonOP nonOP);
     }
 }
