@@ -102,6 +102,23 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
 
+
+        [HttpGet]
+        [Route("get-employees-with-category-id")]
+        public async Task<IActionResult> GetEmployeesWithCategoryId(int emplyoeeCategoryId)
+        {
+            try
+            {
+                var result = await _masterService.GetEmployeesWithCategoryId(emplyoeeCategoryId);
+                return Ok(new ResponseVM<IEnumerable<Employee>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        
+
         [HttpGet]
         [Route("get-user-role")]
         public async Task<IActionResult> GetOTUserRole(int employeeId)

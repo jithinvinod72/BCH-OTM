@@ -60,6 +60,9 @@ namespace BCMCH.OTM.Data.Master
             var result = await _sqlHelper.QueryAsync<Anaesthesia>(Query, SqlParameters, CommandType.Text);
             return result;
         }
+
+
+        // Employees START
         public async Task<IEnumerable<Employee>> GetEmployees(string departmentArray)
         {
             const string StoredProcedure = "[OTM].[SelectEmployeesWithDepartmentsMapping]";
@@ -68,6 +71,45 @@ namespace BCMCH.OTM.Data.Master
             var result = await _sqlHelper.QueryAsync<Employee>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
+        public async Task<IEnumerable<Employee>> GetEmployeesWithCategoryId(int emplyoeeCategoryId)
+        {
+            const string Query = @"
+                                    SELECT 
+                                        Employees.Id                    AS EmployeeId,
+                                        Employees.Code                  AS EmployeeCode,
+                                        Employees.Title                 AS Title,
+                                        Employees.FirstName             AS FirstName,
+                                        Employees.LastName              AS LastName,
+                                        Employees.MiddleName            AS MiddleName,
+                                        Employees.DepartmentID          AS DepartmentId,
+                                        [EmployeeCategories].[Id]       AS EmployeeCategoryId,
+                                        [EmployeeCategories].[Name]     AS CategoryName,
+                                        dbo.Departments.TypeCode        AS departmentTypeCode,
+                                        dbo.Departments.Name            AS departmentName
+                                    FROM 
+                                        HR.Employees
+                                    INNER JOIN 
+                                        [dbo].[Departments] ON [HR].[Employees].DepartmentID= [dbo].[Departments].[Id]
+                                    LEFT JOIN 
+                                            [HR].[EmployeeCategories] AS EmployeeCategories ON [HR].[Employees].CategoryID = EmployeeCategories.[Id]
+                                    WHERE
+                                            HR.Employees.CurrentStatus='A'
+                                        AND
+                                            HR.Employees.Active=1
+                                        AND 
+                                            dbo.Departments.TypeCode=5
+                                        AND 
+                                            EmployeeCategories.Id=@emplyoeeCategoryId
+                                    ORDER BY 
+                                        HR.Employees.FirstName
+
+                                 ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@emplyoeeCategoryId", emplyoeeCategoryId);
+            var result = await _sqlHelper.QueryAsync<Employee>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+        
         public async Task<IEnumerable<Employee>> GetEmployeeDetails(int employeeCode)
         {
             const string StoredProcedure = "[OTM].[SelectEmployeeDetails]";
@@ -76,6 +118,8 @@ namespace BCMCH.OTM.Data.Master
             var result = await _sqlHelper.QueryAsync<Employee>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
+        // Employees END
+
 
         public async Task<IEnumerable<UserRoleDetails>> GetOTUserRole(int employeeId)
         {

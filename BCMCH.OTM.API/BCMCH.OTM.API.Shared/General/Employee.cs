@@ -16,6 +16,7 @@ namespace BCMCH.OTM.API.Shared.General
         public string? LastName {get; set;}
         public string? MiddleName {get; set;}
         public int? EmployeeCategoryId {get; set;}
+        public int? CategoryId {get; set;}
         public string? CategoryName {get; set;}
         public string? departmentTypeCode {get; set;}
         public string? departmentName {get; set;}

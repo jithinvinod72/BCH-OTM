@@ -11,6 +11,7 @@ namespace BCMCH.OTM.Domain.Contract.Master
         Task<IEnumerable<Anaesthesia>> GetAnaesthesiaList();
         Task<IEnumerable<Employee>> GetEmployees(string departmentArray);
         Task<IEnumerable<Employee>> GetEmployeeDetails(int employeeCode);
+        Task<IEnumerable<Employee>> GetEmployeesWithCategoryId(int emplyoeeCategoryId);
 
         // OT ROLE START
         Task<UserRole> GetOTUserRole(int employeeId);

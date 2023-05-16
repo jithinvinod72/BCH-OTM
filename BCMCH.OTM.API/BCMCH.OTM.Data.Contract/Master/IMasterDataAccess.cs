@@ -16,6 +16,8 @@ namespace BCMCH.OTM.Data.Contract.Master
         Task<IEnumerable<int>> CreateAdminRolesAndRigthts(PostAdminRolesAndRights otAdminAndRights);
         Task<IEnumerable<Resources>> GetOTResources();
         Task<IEnumerable<Employee>> GetEmployeeDetails(int employeeCode);
+        Task<IEnumerable<Employee>> GetEmployeesWithCategoryId(int emplyoeeCategoryId);
+
         Task<IEnumerable<OperationTheatre>> GetOperationTheatres();
         Task<IEnumerable<Surgery>> GetSurgeryList(int _pageNumber, int _rowsPerPage, string? _searchKeyword="");
         Task<IEnumerable<GetAllocationModel>> GetAllocations(string startDate, string endDate);
@@ -38,6 +40,7 @@ namespace BCMCH.OTM.Data.Contract.Master
         //validation- ot allocation
         Task<IEnumerable<OTValidation>> CheckAllocationByOperationThearter(string startDate, string endDate, int operationId);
         Task<IEnumerable<NonOperativeProcedureList>> GetNonOperativeProceduresList();
+        
 
         
     }
