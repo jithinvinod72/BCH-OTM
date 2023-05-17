@@ -99,11 +99,15 @@ namespace BCMCH.OTM.Data.Booking
                                     FirstName,
                                     MiddleName,
                                     LastName,
-                                    DepartmentID 
+                                    DepartmentID ,
+                                    [EmployeeCategories].[Id]       AS EmployeeCategoryId,
+                                    [EmployeeCategories].[Name]     AS CategoryName
                                 FROM  
                                     [OTM].[EmployeeMapping]
                                 LEFT JOIN 
                                     HR.[Employees] ON OTM.EmployeeMapping.EmployeeId =HR.[Employees].Id
+                                LEFT JOIN 
+                                    [HR].[EmployeeCategories] AS EmployeeCategories ON [HR].[Employees].CategoryID = EmployeeCategories.[Id]
                                 WHERE 
                                     BookingId=@bookingId
                             ";

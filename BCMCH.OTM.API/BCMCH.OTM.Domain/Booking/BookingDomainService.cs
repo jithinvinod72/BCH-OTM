@@ -184,16 +184,19 @@ namespace BCMCH.OTM.Domain.Booking
         }
         public async Task<EventFields> GetEventEquipmentsAndEmployees(int bookingId)
         {
-            var equipments = await _bookingDataAccess.GetEventEquipments(bookingId);
-            var employees  = await _bookingDataAccess.GetEventEmployees(bookingId);
-            var departmentIds = employees.Select(o => o.DepartmentID).Distinct();
+            var equipments  = await _bookingDataAccess.GetEventEquipments(bookingId);
+            var employees   = await _bookingDataAccess.GetEventEmployees(bookingId);
+            var surgeons    = employees.Where(employee => employee.EmployeeCategoryId==1);
+            var nurses      = employees.Where(employee => employee.EmployeeCategoryId==2);
 
+            var departmentIds = surgeons.Select(o => o.DepartmentID).Distinct();
             var allDepartments = await _bookingDataAccess.GetDepartments();
             var filteredDepartments = allDepartments.Where(o=>  departmentIds.Contains(o.Id));
             
             var fields = new EventFields();
             fields.Equipments = equipments;
-            fields.Surgeons = employees;
+            fields.Surgeons = surgeons;
+            fields.Nurses = nurses;
             fields.Departments = filteredDepartments;
             
             return fields;

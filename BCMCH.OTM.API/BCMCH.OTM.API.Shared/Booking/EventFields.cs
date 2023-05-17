@@ -13,6 +13,7 @@ namespace BCMCH.OTM.API.Shared.Booking
     {
         public IEnumerable<Departments>? Departments {get;set;}
         public IEnumerable<Employee>? Surgeons {get;set;}
+        public IEnumerable<Employee>? Nurses {get;set;}
         public IEnumerable<Equipments>? Equipments {get;set;}       
     }
     
