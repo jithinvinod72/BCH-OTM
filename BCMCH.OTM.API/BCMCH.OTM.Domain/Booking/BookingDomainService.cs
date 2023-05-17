@@ -185,7 +185,10 @@ namespace BCMCH.OTM.Domain.Booking
         public async Task<EventFields> GetEventEquipmentsAndEmployees(int bookingId)
         {
             var equipments  = await _bookingDataAccess.GetEventEquipments(bookingId);
+            var medicines  = await _bookingDataAccess.GetEventMedicines(bookingId);
+            var materials  = await _bookingDataAccess.GetEventMaterials(bookingId);
             var employees   = await _bookingDataAccess.GetEventEmployees(bookingId);
+            
             var surgeons    = employees.Where(employee => employee.EmployeeCategoryId==1);
             var nurses      = employees.Where(employee => employee.EmployeeCategoryId==2);
 
@@ -195,6 +198,8 @@ namespace BCMCH.OTM.Domain.Booking
             
             var fields = new EventFields();
             fields.Equipments = equipments;
+            fields.Medicines = medicines;
+            fields.Materials = materials;
             fields.Surgeons = surgeons;
             fields.Nurses = nurses;
             fields.Departments = filteredDepartments;
@@ -238,6 +243,9 @@ namespace BCMCH.OTM.Domain.Booking
             booking.EmployeeIdArray="["+booking.EmployeeIdArray+"]";
             booking.EquipmentsIdArray="["+booking.EquipmentsIdArray+"]";
             booking.SurgeriesIdArray="["+booking.SurgeriesIdArray+"]";
+
+            booking.MaterialsIdArray="["+booking.MaterialsIdArray+"]";
+            booking.MedicineIdArray="["+booking .MedicineIdArray+"]";
             
             var result = await _bookingDataAccess.AddBooking(booking);
             return new Envelope<IEnumerable<int>>(true, "booking created", result); ;
@@ -292,6 +300,9 @@ namespace BCMCH.OTM.Domain.Booking
             booking.EmployeeIdArray="["+booking.EmployeeIdArray+"]";
             booking.EquipmentsIdArray="["+booking.EquipmentsIdArray+"]";
             booking.SurgeriesIdArray="["+booking.SurgeriesIdArray+"]";
+            booking.MaterialsIdArray="["+booking.MaterialsIdArray+"]";
+            booking.MedicineIdArray="["+booking .MedicineIdArray+"]";
+            
             var result = await _bookingDataAccess.UpdateBooking(booking);
             return new Envelope<IEnumerable<UpdateBookingModel>>(true,"data-update-success", result);
         }

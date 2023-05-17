@@ -57,6 +57,8 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@EmployeeIdArray", booking.EmployeeIdArray);
             SqlParameters.Add("@EquipmentsIdArray", booking.EquipmentsIdArray);
             SqlParameters.Add("@SurgeriesIdArray", booking.SurgeriesIdArray);
+            SqlParameters.Add("@MaterialsIdArray", booking.MaterialsIdArray);
+            SqlParameters.Add("@MedicineIdArray", booking.MedicineIdArray);
 
             var result = await _sqlHelper.QueryAsync<int>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
@@ -83,13 +85,59 @@ namespace BCMCH.OTM.Data.Booking
                             LEFT JOIN  
                                 [OTM].[EquipmentsMaster] ON [EquipmentId] =[OTM].[EquipmentsMaster].[Id]
                             WHERE 
-                                BookingId=@bookingId";
+                                BookingId=@bookingId 
+                                AND 
+                                [OTM].[EquipmentsMapping].[EquipmentId] IS NOT NULL
+                            ";
 
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@bookingId", bookingId);
             var result = await _sqlHelper.QueryAsync<Equipments>(Query, SqlParameters, CommandType.Text);
             return result;
         }
+        public async Task<IEnumerable<Equipments>> GetEventMedicines(int bookingId)
+        {
+            string Query = @"                            
+                            SELECT
+                                [EquipmentsMaster].Id ,
+                                [Name],
+                                [Description]
+                            FROM [OTM].[EquipmentsMapping]
+                                LEFT JOIN
+                                [OTM].[EquipmentsMaster] ON [MedicineId] =[OTM].[EquipmentsMaster].[Id]
+                            WHERE 
+                                BookingId=@bookingId
+                                AND
+                                [OTM].[EquipmentsMapping].[MedicineId] IS NOT NULL
+                            ";
+
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@bookingId", bookingId);
+            var result = await _sqlHelper.QueryAsync<Equipments>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+        public async Task<IEnumerable<Equipments>> GetEventMaterials(int bookingId)
+        {
+            string Query = @"
+                            SELECT
+                                [EquipmentsMaster].Id ,
+                                [Name],
+                                [Description]
+                            FROM [OTM].[EquipmentsMapping]
+                                LEFT JOIN
+                                [OTM].[EquipmentsMaster] ON [MaterialId] =[OTM].[EquipmentsMaster].[Id]
+                            WHERE 
+                                BookingId=@bookingId
+                                AND
+                                [OTM].[EquipmentsMapping].[MaterialId] IS NOT NULL
+                            ";
+
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@bookingId", bookingId);
+            var result = await _sqlHelper.QueryAsync<Equipments>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
         public async Task<IEnumerable<Employee>> GetEventEmployees(int bookingId)
         {
             // used to fetch the employees with their booking Id
@@ -183,6 +231,9 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@EmployeeIdArray", booking.EmployeeIdArray);
             SqlParameters.Add("@EquipmentsIdArray", booking.EquipmentsIdArray);
             SqlParameters.Add("@SurgeriesIdArray", booking.SurgeriesIdArray);
+
+            SqlParameters.Add("@MaterialsIdArray", booking.MaterialsIdArray);
+            SqlParameters.Add("@MedicineIdArray", booking.MedicineIdArray);
 
             var result = await _sqlHelper.QueryAsync<UpdateBookingModel>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;

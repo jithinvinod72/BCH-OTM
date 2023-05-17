@@ -26,6 +26,9 @@ namespace BCMCH.OTM.API.Shared.Booking
         public string? RequestForSpecialMeterial {get; set; }
         public string? EmployeeIdArray {get; set; }
         public string? EquipmentsIdArray {get; set; }
+        public string? MaterialsIdArray {get; set; }
+        public string? MedicineIdArray {get; set; }
+        
     }
 }
 
