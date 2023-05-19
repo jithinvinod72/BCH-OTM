@@ -344,3 +344,4 @@ test.pem
 BCMCH.OTM.API/Dockerfile
 BCMCH.OTM.API/BCMCH.OTM.API/Dockerfile
 BCMCH.OTM.API/backend.zip
+bch.pem

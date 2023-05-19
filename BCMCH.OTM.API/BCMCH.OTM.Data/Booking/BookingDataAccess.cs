@@ -865,6 +865,7 @@ namespace BCMCH.OTM.Data.Booking
             string Query = @"
                             UPDATE [OTM].[Bookings]
                             SET
+                                OtComplexEntry      = @OtComplexEntry     , 
                                 PreOpEntryTime      = @PreOpEntryTime     ,
                                 PreOpExitTime       = @PreOpExitTime      ,
                                 OtEntryTime         = @OtEntryTime        ,
@@ -890,7 +891,6 @@ namespace BCMCH.OTM.Data.Booking
             var result = await _sqlHelper.QueryAsync<BookingTime>(Query, SqlParameters, CommandType.Text);
             return result;
         }
-
 
     }
 

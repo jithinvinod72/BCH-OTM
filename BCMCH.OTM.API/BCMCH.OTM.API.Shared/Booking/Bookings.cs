@@ -54,6 +54,15 @@ namespace BCMCH.OTM.API.Shared.Booking
         public string? PatientDateOfBirth {get;set;}
         public int? PatientGender {get;set;}
         public List<Surgeries> SurgeriesMapping {get; set; }
+
+        public string? OtComplexEntry {get;set;}
+        public string? PreOpEntryTime {get;set;}
+        public string? PreOpExitTime {get;set;}
+        public string? OtEntryTime {get;set;}
+        public string? OtExitTime {get;set;}
+        public string? PostOpEntryTime {get;set;}
+        public string? PostOpExitTime {get;set;}
+        public string? AverageSurgeryTime {get;set;}
     }
     
 }
