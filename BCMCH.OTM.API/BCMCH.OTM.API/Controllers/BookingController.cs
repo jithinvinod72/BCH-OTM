@@ -510,5 +510,23 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
         #endregion
+
+        // update timeing 
+
+        [HttpPatch]
+        [Route("update-booking-timing")]
+        public async Task<IActionResult> PostOTTimings(BookingTime bookingTime)
+        {
+            try
+            {
+                var result = await _bookingService.PostOTTimings(bookingTime);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        // public async Task<IEnumerable<BookingTime>> PostOTTimings(BookingTime bookingTime)
     }
 }

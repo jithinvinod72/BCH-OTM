@@ -825,7 +825,6 @@ namespace BCMCH.OTM.Data.Booking
                 throw ex;
             }
 
-
         }
 
         public async Task<IEnumerable<NonOP>> GetNonOPRequests()
@@ -858,6 +857,41 @@ namespace BCMCH.OTM.Data.Booking
             var result = await _sqlHelper.QueryAsync<NonOP>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
+
+
+        // Time Updates 
+        public async Task<IEnumerable<BookingTime>> PostOTTimings(BookingTime bookingTime)
+        {
+            string Query = @"
+                            UPDATE [OTM].[Bookings]
+                            SET
+                                PreOpEntryTime      = @PreOpEntryTime     ,
+                                PreOpExitTime       = @PreOpExitTime      ,
+                                OtEntryTime         = @OtEntryTime        ,
+                                OtExitTime          = @OtExitTime         ,
+                                PostOpEntryTime     = @PostOpEntryTime    ,
+                                PostOpExitTime      = @PostOpExitTime     ,
+                                AverageSurgeryTime  = @AverageSurgeryTime  
+                            WHERE  
+                                [Bookings].[Id]=@BookingId
+                           ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add( "@BookingId"         , bookingTime.BookingId ) ;
+            SqlParameters.Add( "@OtComplexEntry"    , bookingTime.OtComplexEntry ) ;
+            SqlParameters.Add( "@PreOpEntryTime"    , bookingTime.PreOpEntryTime ) ;
+            SqlParameters.Add( "@PreOpExitTime"     , bookingTime.PreOpExitTime ) ;
+            SqlParameters.Add( "@OtEntryTime"       , bookingTime.OtEntryTime ) ;
+            SqlParameters.Add( "@OtExitTime"        , bookingTime.OtExitTime ) ;
+            SqlParameters.Add( "@PostOpEntryTime"   , bookingTime.PostOpEntryTime ) ;
+            SqlParameters.Add( "@PostOpExitTime"    , bookingTime.PostOpExitTime ) ;
+            SqlParameters.Add( "@AverageSurgeryTime", bookingTime.AverageSurgeryTime ) ;
+            
+
+            var result = await _sqlHelper.QueryAsync<BookingTime>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
+
     }
 
 }
