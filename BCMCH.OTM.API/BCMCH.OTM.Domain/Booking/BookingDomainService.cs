@@ -125,6 +125,36 @@ namespace BCMCH.OTM.Domain.Booking
                     }
                     var StartDateOrderDes = queryResultPage.OrderByDescending(s => s.StartDate);
                     return StartDateOrderDes;
+                case "COMPLEX_ENTRY":
+                    if(sortType=="ASCENDING"){
+                        var StartDateOrderAsc = queryResultPage.OrderBy(s => s.OtComplexEntry);
+                        return StartDateOrderAsc;
+                    }
+                    var complexEntryDesc = queryResultPage.OrderByDescending(s => s.OtComplexEntry);
+                    return complexEntryDesc;
+                case "OT_ENTRY":
+                    if(sortType=="ASCENDING"){
+                        var StartDateOrderAsc = queryResultPage.OrderBy(s => s.OtEntryTime);
+                        return StartDateOrderAsc;
+                    }
+                    var otEntryDesc = queryResultPage.OrderByDescending(s => s.OtEntryTime);
+                    return otEntryDesc;
+                case "POSTOP_ENTRY":
+                    if(sortType=="ASCENDING"){
+                        var StartDateOrderAsc = queryResultPage.OrderBy(s => s.PostOpEntryTime);
+                        return StartDateOrderAsc;
+                    }
+                    var postOpDesc = queryResultPage.OrderByDescending(s => s.PostOpEntryTime);
+                    return postOpDesc;
+
+                case "POSTOP_EXIT":
+                    if(sortType=="ASCENDING"){
+                        var StartDateOrderAsc = queryResultPage.OrderBy(s => s.PostOpExitTime);
+                        return StartDateOrderAsc;
+                    }
+                    var postOpExit = queryResultPage.OrderByDescending(s => s.PostOpExitTime);
+                    return postOpExit;
+
                 default:
                     return queryResultPage;
             }
@@ -137,31 +167,65 @@ namespace BCMCH.OTM.Domain.Booking
             Console.WriteLine("todate : ", toDate);
             var result = await GetBookingsSorted(false, 0,sortValue , sortType , fromDate, toDate);
             // here there will not be any paginations applied 
-            
             var stream = new MemoryStream();
             var package = new OfficeOpenXml.ExcelPackage(stream);
             var worksheet = package.Workbook.Worksheets.FirstOrDefault(x => x.Name == "Attempts");
+            // worksheet.Cells.AutoFitColumns();
             worksheet = package.Workbook.Worksheets.Add("Assessment Attempts");
             int rowCounter =1;
             // UHID 	Name 	Age 	Gender 	Surgery 	Department 	Operation Treater 	Date Time
-            worksheet.Cells[rowCounter, 1].Value = "event id ";
-            worksheet.Cells[rowCounter, 2].Value = "UHID";
-            worksheet.Cells[rowCounter, 3].Value = "Name";
-            worksheet.Cells[rowCounter, 4].Value = "Age";
-            worksheet.Cells[rowCounter, 5].Value = "Gender";
-            worksheet.Cells[rowCounter, 6].Value = "Surgery";
-            worksheet.Cells[rowCounter, 7].Value = "Department";
-            worksheet.Cells[rowCounter, 8].Value = "Operation Theatre";
-            worksheet.Cells[rowCounter, 9].Value = "Start Time";
             
+            // worksheet.Cells[rowCounter, 1].Value = "event id ";
+            // worksheet.Cells[rowCounter, 2].Value = "UHID";
+            // worksheet.Cells[rowCounter, 3].Value = "Name";
+            // worksheet.Cells[rowCounter, 4].Value = "Age";
+            // worksheet.Cells[rowCounter, 5].Value = "Gender";
+            // worksheet.Cells[rowCounter, 6].Value = "Surgery";
+            // worksheet.Cells[rowCounter, 7].Value = "Department";
+            // worksheet.Cells[rowCounter, 8].Value = "Operation Theatre";
+            // worksheet.Cells[rowCounter, 9].Value = "Start Time";
+
+            // Heading Array STOP
+            string[] values = new string[]
+            {
+                "event id",
+                "UHID",
+                "Name",
+                "Age",
+                "Gender",
+                "Surgery",
+                "Department",
+                "Operation Theatre",
+                "Scheduled start Time",
+                "Ot Complex Entry Time",
+                "Pre Op Entry Time",
+                "OT Entry Time",
+                "Post Op Entry Time",
+                "Post Op Exit Time"
+            };
+            // Heading Array STOP
+
+            // Write headings to sheet using looop
+            for (int i = 0; i < values.Length; i++)
+            {
+                worksheet.Cells[rowCounter, i + 1].Value = values[i];
+                // worksheet.Column(i+1).AutoFit();
+            }
+            // Write headings to sheet using looop
+            
+            // ody part 
             foreach (Bookings item in result)
             {
                 if (item.PatientRegistrationNo != null)
                 {
                     rowCounter++;
-
+                    // var properties = item.GetType().GetProperties();
+                    // for (int i = 0; i < properties.Length; i++)
+                    // {
+                    //     var value = properties[i].GetValue(item);
+                    //     worksheet.Cells[rowCounter, i + 1].Value = value?.ToString();
+                    // }
                     worksheet.Cells[rowCounter, 1].Value = item.event_id;
-
                     worksheet.Cells[rowCounter, 2].Value = item.PatientRegistrationNo;
                     worksheet.Cells[rowCounter, 3].Value = item.PatientFirstName + " " + item.PatientMiddleName + " " + item.PatientLastName;
                     worksheet.Cells[rowCounter, 4].Value = FindAgeFromDOB(item.PatientDateOfBirth);
@@ -169,11 +233,16 @@ namespace BCMCH.OTM.Domain.Booking
                     worksheet.Cells[rowCounter, 6].Value = item.SurgeryPrintName;
                     worksheet.Cells[rowCounter, 7].Value = item.DepartmentName;
                     worksheet.Cells[rowCounter, 8].Value = item.TheatreName;
-                    worksheet.Cells[rowCounter, 9].Value = item.StartDate.ToString();
+                    worksheet.Cells[rowCounter, 9].Value = item.StartDate.ToString()  ??string.Empty;
+                    worksheet.Cells[rowCounter, 10].Value = item.OtComplexEntry?.ToString()  ??string.Empty;
+                    worksheet.Cells[rowCounter, 11].Value = item.PreOpEntryTime?.ToString()  ??string.Empty;
+                    worksheet.Cells[rowCounter, 12].Value = item.OtEntryTime?.ToString()  ??string.Empty;
+                    worksheet.Cells[rowCounter, 13].Value = item.PostOpEntryTime?.ToString()  ??string.Empty;
+                    worksheet.Cells[rowCounter, 14].Value = item.PostOpExitTime?.ToString()  ??string.Empty;
                 }
             }
             
-            for (int i = 1; i <= 9; i++) {
+            for (int i = 1; i <= values.Length; i++) {
                 worksheet.Column(i).AutoFit(); 
             }
 
