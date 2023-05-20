@@ -63,7 +63,7 @@ namespace BCMCH.OTM.API.Shared.Booking
         public DateTime? OtExitTime {get;set;}
         public DateTime? PostOpEntryTime {get;set;}
         public DateTime? PostOpExitTime {get;set;}
-        public DateTime? AverageSurgeryTime {get;set;}
+        public float? AverageSurgeryTime {get;set;}
     }
     
 }

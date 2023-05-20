@@ -23,6 +23,30 @@ namespace BCMCH.OTM.Domain.Booking
         #endregion
 
 
+        public float? CalculateHourDifference(DateTime? startTime, DateTime? endTime)
+        {
+            if(!startTime.HasValue  || startTime==DateTime.MinValue){
+                Console.WriteLine( " first if " );
+                return 0;
+            } 
+            if(!endTime.HasValue|| endTime==DateTime.MinValue){
+                Console.WriteLine( " second if " );
+                return 0;
+            }
+
+            if(endTime < startTime){
+                var temp    = startTime;
+                startTime   = endTime ;
+                endTime     = temp;
+            }
+            TimeSpan difference = (TimeSpan)(endTime - startTime);
+            float hourDifference = (float)(difference.TotalMinutes - 10) / 60;
+            int minuteDifference = (int)difference.TotalMinutes;
+
+            return minuteDifference;
+        }
+
+
         // used to fetch surgery id using booking id and populate the booking ienumerable 
         private async Task<IEnumerable<Bookings>> PopulateBookingsWithSurgeries(IEnumerable<Bookings> bookings)
         {
@@ -32,12 +56,31 @@ namespace BCMCH.OTM.Domain.Booking
                 var surgeriesMapping = await _bookingDataAccess.GetEventSurgeries(item.event_id);
                 item.SurgeriesMapping = (List<Surgeries>)surgeriesMapping;
                 item.SurgeriesSelectedString  = string.Join(", \n", item.SurgeriesMapping.Select(s => s.Name));
+
+                Console.WriteLine("");
+                Console.Write( "item.event_id : " );
+                Console.Write( item.event_id );
+                Console.WriteLine("");
+                Console.Write("item.OtEntryTime : ");
+                Console.Write( item.OtEntryTime );
+                Console.WriteLine("");
+                Console.Write( "item.OtExitTime : " );
+                Console.Write( item.OtExitTime );
+
+                Console.WriteLine("");
+                Console.Write( "CalculateHourDifference : " );
+                Console.Write( CalculateHourDifference(item.OtEntryTime, item.OtExitTime) );
+                
+                Console.WriteLine("");
+                
+
+                item.AverageSurgeryTime = CalculateHourDifference(item.OtEntryTime, item.OtExitTime);
             }
             
             return bookings;
         }
-        
 
+    
         private DateTime StringToDateTimeConverter( string dateTime )
         {
             var parsedDate = DateTime.ParseExact(dateTime, "yyyy-MM-ddTHH:mm:ss.fff", CultureInfo.InvariantCulture);
@@ -75,7 +118,6 @@ namespace BCMCH.OTM.Domain.Booking
             
             var result = await _bookingDataAccess.GetBookingList(fromDate, toDate);
             result = (IEnumerable<Bookings>) await PopulateBookingsWithSurgeries(result);
-
             // remove waitinglist 
             result = result.Where(booking=> booking.StatusCode!=4 );
             result = result.Where(booking=> booking.StatusCode!=3 );
@@ -197,7 +239,8 @@ namespace BCMCH.OTM.Domain.Booking
                 "Pre Op Entry Time",
                 "OT Entry Time",
                 "Post Op Entry Time",
-                "Post Op Exit Time"
+                "Post Op Exit Time",
+                "Average Surgery Time"
             };
             // Heading Array STOP
 
@@ -229,6 +272,8 @@ namespace BCMCH.OTM.Domain.Booking
                     worksheet.Cells[rowCounter, 12].Value = item.OtEntryTime?.ToString()  ??string.Empty;
                     worksheet.Cells[rowCounter, 13].Value = item.PostOpEntryTime?.ToString()  ??string.Empty;
                     worksheet.Cells[rowCounter, 14].Value = item.PostOpExitTime?.ToString()  ??string.Empty;
+                    worksheet.Cells[rowCounter, 15].Value = item.AverageSurgeryTime;
+                    // worksheet.Cells[rowCounter, 14].Value = item.PostOpExitTime?.ToString()  ??string.Empty;
                 }
             }
             
