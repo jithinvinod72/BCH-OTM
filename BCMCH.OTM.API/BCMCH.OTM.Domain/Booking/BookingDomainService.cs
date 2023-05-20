@@ -6,6 +6,7 @@ using BCMCH.OTM.Data.Contract.Booking;
 using BCMCH.OTM.Domain.Contract.Booking;
 using BCMCH.OTM.Infrastucture.Generic;
 using OfficeOpenXml;
+using OfficeOpenXml.Style;
 
 namespace BCMCH.OTM.Domain.Booking
 {
@@ -30,7 +31,9 @@ namespace BCMCH.OTM.Domain.Booking
             {
                 var surgeriesMapping = await _bookingDataAccess.GetEventSurgeries(item.event_id);
                 item.SurgeriesMapping = (List<Surgeries>)surgeriesMapping;
+                item.SurgeriesSelectedString  = string.Join(", \n", item.SurgeriesMapping.Select(s => s.Name));
             }
+            
             return bookings;
         }
         
@@ -71,12 +74,15 @@ namespace BCMCH.OTM.Domain.Booking
         {
             
             var result = await _bookingDataAccess.GetBookingList(fromDate, toDate);
+            result = (IEnumerable<Bookings>) await PopulateBookingsWithSurgeries(result);
+
             // remove waitinglist 
             result = result.Where(booking=> booking.StatusCode!=4 );
             result = result.Where(booking=> booking.StatusCode!=3 );
             
             
             var queryResultPage = result;
+            
 
             // if pagination is enabled we will add the functions for that
             if(PaginationEnabled==true){
@@ -166,6 +172,7 @@ namespace BCMCH.OTM.Domain.Booking
             Console.WriteLine("fromdate : ", fromDate);
             Console.WriteLine("todate : ", toDate);
             var result = await GetBookingsSorted(false, 0,sortValue , sortType , fromDate, toDate);
+            
             // here there will not be any paginations applied 
             var stream = new MemoryStream();
             var package = new OfficeOpenXml.ExcelPackage(stream);
@@ -173,18 +180,7 @@ namespace BCMCH.OTM.Domain.Booking
             // worksheet.Cells.AutoFitColumns();
             worksheet = package.Workbook.Worksheets.Add("Assessment Attempts");
             int rowCounter =1;
-            // UHID 	Name 	Age 	Gender 	Surgery 	Department 	Operation Treater 	Date Time
             
-            // worksheet.Cells[rowCounter, 1].Value = "event id ";
-            // worksheet.Cells[rowCounter, 2].Value = "UHID";
-            // worksheet.Cells[rowCounter, 3].Value = "Name";
-            // worksheet.Cells[rowCounter, 4].Value = "Age";
-            // worksheet.Cells[rowCounter, 5].Value = "Gender";
-            // worksheet.Cells[rowCounter, 6].Value = "Surgery";
-            // worksheet.Cells[rowCounter, 7].Value = "Department";
-            // worksheet.Cells[rowCounter, 8].Value = "Operation Theatre";
-            // worksheet.Cells[rowCounter, 9].Value = "Start Time";
-
             // Heading Array STOP
             string[] values = new string[]
             {
@@ -209,31 +205,25 @@ namespace BCMCH.OTM.Domain.Booking
             for (int i = 0; i < values.Length; i++)
             {
                 worksheet.Cells[rowCounter, i + 1].Value = values[i];
-                // worksheet.Column(i+1).AutoFit();
+                worksheet.Cells[rowCounter, i + 1].Style.Font.Bold = true;
             }
             // Write headings to sheet using looop
             
-            // ody part 
+            // body part 
             foreach (Bookings item in result)
             {
                 if (item.PatientRegistrationNo != null)
                 {
                     rowCounter++;
-                    // var properties = item.GetType().GetProperties();
-                    // for (int i = 0; i < properties.Length; i++)
-                    // {
-                    //     var value = properties[i].GetValue(item);
-                    //     worksheet.Cells[rowCounter, i + 1].Value = value?.ToString();
-                    // }
-                    worksheet.Cells[rowCounter, 1].Value = item.event_id;
-                    worksheet.Cells[rowCounter, 2].Value = item.PatientRegistrationNo;
-                    worksheet.Cells[rowCounter, 3].Value = item.PatientFirstName + " " + item.PatientMiddleName + " " + item.PatientLastName;
-                    worksheet.Cells[rowCounter, 4].Value = FindAgeFromDOB(item.PatientDateOfBirth);
-                    worksheet.Cells[rowCounter, 5].Value = item.PatientGender == 1 ? "Female" : "Male";
-                    worksheet.Cells[rowCounter, 6].Value = item.SurgeryPrintName;
-                    worksheet.Cells[rowCounter, 7].Value = item.DepartmentName;
-                    worksheet.Cells[rowCounter, 8].Value = item.TheatreName;
-                    worksheet.Cells[rowCounter, 9].Value = item.StartDate.ToString()  ??string.Empty;
+                    worksheet.Cells[rowCounter, 1].Value  = item.event_id;
+                    worksheet.Cells[rowCounter, 2].Value  = item.PatientRegistrationNo;
+                    worksheet.Cells[rowCounter, 3].Value  = item.PatientFirstName + " " + item.PatientMiddleName + " " + item.PatientLastName;
+                    worksheet.Cells[rowCounter, 4].Value  = FindAgeFromDOB(item.PatientDateOfBirth);
+                    worksheet.Cells[rowCounter, 5].Value  = item.PatientGender == 1 ? "Female" : "Male";
+                    worksheet.Cells[rowCounter, 6].Value  = item.SurgeriesSelectedString;
+                    worksheet.Cells[rowCounter, 7].Value  = item.DepartmentName;
+                    worksheet.Cells[rowCounter, 8].Value  = item.TheatreName;
+                    worksheet.Cells[rowCounter, 9].Value  = item.StartDate.ToString()  ??string.Empty;
                     worksheet.Cells[rowCounter, 10].Value = item.OtComplexEntry?.ToString()  ??string.Empty;
                     worksheet.Cells[rowCounter, 11].Value = item.PreOpEntryTime?.ToString()  ??string.Empty;
                     worksheet.Cells[rowCounter, 12].Value = item.OtEntryTime?.ToString()  ??string.Empty;
