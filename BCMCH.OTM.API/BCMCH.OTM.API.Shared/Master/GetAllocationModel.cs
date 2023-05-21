@@ -14,5 +14,6 @@ namespace BCMCH.OTM.API.Shared.Master
         public string? AssignedDepartmentName {get; set; }
         public DateTime? StartDate {get; set; }
         public DateTime? EndDate {get; set; }
+        public string? OperationTheatreName {get; set; }
     }
 }

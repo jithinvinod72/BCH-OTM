@@ -71,13 +71,6 @@ namespace BCMCH.OTM.API.Controllers
         [Route("get-events-exported")]
         public async Task<IActionResult> ExportEvents( string? sortValue="",string? sortType="",string fromDate="",string toDate="")
         {
-            // @params
-            // bool PaginationEnabled=false,
-            // int pageNumber=0,
-            // string? sortValue="",
-            // string? sortType="",
-            // string? fromDate="",
-            // string? toDate=""
             Console.WriteLine();
             Console.Write("controller fromdate : ");
             Console.Write(fromDate);
@@ -97,6 +90,32 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
+
+        [HttpGet]
+        [Route("get-allocations-exported")]
+        public async Task<IActionResult> ExportAllocations( string? sortValue="",string? sortType="",string fromDate="",string toDate="")
+        {
+            Console.WriteLine();
+            Console.Write("controller fromdate : ");
+            Console.Write(fromDate);
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.Write("controller todate: ");
+            Console.Write(toDate);
+            Console.WriteLine();
+            try
+            {
+                var result = await _bookingService.ExportAllocation(sortValue, sortType, fromDate, toDate);
+                return File(result, "application/octet-stream", "test.xlsx");
+                // return Ok(new ResponseVM<IEnumerable<Bookings>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+
 
 
         [HttpGet]

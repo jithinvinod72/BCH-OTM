@@ -1,7 +1,9 @@
 ﻿using System.Globalization;
+using System.Reflection;
 using System.Text.Json;
 using BCMCH.OTM.API.Shared.Booking;
 using BCMCH.OTM.API.Shared.General;
+using BCMCH.OTM.API.Shared.Master;
 using BCMCH.OTM.Data.Contract.Booking;
 using BCMCH.OTM.Domain.Contract.Booking;
 using BCMCH.OTM.Infrastucture.Generic;
@@ -23,17 +25,13 @@ namespace BCMCH.OTM.Domain.Booking
         #endregion
 
 
-        public float? CalculateHourDifference(DateTime? startTime, DateTime? endTime)
+        private float? CalculateHourDifference(DateTime? startTime, DateTime? endTime)
         {
-            if(!startTime.HasValue  || startTime==DateTime.MinValue){
-                Console.WriteLine( " first if " );
-                return 0;
-            } 
-            if(!endTime.HasValue|| endTime==DateTime.MinValue){
-                Console.WriteLine( " second if " );
+            if ((!startTime.HasValue || startTime == DateTime.MinValue) || (!endTime.HasValue || endTime == DateTime.MinValue))
+            {
+                Console.WriteLine(" first if ");
                 return 0;
             }
-
             if(endTime < startTime){
                 var temp    = startTime;
                 startTime   = endTime ;
@@ -211,8 +209,6 @@ namespace BCMCH.OTM.Domain.Booking
         // EXCEL Handlers START
         public async Task<Stream> ExportEvents( string? sortValue="",string? sortType="",string? fromDate="",string? toDate="")
         {
-            Console.WriteLine("fromdate : ", fromDate);
-            Console.WriteLine("todate : ", toDate);
             var result = await GetBookingsSorted(false, 0,sortValue , sortType , fromDate, toDate);
             
             // here there will not be any paginations applied 
@@ -286,6 +282,89 @@ namespace BCMCH.OTM.Domain.Booking
             stream.Position=0;
             return stream;
         }
+
+        public static MemoryStream ConvertIEnumerableToExcelStream<T>(IEnumerable<T> collection, string sheetName, params object[] disabledColumns)
+        {
+            MemoryStream stream = new MemoryStream();
+
+            using (var package = new ExcelPackage(stream))
+            {
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add(sheetName);
+                PropertyInfo[] properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                int colCounter=0;
+                // Add column headers START
+                for (int columnIndex = 1; columnIndex <= properties.Length; columnIndex++)
+                {
+                    PropertyInfo property = properties[columnIndex - 1];
+                    // filter out unwanted columns from heading START
+                    if (disabledColumns.Contains(property.Name) || disabledColumns.Contains(columnIndex))
+                    {
+                        continue; // Skip disabled columns
+                    }
+                    // filter out unwanted columns from heading END
+                    colCounter++;
+                    worksheet.Cells[1, colCounter].Value = properties[columnIndex - 1].Name;
+                    worksheet.Cells[1, colCounter].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                }
+                // Add column headers END
+
+                // Add data rows START
+
+                
+                int rowIndex = 2;
+                
+                foreach (T item in collection)
+                {
+                    colCounter=1;
+                    for (int columnIndex = 1; columnIndex <= properties.Length; columnIndex++)
+                    {
+                        
+                        PropertyInfo property = properties[columnIndex - 1];
+                        // filter out unwanted columns from body START
+                        if (disabledColumns.Contains(property.Name) || disabledColumns.Contains(columnIndex))
+                        {
+                            continue; // Skip disabled columns
+                        }
+                        // filter out unwanted columns from body END
+
+                        
+                        object value = property.GetValue(item);
+                        if (value is DateTime dateTimeValue)
+                        {
+                            // Convert DateTime to string in the desired format
+                            string stringValue = dateTimeValue.ToString("yyyy-MM-dd HH:mm:ss");
+                            worksheet.Cells[rowIndex, colCounter].Value = stringValue;
+                        }
+                        else
+                        {
+                            worksheet.Cells[rowIndex, colCounter].Value = value;
+                        }
+                        worksheet.Cells[rowIndex, colCounter].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                        colCounter++;
+                    }
+
+                    for (int i = 1; i <= properties.Length; i++) {
+                        worksheet.Column(i).AutoFit(); 
+                    }
+                    rowIndex++;
+                }
+                // Add data rows END
+
+                package.Save();
+            }
+
+            stream.Position = 0;
+            return stream;
+        }
+
+        public async Task<Stream> ExportAllocation( string? sortValue="",string? sortType="",string? fromDate="",string? toDate="")
+        {
+            var result = await _bookingDataAccess.GetAllocation(fromDate, toDate);   
+            var stream = ConvertIEnumerableToExcelStream(result, "alocation", 1,2,3);
+            return stream;
+        }
+
+
         public async Task<EventFields> GetEventEquipmentsAndEmployees(int bookingId)
         {
             var equipments  = await _bookingDataAccess.GetEventEquipments(bookingId);
