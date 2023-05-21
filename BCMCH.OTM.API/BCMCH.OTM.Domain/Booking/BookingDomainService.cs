@@ -283,8 +283,11 @@ namespace BCMCH.OTM.Domain.Booking
             return stream;
         }
 
-        public static MemoryStream ConvertIEnumerableToExcelStream<T>(IEnumerable<T> collection, string sheetName, params object[] disabledColumns)
+        public static MemoryStream ConvertIEnumerableToExcelStream<T>(string[] headerArray, IEnumerable<T> collection, string sheetName, params object[] disabledColumns)
         {
+            // headerArray -> used to add header row to the excel. 
+            // if is [] the header is taken from the object value names . 
+
             MemoryStream stream = new MemoryStream();
 
             using (var package = new ExcelPackage(stream))
@@ -293,19 +296,32 @@ namespace BCMCH.OTM.Domain.Booking
                 PropertyInfo[] properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
                 int colCounter=0;
                 // Add column headers START
-                for (int columnIndex = 1; columnIndex <= properties.Length; columnIndex++)
+                
+                if(headerArray.Length>0)
                 {
-                    PropertyInfo property = properties[columnIndex - 1];
-                    // filter out unwanted columns from heading START
-                    if (disabledColumns.Contains(property.Name) || disabledColumns.Contains(columnIndex))
+                    // if header array exists 
+                    for (int columnIndex = 1; columnIndex <= properties.Length; columnIndex++)
                     {
-                        continue; // Skip disabled columns
+                        worksheet.Cells[1, columnIndex].Value = headerArray[columnIndex - 1];
+                        worksheet.Cells[1, columnIndex].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                     }
-                    // filter out unwanted columns from heading END
-                    colCounter++;
-                    worksheet.Cells[1, colCounter].Value = properties[columnIndex - 1].Name;
-                    worksheet.Cells[1, colCounter].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                } else {
+                    // else  take header  from object names 
+                    for (int columnIndex = 1; columnIndex <= properties.Length; columnIndex++)
+                    {
+                        PropertyInfo property = properties[columnIndex - 1];
+                        // filter out unwanted columns from heading START
+                        if (disabledColumns.Contains(property.Name) || disabledColumns.Contains(columnIndex))
+                        {
+                            continue; // Skip disabled columns
+                        }
+                        // filter out unwanted columns from heading END
+                        colCounter++;
+                        worksheet.Cells[1, colCounter].Value = properties[columnIndex - 1].Name;
+                        worksheet.Cells[1, colCounter].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                    }
                 }
+                
                 // Add column headers END
 
                 // Add data rows START
@@ -360,7 +376,14 @@ namespace BCMCH.OTM.Domain.Booking
         public async Task<Stream> ExportAllocation( string? sortValue="",string? sortType="",string? fromDate="",string? toDate="")
         {
             var result = await _bookingDataAccess.GetAllocation(fromDate, toDate);   
-            var stream = ConvertIEnumerableToExcelStream(result, "alocation", 1,2,3);
+            var stream = ConvertIEnumerableToExcelStream( new string[0] , result, "alocation", 1,2,3);
+            return stream;
+        }
+
+        public async Task<Stream> ExportPathology( )
+        {
+            var result = await _bookingDataAccess.GetPathology();   
+            var stream = ConvertIEnumerableToExcelStream(new string[0], result, "pathology", "Id","IsDeleted" ,"BookedDepartment", "NestedData","PostedBy","Status");
             return stream;
         }
 

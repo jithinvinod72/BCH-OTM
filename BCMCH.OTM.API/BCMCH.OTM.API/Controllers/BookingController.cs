@@ -91,30 +91,7 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("get-allocations-exported")]
-        public async Task<IActionResult> ExportAllocations( string? sortValue="",string? sortType="",string fromDate="",string toDate="")
-        {
-            Console.WriteLine();
-            Console.Write("controller fromdate : ");
-            Console.Write(fromDate);
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.Write("controller todate: ");
-            Console.Write(toDate);
-            Console.WriteLine();
-            try
-            {
-                var result = await _bookingService.ExportAllocation(sortValue, sortType, fromDate, toDate);
-                return File(result, "application/octet-stream", "test.xlsx");
-                // return Ok(new ResponseVM<IEnumerable<Bookings>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
-            }
-            catch (Exception ex)
-            {
-                return Ok(new ResponseVM<bool>(false, ex.Message));
-            }
-        }
-
+        
 
 
 
@@ -547,5 +524,47 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
         // public async Task<IEnumerable<BookingTime>> PostOTTimings(BookingTime bookingTime)
+
+
+        // EXPORT START
+        [HttpGet]
+        [Route("get-allocations-exported")]
+        public async Task<IActionResult> ExportAllocations( string? sortValue="",string? sortType="",string fromDate="",string toDate="")
+        {
+            Console.WriteLine();
+            Console.Write("controller fromdate : ");
+            Console.Write(fromDate);
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.Write("controller todate: ");
+            Console.Write(toDate);
+            Console.WriteLine();
+            try
+            {
+                var result = await _bookingService.ExportAllocation(sortValue, sortType, fromDate, toDate);
+                return File(result, "application/octet-stream", "test.xlsx");
+                // return Ok(new ResponseVM<IEnumerable<Bookings>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+        [HttpGet]
+        [Route("get-pathology-exported")]
+        public async Task<IActionResult> ExportPathology()
+        {
+            try
+            {
+                var result = await _bookingService.ExportPathology();
+                return File(result, "application/octet-stream", "test.xlsx");
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
     }
 }

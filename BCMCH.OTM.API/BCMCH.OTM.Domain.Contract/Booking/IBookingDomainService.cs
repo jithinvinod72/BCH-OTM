@@ -55,6 +55,9 @@ namespace BCMCH.OTM.Domain.Contract.Booking
 
         // time 
         Task<IEnumerable<BookingTime>> PostOTTimings(BookingTime bookingTime);
+
+        // EXPORTING 
         Task<Stream> ExportAllocation( string? sortValue="",string? sortType="",string? fromDate="",string? toDate="");
+        Task<Stream> ExportPathology();
     }
 }
