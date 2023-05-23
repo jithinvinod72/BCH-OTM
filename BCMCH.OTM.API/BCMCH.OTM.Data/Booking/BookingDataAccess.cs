@@ -892,6 +892,47 @@ namespace BCMCH.OTM.Data.Booking
             return result;
         }
 
+
+
+
+        // DASHBOARD 
+        #region DASHBOARD-TODAY
+        public async Task<IEnumerable<DashboardOperation>> GetTodaysOtStatuses()
+        {
+            string Query = @"
+                            SELECT 
+                                Bookings.[Id]                    AS operationId,
+                                Bookings.[OperationTheatreId]    AS OperationTheatreId,
+                                OperationTheatre.Name            AS OperationTheatreName,
+                                Bookings.[RegistrationNo]        AS RegistrationNo,
+                                Patients.FirstName               AS PatientFirstName,
+                                Patients.MiddleName              AS PatientMiddleName,
+                                Patients.LastName                AS PatientLastName,
+                                Bookings.[StartDate]             AS StartDate,
+                                Bookings.[EndDate]               AS EndDate,
+                                Bookings.[DepartmentId]          AS DepartmentId,
+                                Bookings.[PreOpEntryTime]        AS PreOpEntryTime,
+                                Bookings.[PreOpExitTime]         AS PreOpExitTime,
+                                Bookings.[OtEntryTime]           AS OtEntryTime,
+                                Bookings.[OtExitTime]            AS OtExitTime,
+                                Bookings.[PostOpEntryTime]       AS PostOpEntryTime,
+                                Bookings.[PostOpExitTime]        AS PostOpExitTime,
+                                Bookings.[AverageSurgeryTime]    AS AverageSurgeryTime,
+                                Bookings.[OtComplexEntry]        AS OtComplexEntry
+                            FROM [OTM].[Bookings] AS Bookings
+                            LEFT JOIN 
+                                [OTM].[OperationTheatreMaster] AS OperationTheatre ON Bookings.OperationTheatreId = OperationTheatre.Id
+                            LEFT JOIN [dbo].[PatientMaster] AS Patients ON Bookings.RegistrationNo = [Patients].[RegistrationNo]
+                            WHERE CONVERT(DATE, Bookings.[StartDate]) = CONVERT(DATE, GETDATE());
+                            
+                           ";
+            var SqlParameters = new DynamicParameters();
+            var result = await _sqlHelper.QueryAsync<DashboardOperation>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+        #endregion
+        // DASHBOARD REGION END
+
     }
 
 }

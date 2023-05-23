@@ -63,6 +63,9 @@ namespace BCMCH.OTM.Data.Contract.Booking
 
         // time 
         Task<IEnumerable<BookingTime>> PostOTTimings(BookingTime bookingTime);
+
+        // DASHBOARD 
+        Task<IEnumerable<DashboardOperation>> GetTodaysOtStatuses();
         
     }
 }

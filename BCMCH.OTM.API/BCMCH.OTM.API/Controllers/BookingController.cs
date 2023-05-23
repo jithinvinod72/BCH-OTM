@@ -566,5 +566,25 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
 
+
+        // #################
+        // DASHBOARD SECTION 
+        [HttpGet]
+        [Route("get-dashboard-ot-todays")]
+        public async Task<IActionResult> GetTodaysOtStatuses()
+        {
+            try
+            {
+                var result = await _bookingService.GetTodaysOtStatuses();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+        // public async Task<IEnumerable<DashboardOperationTheatreStatus>> GetTodaysOtStatuses()
+
     }
 }

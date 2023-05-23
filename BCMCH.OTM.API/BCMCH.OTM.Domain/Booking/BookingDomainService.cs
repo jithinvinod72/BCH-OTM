@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics;
+using System.Globalization;
 using System.Reflection;
 using System.Text.Json;
 using BCMCH.OTM.API.Shared.Booking;
@@ -663,7 +664,7 @@ namespace BCMCH.OTM.Domain.Booking
 
 
 
-        #region NON OP
+        #region NON-OP
         public async Task<Envelope<IEnumerable<NonOP>>> AddNonOPRequest(NonOP nonOP)
         {
             var result = await _bookingDataAccess.AddNonOPRequest(nonOP);
@@ -684,12 +685,92 @@ namespace BCMCH.OTM.Domain.Booking
         #endregion
 
 
-        // time controls 
+        // time controls  
         public async Task<IEnumerable<BookingTime>> PostOTTimings(BookingTime bookingTime)
         {
             var result = await _bookingDataAccess.PostOTTimings(bookingTime);
             return result;
         }
+
+
+        // DASHBOARD REGION START
+        #region DASHBOARD-TODAY
+        public async Task<IEnumerable<DashbordOTGroup>> GetTodaysOtStatuses()
+        {
+            
+            var dataRes = new DashboardData();
+            
+            var result = await _bookingDataAccess.GetTodaysOtStatuses();
+
+            List<DashbordOTGroup> groupedDataList = result
+            .GroupBy(o => o.OperationTheatreId)
+            .Select(group => new DashbordOTGroup
+            {
+                OperationTheatreId = group.Key,
+                OperationTheatreName = group.First().OperationTheatreName,
+                OperationsList = group.ToList()
+            })
+            .ToList();
+
+            // Perform operations on the categorized data
+            foreach (var group in groupedDataList)
+            {
+                // Access the properties of each group
+                int? operationTheatreId = group.OperationTheatreId;
+                string operationTheatreName = group.OperationTheatreName;
+                
+                int todaysTotal=0;
+                int todaysCompleted=0;
+
+                int complexEntryCount=0;
+                int preOpCount=0;
+                int postOpCount=0;
+                int inOtCount=0;
+                
+                
+                List<DashboardOperation> operationsList = group.OperationsList;
+                foreach (var operation in operationsList)
+                {
+                    todaysTotal++;
+                    string complexLocation="NOT_IN_COMPLEX";
+                    if(operation.OtComplexEntry!=null){
+                        complexLocation="IN_COMPLEX_RECEPTION";
+                        complexEntryCount++;
+                    }
+                    if(operation.PreOpEntryTime!=null){
+                        complexLocation="PRE_OP";
+                        preOpCount++;
+                    }
+                    if(operation.OtEntryTime!=null){
+                        complexLocation="IN_OT";
+                        inOtCount++;
+                    }
+                    if(operation.PostOpEntryTime!=null){
+                        complexLocation="POST_OP";
+                        postOpCount++;
+                    }
+                    if(operation.PostOpExitTime!=null){
+                        complexLocation="EXIT";
+                    }
+                    operation.ComplexLocation=complexLocation;
+                }
+                
+                group.TotalCases = todaysTotal;
+                group.CompletedCases = postOpCount;
+                group.InComplexCasesCount = complexEntryCount;
+                group.InPreOpCasesCount = preOpCount;
+                group.InPostOpCasesCount = postOpCount;
+                group.inOtCasesCount = inOtCount;
+                group.pendingCasesCount = todaysTotal-postOpCount;
+            }
+            
+            // groupedDataList.OperationsList=operationsList;
+            // dataRes.OtStatuses = groupedDataList;
+            return groupedDataList;
+        }
+        #endregion
+        // DASHBOARD REGION END
+
 
     }
 }
