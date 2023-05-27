@@ -59,6 +59,7 @@ namespace BCMCH.OTM.Domain.Contract.Booking
         // EXPORTING 
         Task<Stream> ExportAllocation( string? sortValue="",string? sortType="",string? fromDate="",string? toDate="");
         Task<Stream> ExportPathology();
+        Task<Stream> ExportNonOperativeProcedure();
 
         // DASHBOARD SECTION 
         Task<IEnumerable<DashbordOTGroup>> GetTodaysOtStatuses();

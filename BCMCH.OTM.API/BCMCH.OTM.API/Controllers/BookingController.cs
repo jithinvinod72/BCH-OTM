@@ -566,6 +566,21 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("get-nonop-exported")]
+        public async Task<IActionResult> ExportNonOperativeProcedure()
+        {
+            try
+            {
+                var result = await _bookingService.ExportNonOperativeProcedure();
+                return File(result, "application/octet-stream", "test.xlsx");
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        // EXPORT END
 
         // #################
         // DASHBOARD SECTION 

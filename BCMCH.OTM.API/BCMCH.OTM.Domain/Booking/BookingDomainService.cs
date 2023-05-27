@@ -380,11 +380,16 @@ namespace BCMCH.OTM.Domain.Booking
             var stream = ConvertIEnumerableToExcelStream( new string[0] , result, "alocation", 1,2,3);
             return stream;
         }
-
         public async Task<Stream> ExportPathology( )
         {
             var result = await _bookingDataAccess.GetPathology();   
             var stream = ConvertIEnumerableToExcelStream(new string[0], result, "pathology", "Id","IsDeleted" ,"BookedDepartment", "NestedData","PostedBy","Status");
+            return stream;
+        }
+        public async Task<Stream> ExportNonOperativeProcedure()
+        {
+            var result = await _bookingDataAccess.GetNonOPRequests();
+            var stream = ConvertIEnumerableToExcelStream(new string[0], result, "pathology");
             return stream;
         }
 
@@ -732,7 +737,7 @@ namespace BCMCH.OTM.Domain.Booking
                 foreach (var operation in operationsList)
                 {
                     todaysTotal++;
-                    string complexLocation="NOT_IN_COMPLEX";
+                    string complexLocation="SCHEDULED";
                     if(operation.OtComplexEntry!=null){
                         complexLocation="IN_COMPLEX_RECEPTION";
                         complexEntryCount++;
