@@ -11,8 +11,9 @@ namespace BCMCH.OTM.API.Shared.Booking
         public string AdmittedLocation { get; set; }
         public int ProcedureToPerform { get; set; }
         public int PriorityLevel { get; set; }
-        public string ProvisionalDiagnosis { get; set; }
-        public string Comments { get; set; }
+        public string? ProvisionalDiagnosis { get; set; }
+        public string? Comments { get; set; }
+        public string? Status { get; set; }
         public DateTime DateToBePerformed { get; set; }
 
     }

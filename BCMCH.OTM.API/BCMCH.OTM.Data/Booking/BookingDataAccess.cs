@@ -813,6 +813,7 @@ namespace BCMCH.OTM.Data.Booking
                 SqlParameters.Add("@PriorityLevel", nonOP.PriorityLevel);
                 SqlParameters.Add("@DateToBePerformed", nonOP.DateToBePerformed);
                 SqlParameters.Add("@Comments", nonOP.Comments);
+                SqlParameters.Add("@Status", nonOP.Status);
                 SqlParameters.Add("@ProcedureToPerform", nonOP.ProcedureToPerform);
                 SqlParameters.Add("@ProvisionalDiagnosis", nonOP.ProvisionalDiagnosis);
                 SqlParameters.Add("@AdmittedLocation", nonOP.AdmittedLocation);
@@ -831,8 +832,19 @@ namespace BCMCH.OTM.Data.Booking
         {
             const string Query = @"
                                     SELECT 
-                                    *
-                                    FROM [OTM].[NonOP]                     
+                                         [Id]
+                                        ,[PatientUHID]
+                                        ,[PatientName]
+                                        ,[PatientAge]
+                                        ,[Sex]
+                                        ,[AdmittedLocation]
+                                        ,[ProcedureToPerform]
+                                        ,[PriorityLevel]
+                                        ,[ProvisionalDiagnosis]
+                                        ,[Comments]
+                                        ,[DateToBePerformed]
+                                        ,[status]
+                                    FROM [OTM].[NonOP]
                                  ";
             var SqlParameters = new DynamicParameters();
             var result = await _sqlHelper.QueryAsync<NonOP>(Query, SqlParameters, CommandType.Text);
