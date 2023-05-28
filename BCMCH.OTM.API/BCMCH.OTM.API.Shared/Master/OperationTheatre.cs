@@ -11,6 +11,7 @@ namespace BCMCH.OTM.API.Shared.Master
     {
         public int OperationTheatreId { get; set; }
         public string? Name { get; set; }
+        public string? shortName { get; set; }
         public string? Location { get; set; }
         public string? Type { get; set; }
         public int ReservedDepartment { get; set; }

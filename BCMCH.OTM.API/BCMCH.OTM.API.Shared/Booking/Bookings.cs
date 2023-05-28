@@ -38,6 +38,7 @@ namespace BCMCH.OTM.API.Shared.Booking
         public bool? IsDeleted {get; set; }
         public string? TheatreName {get; set; }
         public string? TheatreLocation {get; set; }
+        public string? TheatreShortName {get; set; }
         public string? TheatreType {get; set; }
         public int? TheatreDefaultDepartment {get; set; }
         public float? TheatreCleaningTime  {get; set; }
