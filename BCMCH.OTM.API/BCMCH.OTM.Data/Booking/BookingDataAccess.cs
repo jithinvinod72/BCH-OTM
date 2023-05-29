@@ -43,6 +43,7 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@StatusId", booking.StatusId);
             SqlParameters.Add("@AnaesthesiaTypeId", booking.AnaesthesiaTypeId);
             SqlParameters.Add("@SurgeryId", booking.SurgeryId);
+            SqlParameters.Add("@OtherSurgery", booking.OtherSurgery);
 
             SqlParameters.Add("@RegistrationNo", booking.RegistrationNo);
             SqlParameters.Add("@StartDate", booking.StartDate);
@@ -217,6 +218,7 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@StatusId", booking.StatusId);
             SqlParameters.Add("@AnaesthesiaTypeId", booking.AnaesthesiaTypeId);
             SqlParameters.Add("@SurgeryId", booking.SurgeryId);
+            SqlParameters.Add("@OtherSurgery", booking.OtherSurgery);
 
             SqlParameters.Add("@RegistrationNo", booking.RegistrationNo);
             SqlParameters.Add("@StartDate", booking.StartDate);

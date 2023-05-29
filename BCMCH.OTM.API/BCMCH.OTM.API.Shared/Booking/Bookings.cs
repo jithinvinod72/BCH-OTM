@@ -20,7 +20,7 @@ namespace BCMCH.OTM.API.Shared.Booking
         public int? AnaesthetistId {get; set; }
         public int? AnaesthesiaTypeId {get; set; }
         public int? SurgeryId {get; set; }
-
+        public string? OtherSurgery {get;set;}
         public string? SurgeryName {get;set;}
         public string? SurgeryPrintName {get;set;}
         public string? SurgeryAliasName {get;set;}
