@@ -109,6 +109,7 @@ namespace BCMCH.OTM.Domain.Booking
 
             var result = await _bookingDataAccess.GetBookingList(fromDate, toDate);
             var filteredWithOtId = result.Where(booking=> otsSelected.Contains(booking.OperationTheatreId) );
+            filteredWithOtId = (IEnumerable<Bookings>) await PopulateBookingsWithSurgeries(filteredWithOtId);
             return filteredWithOtId;
         }
         

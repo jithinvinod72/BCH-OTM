@@ -306,14 +306,13 @@ namespace BCMCH.OTM.Data.Master
             return result;
         }
 
-        public async Task<IEnumerable<GetAllocationModel>> GetAllocations(string startDate, string endDate)
+        public async Task<IEnumerable<GetAllocation>> GetAllocations(string startDate, string endDate)
         {
             const string StoredProcedure = "[OTM].[SelectAllocation]";
             var SqlParameters = new DynamicParameters();
-            // SqlParameters.Add("@DeartmentId"    , departmentId );
             SqlParameters.Add("@StartDate", startDate);
             SqlParameters.Add("@EndDate", endDate);
-            var result = await _sqlHelper.QueryAsync<GetAllocationModel>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            var result = await _sqlHelper.QueryAsync<GetAllocation>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
 
@@ -323,17 +322,18 @@ namespace BCMCH.OTM.Data.Master
             string Query = @"
                                 INSERT INTO [OTM].[OperationTheatreAllocation]
                                 ( 
-                                    [OperationTheatreId],[AssignedDepartmentId],[StartDate],[EndDate],[ModifiedBy]
+                                    [OperationTheatreId],[AssignedDepartmentId],[GroupId],[StartDate],[EndDate],[ModifiedBy]
                                 )
                                 VALUES
                                 ( 
-                                    @OperationTheatreId, @AssignedDepartmentId,@StartDate,@EndDate,@ModifiedBy
+                                    @OperationTheatreId, @AssignedDepartmentId, @GroupId, @StartDate, @EndDate, @ModifiedBy
                                 )
                             ";
             var SqlParameters = new DynamicParameters();
 
             SqlParameters.Add("@OperationTheatreId", _allocation.OperationTheatreId);
             SqlParameters.Add("@AssignedDepartmentId", _allocation.AssignedDepartmentId);
+            SqlParameters.Add("@GroupId", _allocation.GroupId);
             SqlParameters.Add("@StartDate", _allocation.StartDate);
             SqlParameters.Add("@EndDate", _allocation.EndDate);
             SqlParameters.Add("@ModifiedBy", _allocation.ModifiedBy);

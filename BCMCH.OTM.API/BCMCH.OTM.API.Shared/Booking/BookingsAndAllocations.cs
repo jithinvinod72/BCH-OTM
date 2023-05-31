@@ -10,7 +10,7 @@ namespace BCMCH.OTM.API.Shared.Booking
     public class BookingsAndAllocations
     {
         public IEnumerable<Bookings> Bookings {get;set;}
-        public IEnumerable<GetAllocationModel> Allocations {get;set;}
+        public IEnumerable<GetAllocation> Allocations {get;set;}
     }
     
 }

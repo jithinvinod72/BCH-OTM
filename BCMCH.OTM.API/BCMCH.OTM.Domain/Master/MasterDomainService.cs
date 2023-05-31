@@ -6,6 +6,10 @@ using System.Globalization;
 using OfficeOpenXml;
 using BCMCH.OTM.API.Shared.Booking;
 using BCMCH.OTM.Infrastucture.Generic;
+using System;
+using System.Text;
+using System.Linq;
+using System.Diagnostics;
 
 namespace BCMCH.OTM.Domain.Master
 {
@@ -23,6 +27,15 @@ namespace BCMCH.OTM.Domain.Master
             
         }
         #endregion
+
+        private string GenerateRandomString()
+        {
+            Random random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            string unixTimestamp = DateTimeOffset.Now.ToUnixTimeSeconds().ToString();
+            string randomString = new string(Enumerable.Repeat(chars, 9).Select(s => s[random.Next(s.Length)]).ToArray());
+            return unixTimestamp+randomString;
+        }
 
 
         #region PUBLIC
@@ -200,22 +213,34 @@ namespace BCMCH.OTM.Domain.Master
 
 
         // START- public functions for allocation to access from controller
-        public async Task<IEnumerable<GetAllocationModel>> GetAllocations(string startDate, string endDate)
+        public async Task<IEnumerable<GetAllocation>> GetAllAllocations(string startDate, string endDate)
         {
             var result = await _masterDataAccess.GetAllocations(startDate,endDate);
             return result;
         }
+        public async Task<IEnumerable<GetAllocationGroupped>> GetAllocationsGroup(string startDate, string endDate)
+        {
+            var result = await _masterDataAccess.GetAllocations(startDate,endDate);
+            var uniqueGroupIds = result.Select(model => model.GroupId).Distinct();
+
+            List<GetAllocationGroupped> GroupList = new List<GetAllocationGroupped>{};
+
+            foreach (var groupId in uniqueGroupIds)
+            {
+                var grouppedAllocations = new GetAllocationGroupped();
+                grouppedAllocations.GroupId=groupId;
+                var grouppedData = result.Where(model => model.GroupId==groupId);
+                grouppedAllocations.Allocations= (IEnumerable<GetAllocation>)grouppedData;
+                GroupList.Add(grouppedAllocations);
+            }
+
+            return (IEnumerable<GetAllocationGroupped>)GroupList;
+        }
+        
         public async Task<IEnumerable<int>> PostAllocation(Allocation _allocation)
         {
             // used to post allocation with only a startdate,enddate,otid and department id
-            
-            // var isAllocationAlreadyExists = await _masterDataAccess.CheckAllocationByOperationThearter(_allocation.StartDate, _allocation.EndDate, (int)_allocation.OperationTheatreId);
-            // var legnth = isAllocationAlreadyExists.Count();
-            // if (legnth >0)
-            // {
-            //     return new List<int> { 2};
-            // }
-
+            _allocation.GroupId = GenerateRandomString();
             var result = await _masterDataAccess.PostAllocation(_allocation);
             return new List<int> { 0 };
         }
@@ -242,6 +267,8 @@ namespace BCMCH.OTM.Domain.Master
             if (filteredDatesWithDay.Count() < 1) {
                 return new List<int> { 1 };
             }
+
+            var groupId = GenerateRandomString();
 
             // we loop through the filteredDatesWithDay and allocate the start and end time with ot and department ids using the PostAllocation function
             foreach (DateTime dateRecurring in filteredDatesWithDay)
@@ -271,6 +298,7 @@ namespace BCMCH.OTM.Domain.Master
                 
                 _postAllocation_format.OperationTheatreId = _allocation.OperationTheatreId;
                 _postAllocation_format.AssignedDepartmentId = _allocation.AssignedDepartmentId;
+                _postAllocation_format.GroupId = groupId;
                 _postAllocation_format.StartDate = date_time_start;
                 _postAllocation_format.EndDate = date_time_end;
                 _postAllocation_format.ModifiedBy = _allocation.ModifiedBy;
