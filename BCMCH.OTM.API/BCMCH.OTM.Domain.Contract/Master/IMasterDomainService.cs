@@ -29,6 +29,7 @@ namespace BCMCH.OTM.Domain.Contract.Master
         
         // Task<IEnumerable<Allocation>> PostAllocation(Allocation _allocation);
         Task<IEnumerable<int>> PostAllocation(Allocation _allocation);
+        Task<IEnumerable<int>> EditAllocation(Allocation _allocation);
         Task<IEnumerable<int>> PostAllocationInARange(AllocateInRange _allocation);
         Task<IEnumerable<int>> DeleteAllocations(string allocationIds);
         Task<DateTime>GetDateToday();

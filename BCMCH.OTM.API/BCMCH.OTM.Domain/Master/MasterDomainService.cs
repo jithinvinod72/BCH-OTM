@@ -244,6 +244,14 @@ namespace BCMCH.OTM.Domain.Master
             var result = await _masterDataAccess.PostAllocation(_allocation);
             return new List<int> { 0 };
         }
+        public async Task<IEnumerable<int>> EditAllocation(Allocation _allocation)
+        {
+            // used to post allocation with only a startdate,enddate,otid and department id
+            // _allocation.GroupId = GenerateRandomString();
+            var result = await _masterDataAccess.EditAllocation(_allocation);
+            return new List<int> { 0 };
+        }
+
         public async Task<IEnumerable<int>> DeleteAllocations(string allocationIds)
         {
             // allocationIds="["+allocationIds+"]";

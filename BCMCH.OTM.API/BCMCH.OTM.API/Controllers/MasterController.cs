@@ -323,6 +323,37 @@ namespace BCMCH.OTM.API.Controllers
         }
 
         [HttpPost]
+        [Route("edit-Allocation")]
+        public async Task<IActionResult> EditAllocation( Allocation _allocation)
+        {
+            try
+            {
+                var result = await _masterService.EditAllocation(_allocation);
+                if (result.Contains(0))
+                {
+                    return Ok(new ResponseVM<IEnumerable<int>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+                }
+                else if (result.Contains(1))
+                {
+                    return Ok(new ResponseVM<IEnumerable<int>>(false, ResponseMessages.IS_ALLOCATION_DAY_VALIDATION, result));
+                }
+                else if (result.Contains(2))
+                {
+                    return Ok(new ResponseVM<IEnumerable<int>>(false, ResponseMessages.IS_ALLOCATION_EXISTS, result));
+                }
+                else 
+                {
+                    return Ok(new ResponseVM<IEnumerable<int>>(false, ResponseMessages.SOMETHING_WENT_WRNG, result));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+        [HttpPost]
         [Route("post-Allocation-in-a-range")]
         public async Task<IActionResult> PostAllocationInARange( AllocateInRange _allocation)
         {

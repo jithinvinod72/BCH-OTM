@@ -8,6 +8,7 @@ namespace BCMCH.OTM.API.Shared.Master
 {
     public class Allocation
     {
+        public int? id {get; set; }
         public int? OperationTheatreId {get; set; }
         public int? AssignedDepartmentId {get; set; }
         public string? GroupId {get; set; }

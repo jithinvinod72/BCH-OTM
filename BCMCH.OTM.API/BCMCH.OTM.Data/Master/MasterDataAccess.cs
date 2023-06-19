@@ -342,6 +342,59 @@ namespace BCMCH.OTM.Data.Master
             return result;
         }
 
+
+        public async Task<IEnumerable<Allocation>> EditAllocation(Allocation _allocation)
+        {
+            string Query = @"
+                UPDATE [OTM].[OperationTheatreAllocation]
+                SET
+                    [OperationTheatreId] = @OperationTheatreId,
+                    [AssignedDepartmentId] = @AssignedDepartmentId,
+                    [GroupId] = @GroupId,
+                    [StartDate] = @StartDate,
+                    [EndDate] = @EndDate,
+                    [ModifiedBy] = @ModifiedBy
+                WHERE
+                    [id] = @id
+                    AND [AssignedDepartmentId] = @_allocationAssignedDepartmentId
+            ";
+
+            var SqlParameters = new DynamicParameters();
+
+            SqlParameters.Add("@OperationTheatreId", _allocation.OperationTheatreId);
+            SqlParameters.Add("@AssignedDepartmentId", _allocation.AssignedDepartmentId);
+            SqlParameters.Add("@GroupId", _allocation.GroupId);
+            SqlParameters.Add("@StartDate", _allocation.StartDate);
+            SqlParameters.Add("@EndDate", _allocation.EndDate);
+            SqlParameters.Add("@ModifiedBy", _allocation.ModifiedBy);
+            SqlParameters.Add("@id", _allocation.id);
+            SqlParameters.Add("@_allocationAssignedDepartmentId", _allocation.AssignedDepartmentId);
+
+            var result = await _sqlHelper.QueryAsync<Allocation>(Query, SqlParameters, CommandType.Text);
+            return result;
+            // string Query = @"
+            //                     INSERT INTO [OTM].[OperationTheatreAllocation]
+            //                     ( 
+            //                         [OperationTheatreId],[AssignedDepartmentId],[GroupId],[StartDate],[EndDate],[ModifiedBy]
+            //                     )
+            //                     VALUES
+            //                     ( 
+            //                         @OperationTheatreId, @AssignedDepartmentId, @GroupId, @StartDate, @EndDate, @ModifiedBy
+            //                     )
+            //                 ";
+            // var SqlParameters = new DynamicParameters();
+
+            // SqlParameters.Add("@OperationTheatreId", _allocation.OperationTheatreId);
+            // SqlParameters.Add("@AssignedDepartmentId", _allocation.AssignedDepartmentId);
+            // SqlParameters.Add("@GroupId", _allocation.GroupId);
+            // SqlParameters.Add("@StartDate", _allocation.StartDate);
+            // SqlParameters.Add("@EndDate", _allocation.EndDate);
+            // SqlParameters.Add("@ModifiedBy", _allocation.ModifiedBy);
+
+            // var result = await _sqlHelper.QueryAsync<Allocation>(Query, SqlParameters, CommandType.Text);
+            // return result;
+        }
+
         public async Task<IEnumerable<int>> DeleteAllocations(string allocationIds)
         {
             string Query = @"
