@@ -299,22 +299,6 @@ namespace BCMCH.OTM.API.Controllers
             {
                 var result = await _masterService.PostAllocation(_allocation);
                 return Ok(result);
-                // if (result.Contains(0))
-                // {
-                //     return Ok(new ResponseVM<IEnumerable<int>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
-                // }
-                // else if (result.Contains(1))
-                // {
-                //     return Ok(new ResponseVM<IEnumerable<int>>(false, ResponseMessages.IS_ALLOCATION_DAY_VALIDATION, result));
-                // }
-                // else if (result.Contains(2))
-                // {
-                //     return Ok(new ResponseVM<IEnumerable<int>>(false, ResponseMessages.IS_ALLOCATION_EXISTS, result));
-                // }
-                // else 
-                // {
-                //     return Ok(new ResponseVM<IEnumerable<int>>(false, ResponseMessages.SOMETHING_WENT_WRNG, result));
-                // }
 
             }
             catch (Exception ex)
@@ -360,25 +344,8 @@ namespace BCMCH.OTM.API.Controllers
         {
             try
             {
-                // Task<int> PostAllocationInARange(AllocateInRange _allocation);
                 var result = await _masterService.PostAllocationInARange(_allocation);
-                if (result.Contains(0))
-                {
-                    return Ok(new ResponseVM<IEnumerable<int>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
-                }
-                else if (result.Contains(1))
-                {
-                    return Ok(new ResponseVM<IEnumerable<int>>(false, ResponseMessages.IS_ALLOCATION_DAY_VALIDATION, result));
-                }
-                else if (result.Contains(2))
-                {
-                    return Ok(new ResponseVM<IEnumerable<int>>(false, ResponseMessages.IS_ALLOCATION_EXISTS, result));
-                }
-                else 
-                {
-                    return Ok(new ResponseVM<IEnumerable<int>>(false, ResponseMessages.SOMETHING_WENT_WRNG, result));
-                }
-
+                return Ok(result);
             }
             catch (Exception ex)
             {

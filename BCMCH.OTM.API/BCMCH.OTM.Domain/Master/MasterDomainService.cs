@@ -248,7 +248,7 @@ namespace BCMCH.OTM.Domain.Master
             if (validation.Any())
             {
                 var validationErrors = validation.Select(v => v.ToString()); // Convert each OTValidation item to a string representation
-                envelope = new Envelope<IEnumerable<Allocation>>(false, string.Join(", ", validationErrors));
+                envelope = new Envelope<IEnumerable<Allocation>>();
                 envelope.Data = validation; // Assign the validation data to the Data property
                 return envelope;
             }
@@ -313,57 +313,55 @@ namespace BCMCH.OTM.Domain.Master
                 var validation =await _masterDataAccess.CheckAllocationByOperationThearter(dateTimeStart, dateTimeEnd , (int)_allocation.OperationTheatreId);
                 allocationValidation = allocationValidation.Concat(validation);
 
-                // var validation = new IEnumerable<Allocation>;
-                
-                // var envelope = new Envelope<IEnumerable<Allocation>>();
-                // if (validation.Any())
-                // {
-                //     var validationErrors = validation.Select(v => v.ToString()); // Convert each OTValidation item to a string representation
-                //     envelope = new Envelope<IEnumerable<Allocation>>(false, string.Join(", ", validationErrors));
-                //     envelope.Data = validation; // Assign the validation data to the Data property
-                //     return envelope;
-                // }
                 
             }
+
             // After the loop, check the length of allocationValidation
             if (allocationValidation.Any())
             {
                 // if any allocations are already posted in the given timeing it will return an errorr
-                var envelope = new Envelope<IEnumerable<Allocation>>();
                 var validationErrors = allocationValidation.Select(v => v.ToString()); // Convert each OTValidation item to a string representation
-                envelope = new Envelope<IEnumerable<Allocation>>(false, string.Join(", ", validationErrors));
-                envelope.Data = (IEnumerable<Allocation>)validationErrors; // Assign the validation data to the Data property
+                var envelope = new Envelope<IEnumerable<Allocation>>();
+                envelope.Data = allocationValidation;
                 return envelope;
                 
             }
+
+            // if (validation.Any())
+            // {
+            //     var validationErrors = validation.Select(v => v.ToString()); // Convert each OTValidation item to a string representation
+            //     envelope = new Envelope<IEnumerable<Allocation>>();
+            //     envelope.Data = validation; // Assign the validation data to the Data property
+            //     return envelope;
+            // }
             // validation start
 
 
 
             // we loop through the filteredDatesWithDay and allocate the start and end time with ot and department ids using the PostAllocation function
-            foreach (DateTime dateRecurring in filteredDatesWithDay)
-            {
-                DateTime starDateTime   =  AddDateAndTime(dateRecurring,_allocation.StartTime);
-                // the above line adds startDate + startTime time to find the allocation startdatetime
-                DateTime endDateTime    =  AddDateAndTime(dateRecurring,_allocation.EndTime);
-                // the above line adds endDate + endTime time to find the allocation startdatetime
-                string date_time_start  = starDateTime.ToString("yyyy-MM-ddTHH:mm:ss");
-                // converts to string format which we use to write to database
-                string date_time_end    = endDateTime.ToString("yyyy-MM-ddTHH:mm:ss");
-                // converts to string format which we use to write to database
+            // foreach (DateTime dateRecurring in filteredDatesWithDay)
+            // {
+            //     DateTime starDateTime   =  AddDateAndTime(dateRecurring,_allocation.StartTime);
+            //     // the above line adds startDate + startTime time to find the allocation startdatetime
+            //     DateTime endDateTime    =  AddDateAndTime(dateRecurring,_allocation.EndTime);
+            //     // the above line adds endDate + endTime time to find the allocation startdatetime
+            //     string date_time_start  = starDateTime.ToString("yyyy-MM-ddTHH:mm:ss");
+            //     // converts to string format which we use to write to database
+            //     string date_time_end    = endDateTime.ToString("yyyy-MM-ddTHH:mm:ss");
+            //     // converts to string format which we use to write to database
                 
-                Allocation _postAllocation_format = new Allocation();
+            //     Allocation _postAllocation_format = new Allocation();
                 
-                _postAllocation_format.OperationTheatreId = _allocation.OperationTheatreId;
-                _postAllocation_format.AssignedDepartmentId = _allocation.AssignedDepartmentId;
-                _postAllocation_format.GroupId = groupId;
-                _postAllocation_format.StartDate = date_time_start;
-                _postAllocation_format.EndDate = date_time_end;
-                _postAllocation_format.ModifiedBy = _allocation.ModifiedBy;
+            //     _postAllocation_format.OperationTheatreId = _allocation.OperationTheatreId;
+            //     _postAllocation_format.AssignedDepartmentId = _allocation.AssignedDepartmentId;
+            //     _postAllocation_format.GroupId = groupId;
+            //     _postAllocation_format.StartDate = date_time_start;
+            //     _postAllocation_format.EndDate = date_time_end;
+            //     _postAllocation_format.ModifiedBy = _allocation.ModifiedBy;
 
-                var result = await _masterDataAccess.PostAllocation(_postAllocation_format);
+            //     var result = await _masterDataAccess.PostAllocation(_postAllocation_format);
                 
-            }
+            // }
             return new Envelope<IEnumerable<Allocation>>(true, null);
         }
         // END- public functions for allocation to access from controller
