@@ -7,7 +7,6 @@ namespace BCMCH.OTM.API.Shared.Booking
         public string PatientUHID { get; set; }
         public string PatientName { get; set; }
         public int PatientAge { get; set; }
-        public string Sex { get; set; }
         public string AdmittedLocation { get; set; }
         public int ProcedureToPerform { get; set; }
         public int PriorityLevel { get; set; }
@@ -15,6 +14,7 @@ namespace BCMCH.OTM.API.Shared.Booking
         public string? Comments { get; set; }
         public string? Status { get; set; }
         public DateTime DateToBePerformed { get; set; }
+        public DateTime? PostedDateTime { get; set; }
 
     }
 }

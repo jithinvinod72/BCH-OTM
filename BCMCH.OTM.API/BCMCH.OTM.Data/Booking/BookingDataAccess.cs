@@ -806,12 +806,44 @@ namespace BCMCH.OTM.Data.Booking
         {
             try
             {
-                const string StoredProcedure = "[OTM].[InsertNonOP]";
+                string Query = @"
+                INSERT INTO [OTM].[NonOP]
+                    (
+                    [PatientUHID],
+                    [PatientName],
+                    [PatientAge],
+                    [AdmittedLocation],
+                    [ProcedureToPerform],
+                    [PriorityLevel],
+                    [ProvisionalDiagnosis],
+                    [Comments],
+                    [Status],
+                    [DateToBePerformed],
+                    [PostedDateTime]
+                    )
+                VALUES
+                    (
+                        @PatientUHID,
+                        @PatientName,
+                        @PatientAge,
+                        @AdmittedLocation,
+                        @ProcedureToPerform,
+                        @PriorityLevel,
+                        @ProvisionalDiagnosis,
+                        @Comments,
+                        @Status,
+                        @DateToBePerformed,
+                        GETDATE()
+                )
+                ";
                 var SqlParameters = new DynamicParameters();
+                
+                
+                // const string StoredProcedure = "[OTM].[InsertNonOP]";
+                // var SqlParameters = new DynamicParameters();
                 SqlParameters.Add("@PatientUHID", nonOP.PatientUHID);
                 SqlParameters.Add("@PatientName", nonOP.PatientName);
                 SqlParameters.Add("@PatientAge", nonOP.PatientAge);
-                SqlParameters.Add("@Sex", nonOP.Sex);
                 SqlParameters.Add("@PriorityLevel", nonOP.PriorityLevel);
                 SqlParameters.Add("@DateToBePerformed", nonOP.DateToBePerformed);
                 SqlParameters.Add("@Comments", nonOP.Comments);
@@ -819,7 +851,8 @@ namespace BCMCH.OTM.Data.Booking
                 SqlParameters.Add("@ProcedureToPerform", nonOP.ProcedureToPerform);
                 SqlParameters.Add("@ProvisionalDiagnosis", nonOP.ProvisionalDiagnosis);
                 SqlParameters.Add("@AdmittedLocation", nonOP.AdmittedLocation);
-                var result = await _sqlHelper.QueryAsync<NonOP>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+                
+                var result = await _sqlHelper.QueryAsync<NonOP>(Query, SqlParameters, CommandType.Text);
                 return result;
             }
             catch (Exception ex)
@@ -838,13 +871,13 @@ namespace BCMCH.OTM.Data.Booking
                                         ,[PatientUHID]
                                         ,[PatientName]
                                         ,[PatientAge]
-                                        ,[Sex]
                                         ,[AdmittedLocation]
                                         ,[ProcedureToPerform]
                                         ,[PriorityLevel]
                                         ,[ProvisionalDiagnosis]
                                         ,[Comments]
                                         ,[DateToBePerformed]
+                                        ,[PostedDateTime]
                                         ,[status]
                                     FROM [OTM].[NonOP]
                                  ";
@@ -860,7 +893,6 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add("@PatientUHID", nonOP.PatientUHID);
             SqlParameters.Add("@PatientName", nonOP.PatientName);
             SqlParameters.Add("@PatientAge", nonOP.PatientAge);
-            SqlParameters.Add("@Sex", nonOP.Sex);
             SqlParameters.Add("@PriorityLevel", nonOP.PriorityLevel);
             SqlParameters.Add("@DateToBePerformed", nonOP.DateToBePerformed);
             SqlParameters.Add("@Comments", nonOP.Comments);
