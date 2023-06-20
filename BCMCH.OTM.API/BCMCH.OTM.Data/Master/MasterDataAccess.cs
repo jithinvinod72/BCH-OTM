@@ -597,14 +597,30 @@ namespace BCMCH.OTM.Data.Master
 
         // ANSWER HANDLE SECTION END
 
-        public async Task<IEnumerable<OTValidation>> CheckAllocationByOperationThearter(string startDate, string endDate, int operationId)
+        public async Task<IEnumerable<Allocation>> CheckAllocationByOperationThearter(string startDate, string endDate, int operationTheatreId)
         {
-            const string StoredProcedure = "[OTM].[CheckifAllocationExistsForOperationTheaterInRange]";
+            string Query = @"
+                                SELECT 
+                                     [Id]                   AS Id
+                                    ,[OperationTheatreId]   AS OperationTheatreId
+                                    ,[AssignedDepartmentId] AS AssignedDepartmentId
+                                    ,[StartDate]            AS StartDate
+                                    ,[EndDate]              AS EndDate
+                                    ,[ModifiedBy]           AS ModifiedBy
+                                FROM [OTM].[OperationTheatreAllocation]
+
+                                WHERE 
+                                    (([StartDate] <= @StartDateToSearch AND [EndDate] >= @StartDateToSearch)
+                                    OR ([StartDate] <= @EndDateToSearch AND [EndDate] >= @EndDateToSearch)
+                                    OR ([StartDate] >= @StartDateToSearch AND [EndDate] <= @EndDateToSearch))
+                                    AND [OperationTheatreId] = @operationTheatreId;
+                            ";
+            // const string StoredProcedure = "[OTM].[CheckifAllocationExistsForOperationTheaterInRange]";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@operationTheatreId", operationId);
+            SqlParameters.Add("@operationTheatreId", operationTheatreId);
             SqlParameters.Add("@StartDateToSearch", startDate);
             SqlParameters.Add("@EndDateToSearch", endDate);
-            var result = await _sqlHelper.QueryAsync<OTValidation>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            var result = await _sqlHelper.QueryAsync<Allocation>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 

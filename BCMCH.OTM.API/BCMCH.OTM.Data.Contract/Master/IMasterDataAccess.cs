@@ -39,7 +39,7 @@ namespace BCMCH.OTM.Data.Contract.Master
          Task<IEnumerable<GetAnswer>> GetFormAnswer(int eventId);
 
         //validation- ot allocation
-        Task<IEnumerable<OTValidation>> CheckAllocationByOperationThearter(string startDate, string endDate, int operationId);
+        Task<IEnumerable<Allocation>> CheckAllocationByOperationThearter(string startDate, string endDate, int operationTheatreId);
         Task<IEnumerable<NonOperativeProcedureList>> GetNonOperativeProceduresList();
         
 

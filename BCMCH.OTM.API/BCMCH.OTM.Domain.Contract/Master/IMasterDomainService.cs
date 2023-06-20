@@ -28,7 +28,8 @@ namespace BCMCH.OTM.Domain.Contract.Master
         Task<IEnumerable<GetAllocationGroupped>> GetAllocationsGroup(string startDate, string endDate);
         
         // Task<IEnumerable<Allocation>> PostAllocation(Allocation _allocation);
-        Task<IEnumerable<int>> PostAllocation(Allocation _allocation);
+        // Task<IEnumerable<int>> PostAllocation(Allocation _allocation);
+        Task<Envelope<IEnumerable<Allocation>>> PostAllocation(Allocation _allocation);
         Task<IEnumerable<int>> EditAllocation(Allocation _allocation);
         Task<IEnumerable<int>> PostAllocationInARange(AllocateInRange _allocation);
         Task<IEnumerable<int>> DeleteAllocations(string allocationIds);
