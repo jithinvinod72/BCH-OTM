@@ -238,23 +238,23 @@ namespace BCMCH.OTM.Domain.Master
             return (IEnumerable<GetAllocationGroupped>)GroupList;
         }
         
-        public async Task<Envelope<IEnumerable<Allocation>>> PostAllocation(Allocation _allocation)
+        public async Task<Envelope<IEnumerable<GetAllocation>>> PostAllocation(Allocation _allocation)
         {
             // used to post allocation with only a startdate,enddate,otid and department id
             _allocation.GroupId = GenerateRandomString();
             var validation =await _masterDataAccess.CheckAllocationByOperationThearter(_allocation.StartDate, _allocation.EndDate , (int)_allocation.OperationTheatreId);
 
-            var envelope = new Envelope<IEnumerable<Allocation>>();
+            var envelope = new Envelope<IEnumerable<GetAllocation>>();
             if (validation.Any())
             {
                 var validationErrors = validation.Select(v => v.ToString()); // Convert each OTValidation item to a string representation
-                envelope = new Envelope<IEnumerable<Allocation>>();
+                envelope = new Envelope<IEnumerable<GetAllocation>>();
                 envelope.Data = validation; // Assign the validation data to the Data property
                 return envelope;
             }
 
             var result = await _masterDataAccess.PostAllocation(_allocation);
-            envelope = new Envelope<IEnumerable<Allocation>>(true, null);
+            envelope = new Envelope<IEnumerable<GetAllocation>>(true, null);
             return envelope;
         }
         public async Task<IEnumerable<int>> EditAllocation(Allocation _allocation)
@@ -272,7 +272,7 @@ namespace BCMCH.OTM.Domain.Master
             return result;
         }
         
-        public async Task<Envelope<IEnumerable<Allocation>>> PostAllocationInARange(AllocateInRange _allocation)
+        public async Task<Envelope<IEnumerable<GetAllocation>>> PostAllocationInARange(AllocateInRange _allocation)
         {
             // used to bulk posting allocation
             // first we convert the incoming startdate and enddate to date in js 
@@ -286,8 +286,8 @@ namespace BCMCH.OTM.Domain.Master
             List<DateTime> filteredDatesWithDay = FilterDatesOfDay(start, end, _allocation.day);
             // The above function will filter the dates of the day number that we have given within a given start and end dates.
             if (filteredDatesWithDay.Count() < 1) {
-                var envelope = new Envelope<IEnumerable<Allocation>>();
-                envelope = new Envelope<IEnumerable<Allocation>>(true, null);
+                var envelope = new Envelope<IEnumerable<GetAllocation>>();
+                envelope = new Envelope<IEnumerable<GetAllocation>>(true, null);
                 return envelope;
                 // return new List<int> { 1 };
             }
@@ -295,7 +295,7 @@ namespace BCMCH.OTM.Domain.Master
             var groupId = GenerateRandomString();
 
             // IEnumerable<Allocation> allocationValidation;
-            IEnumerable<Allocation> allocationValidation = Enumerable.Empty<Allocation>();
+            IEnumerable<GetAllocation> allocationValidation = Enumerable.Empty<GetAllocation>();
 
             // validation START
             foreach (DateTime dateRecurring in filteredDatesWithDay)
@@ -321,7 +321,7 @@ namespace BCMCH.OTM.Domain.Master
             {
                 // if any allocations are already posted in the given timeing it will return an errorr
                 var validationErrors = allocationValidation.Select(v => v.ToString());
-                var envelope = new Envelope<IEnumerable<Allocation>>();
+                var envelope = new Envelope<IEnumerable<GetAllocation>>();
                 envelope.Data = allocationValidation;
                 return envelope;   
             }
@@ -345,13 +345,13 @@ namespace BCMCH.OTM.Domain.Master
                 _postAllocation_format.AssignedDepartmentId = _allocation.AssignedDepartmentId;
                 _postAllocation_format.GroupId = groupId;
                 _postAllocation_format.StartDate = date_time_start;
-                _postAllocation_format.EndDate = date_time_end;
+                _postAllocation_format.EndDate  = date_time_end;
                 _postAllocation_format.ModifiedBy = _allocation.ModifiedBy;
 
                 var result = await _masterDataAccess.PostAllocation(_postAllocation_format);
                 
             }
-            return new Envelope<IEnumerable<Allocation>>(true, null);
+            return new Envelope<IEnumerable<GetAllocation>>(true, null);
         }
         // END- public functions for allocation to access from controller
         #endregion

@@ -356,7 +356,7 @@ namespace BCMCH.OTM.Data.Master
                     [ModifiedBy] = @ModifiedBy
                 WHERE
                     [id] = @id
-                    AND [AssignedDepartmentId] = @_allocationAssignedDepartmentId
+                    AND [AssignedDepartmentId] = @allocationAssignedDepartmentId
             ";
 
             var SqlParameters = new DynamicParameters();
@@ -368,31 +368,10 @@ namespace BCMCH.OTM.Data.Master
             SqlParameters.Add("@EndDate", _allocation.EndDate);
             SqlParameters.Add("@ModifiedBy", _allocation.ModifiedBy);
             SqlParameters.Add("@id", _allocation.id);
-            SqlParameters.Add("@_allocationAssignedDepartmentId", _allocation.AssignedDepartmentId);
+            SqlParameters.Add("@allocationAssignedDepartmentId", _allocation.AssignedDepartmentId);
 
             var result = await _sqlHelper.QueryAsync<Allocation>(Query, SqlParameters, CommandType.Text);
             return result;
-            // string Query = @"
-            //                     INSERT INTO [OTM].[OperationTheatreAllocation]
-            //                     ( 
-            //                         [OperationTheatreId],[AssignedDepartmentId],[GroupId],[StartDate],[EndDate],[ModifiedBy]
-            //                     )
-            //                     VALUES
-            //                     ( 
-            //                         @OperationTheatreId, @AssignedDepartmentId, @GroupId, @StartDate, @EndDate, @ModifiedBy
-            //                     )
-            //                 ";
-            // var SqlParameters = new DynamicParameters();
-
-            // SqlParameters.Add("@OperationTheatreId", _allocation.OperationTheatreId);
-            // SqlParameters.Add("@AssignedDepartmentId", _allocation.AssignedDepartmentId);
-            // SqlParameters.Add("@GroupId", _allocation.GroupId);
-            // SqlParameters.Add("@StartDate", _allocation.StartDate);
-            // SqlParameters.Add("@EndDate", _allocation.EndDate);
-            // SqlParameters.Add("@ModifiedBy", _allocation.ModifiedBy);
-
-            // var result = await _sqlHelper.QueryAsync<Allocation>(Query, SqlParameters, CommandType.Text);
-            // return result;
         }
 
         public async Task<IEnumerable<int>> DeleteAllocations(string allocationIds)
@@ -597,17 +576,25 @@ namespace BCMCH.OTM.Data.Master
 
         // ANSWER HANDLE SECTION END
 
-        public async Task<IEnumerable<Allocation>> CheckAllocationByOperationThearter(string startDate, string endDate, int operationTheatreId)
+        public async Task<IEnumerable<GetAllocation>> CheckAllocationByOperationThearter(string startDate, string endDate, int operationTheatreId)
         {
             string Query = @"
                                 SELECT 
-                                     [Id]                   AS Id
-                                    ,[OperationTheatreId]   AS OperationTheatreId
-                                    ,[AssignedDepartmentId] AS AssignedDepartmentId
-                                    ,[StartDate]            AS StartDate
-                                    ,[EndDate]              AS EndDate
-                                    ,[ModifiedBy]           AS ModifiedBy
-                                FROM [OTM].[OperationTheatreAllocation]
+                                      [OTAllocation].[Id]                        AS Id
+                                    , [OTAllocation].[OperationTheatreId]        AS OperationTheatreId
+                                    , [OTAllocation].[AssignedDepartmentId]      AS AssignedDepartmentId
+                                    , [Departments].[Name]                       AS AssignedDepartmentName
+                                    , [OperationTheatre].[Name]                    AS OperationTheatreName
+                                    , [OTAllocation].[StartDate]                 AS StartDate
+                                    , [OTAllocation].[EndDate]                   AS EndDate
+                                    , [OTAllocation].[ModifiedBy]                AS ModifiedBy
+
+                                FROM
+                                    [OTM].[OperationTheatreAllocation] AS OTAllocation
+                                LEFT JOIN
+                                [dbo].[Departments] AS Departments ON OTAllocation.AssignedDepartmentId = Departments.Id
+                                LEFT JOIN
+                                [OTM].[OperationTheatreMaster] AS OperationTheatre ON OTAllocation.OperationTheatreId = OperationTheatre.Id
 
                                 WHERE 
                                     (([StartDate] <= @StartDateToSearch AND [EndDate] >= @StartDateToSearch)
@@ -620,7 +607,7 @@ namespace BCMCH.OTM.Data.Master
             SqlParameters.Add("@operationTheatreId", operationTheatreId);
             SqlParameters.Add("@StartDateToSearch", startDate);
             SqlParameters.Add("@EndDateToSearch", endDate);
-            var result = await _sqlHelper.QueryAsync<Allocation>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<GetAllocation>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 
