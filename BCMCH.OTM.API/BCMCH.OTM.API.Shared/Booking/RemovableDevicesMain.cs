@@ -9,7 +9,8 @@ namespace BCMCH.OTM.API.Shared.Booking
     public class RemovableDevicesMain
     {
         public int? Id {get;set;}
-        public string RegistrationNo {get; set; }
+        public int OperationId {get; set; }
+        public string? RegistrationNo {get; set; }
         public string? Datetime {get;set;}
         public string? PatientFirstName {get;set;}
         public string? PatientMiddleName {get;set;}

@@ -524,16 +524,17 @@ namespace BCMCH.OTM.Data.Booking
         public async Task<IEnumerable<PathologySample>> GetPathologyDataWithId(int id)
         {
             string Query = @"
-                SELECT TOP (1000) [Id]
-                    ,[PathologyId]
-                    ,[ProcedureId]
-                    ,[HistopathologyId]
-                    ,[SpecimenNature]
-                    ,[BiposySite]
-                FROM 
-                    [behive-dev-otm].[OTM].[PathologySamples]
-                WHERE 
-                    PathologyId=@PathologyId
+                    SELECT 
+                         [Id]
+                        ,[PathologyId]
+                        ,[ProcedureId]
+                        ,[HistopathologyId]
+                        ,[SpecimenNature]
+                        ,[BiposySite]
+                    FROM 
+                        [behive-dev-otm].[OTM].[PathologySamples]
+                    WHERE 
+                        PathologyId=@PathologyId
             ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@PathologyId", id);
@@ -688,6 +689,7 @@ namespace BCMCH.OTM.Data.Booking
             string Query = @"
                             INSERT INTO [OTM].[RemovableDevicesMain]
                             (
+                                [OperationId],
                                 [RegistrationNo],
                                 [status],
                                 [IsDeleted],
@@ -696,6 +698,7 @@ namespace BCMCH.OTM.Data.Booking
                             )
                             VALUES
                             (
+                                @OperationId,
                                 @RegistrationNo,
                                 @status,
                                 @IsDeleted,
@@ -740,6 +743,7 @@ namespace BCMCH.OTM.Data.Booking
                             
                            ";
             var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@OperationId", removableDevicesMain.OperationId);
             SqlParameters.Add("@RegistrationNo", removableDevicesMain.RegistrationNo);
             SqlParameters.Add("@status", removableDevicesMain.Status);
             SqlParameters.Add("@IsDeleted", 0);
@@ -757,6 +761,7 @@ namespace BCMCH.OTM.Data.Booking
             string Query = @"
                             UPDATE [OTM].[RemovableDevicesMain]
                             SET
+                                [OperationId]   = @OperationId,
                                 [RegistrationNo] = @RegistrationNo,
                                 [status] = @status,
                                 [IsDeleted] = @IsDeleted,
@@ -802,6 +807,7 @@ namespace BCMCH.OTM.Data.Booking
             var SqlParameters = new DynamicParameters();
 
             SqlParameters.Add("@RemovableDevicesMainId", removableDevicesMain.Id);
+            SqlParameters.Add("@OperationId", removableDevicesMain.OperationId);
             SqlParameters.Add("@RegistrationNo", removableDevicesMain.RegistrationNo);
             SqlParameters.Add("@status", removableDevicesMain.Status);
             SqlParameters.Add("@IsDeleted", 0);
@@ -833,39 +839,29 @@ namespace BCMCH.OTM.Data.Booking
         public async Task<IEnumerable<RemovableDevicesMain>> GetRemovableDevices()
         {
             string Query = @"
-                            SELECT
-                                RemovableDevices.[Id],
-                                RemovableDevices.[RegistrationNo],
-                                RemovableDevices.[DateTime]                AS Datetime,
-                                RemovableDevices.[status]                  AS Status,
-                                RemovableDevices.[IsDeleted],
-                                RemovableDevices.[PostedBy],
-                                PatientMaster.FirstName             AS PatientFirstName,
-                                PatientMaster.MiddleName            AS PatientMiddleName,
-                                PatientMaster.LastName              AS PatientLastName,
-                                EmployeeTable.[DepartmentID]        AS BookedDepartment,
-                                SurgeonTable.[FullName]             AS BookedByName,
-                                DepartmentTable.Name                AS DepartmentName
-                            FROM
-                                [behive-dev-otm].[OTM].[RemovableDevicesMain] AS RemovableDevices
-                                LEFT JOIN
-                                    [behive-dev-otm].dbo.PatientMaster 
-                                AS PatientMaster ON 
-                                    RemovableDevices.RegistrationNo = PatientMaster.RegistrationNo
+                                SELECT 
+                                  [RemovableMain].[Id]                      AS Id
+                                , [RemovableMain].[OperationId]             AS OperationId
+                                , [RemovableMain].[status]                  AS status
+                                , [RemovableMain].[IsDeleted]               AS IsDeleted
+                                , [RemovableMain].[PostedBy]                AS PostedBy
+                                , [RemovableMain].[DateTime]                AS DateTime
+                                , [Bookings].RegistrationNo                 AS RegistrationNo
+                                , ISNULL([PatientTable].[FirstName], '')    AS PatientFirstName
+                                , ISNULL([PatientTable].[MiddleName], '')   AS PatientMiddleName
+                                , ISNULL([PatientTable].[LastName], '')     AS PatientLastName
+                                , EmployeeTable.[DepartmentID]              AS BookedDepartment
+                                , SurgeonTable.[FullName]                   AS BookedByName
+                                , DepartmentTable.Name                      AS DepartmentName
 
-                                LEFT JOIN
-                                [dbo].[Users] AS SurgeonTable ON 
-                                RemovableDevices.PostedBy = [SurgeonTable].EmployeeId
-
-                                LEFT JOIN
-                                [HR].[Employees] AS EmployeeTable ON 
-                                RemovableDevices.[PostedBy] = [EmployeeTable].Id
-
-                                LEFT JOIN
-                                [dbo].[Departments] AS DepartmentTable ON 
-                                EmployeeTable.[DepartmentID] = DepartmentTable.Id
+                            FROM [behive-dev-otm].[OTM].[RemovableDevicesMain] AS RemovableMain
+                                LEFT JOIN [OTM].[Bookings] AS Bookings ON RemovableMain.OperationId = Bookings.id
+                                LEFT JOIN [dbo].[PatientMaster] AS PatientTable ON Bookings.RegistrationNo = [PatientTable].[RegistrationNo]
+                                LEFT JOIN [dbo].[Users] AS SurgeonTable ON  RemovableMain.PostedBy = [SurgeonTable].EmployeeId
+                                LEFT JOIN [HR].[Employees] AS EmployeeTable ON RemovableMain.[PostedBy] = [EmployeeTable].Id
+                                LEFT JOIN [dbo].[Departments] AS DepartmentTable ON  EmployeeTable.[DepartmentID] = DepartmentTable.Id
                             WHERE 
-                                RemovableDevices.[IsDeleted]=0;
+                                RemovableMain.[IsDeleted]=0
                            ";
             var SqlParameters = new DynamicParameters();
             var result = await _sqlHelper.QueryAsync<RemovableDevicesMain>(Query, SqlParameters, CommandType.Text);
@@ -876,7 +872,7 @@ namespace BCMCH.OTM.Data.Booking
         public async Task<IEnumerable<RemovableDevicesSelcted>> GetRemovableDevicesSelected(int id)
         {
             string Query = @"
-                            SELECT TOP (1000) 
+                            SELECT
                                 [Id]
                                 ,[RemovableDeviceMainId]
                                 ,[RemovableDeviceId]
