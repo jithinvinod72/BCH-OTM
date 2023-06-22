@@ -9,6 +9,7 @@ namespace BCMCH.OTM.API.Shared.Booking
     public class Pathology
     {
         public int? Id {get;set;}
+        public int? OperationId {get; set; }
         public string RegistrationNo {get; set; }
         public string? Datetime {get;set;}
         public string? PatientFirstName {get;set;}

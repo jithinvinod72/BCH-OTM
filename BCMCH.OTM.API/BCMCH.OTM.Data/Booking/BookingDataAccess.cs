@@ -486,37 +486,31 @@ namespace BCMCH.OTM.Data.Booking
         public async Task<IEnumerable<Pathology>> GetPathology()
         {
             string Query = @"
-                            SELECT 
+                            SELECT
                                 Pathology.[Id],
-                                Pathology.[RegistrationNo],
-                                Pathology.[datetime]                AS Datetime,
-                                Pathology.[status]                  AS Status,
+                                Pathology.[datetime]                      AS Datetime,
+                                Pathology.[status]                        AS Status,
                                 Pathology.[IsDeleted],
                                 Pathology.[PostedBy],
-                                PatientMaster.FirstName             AS PatientFirstName,
-                                PatientMaster.MiddleName            AS PatientMiddleName,
-                                PatientMaster.LastName              AS PatientLastName,
-                                EmployeeTable.[DepartmentID]        AS BookedDepartment,
-                                SurgeonTable.[FullName]             AS BookedByName,
-                                DepartmentTable.Name                AS DepartmentName
-                            FROM 
+                                Pathology.[OperationId]                   AS OperationId,
+                                EmployeeTable.[DepartmentID]              AS BookedDepartment,
+                                SurgeonTable.[FullName]                   AS BookedByName,
+                                DepartmentTable.Name                      AS DepartmentName,
+                                [Bookings].RegistrationNo                 AS RegistrationNo,
+                                ISNULL([PatientTable].[FirstName], '')    AS PatientFirstName,
+                                ISNULL([PatientTable].[MiddleName], '')   AS PatientMiddleName,
+                                ISNULL([PatientTable].[LastName], '')     AS PatientLastName
+                            FROM
                                 [behive-dev-otm].[OTM].[Pathology] AS Pathology
-                            LEFT JOIN 
-                                [behive-dev-otm].dbo.PatientMaster 
-                                AS PatientMaster ON 
-                                Pathology.RegistrationNo = PatientMaster.RegistrationNo
-                            LEFT JOIN 
-                                [dbo].[Users] AS SurgeonTable 
-                                ON 
-                                Pathology.PostedBy = [SurgeonTable].EmployeeId 
-                            LEFT JOIN 
-                                [HR].[Employees] AS EmployeeTable 
-                                ON 
-                                Pathology.[PostedBy] = [EmployeeTable].Id 
-                            LEFT JOIN 
-                                [dbo].[Departments] AS DepartmentTable 
-                                ON 
-                                EmployeeTable.[DepartmentID] = DepartmentTable.Id
+                                LEFT JOIN [OTM].[Bookings] AS Bookings ON Pathology.OperationId = Bookings.id
+                                LEFT JOIN [dbo].[PatientMaster] AS PatientTable ON Bookings.RegistrationNo = [PatientTable].[RegistrationNo]
+                                LEFT JOIN
+                                [dbo].[Users] AS SurgeonTable ON  Pathology.PostedBy = [SurgeonTable].EmployeeId
+                                LEFT JOIN [HR].[Employees] AS EmployeeTable
+                                ON Pathology.[PostedBy] = [EmployeeTable].Id
+                                LEFT JOIN
+                                [dbo].[Departments] AS DepartmentTable
+                                ON  EmployeeTable.[DepartmentID] = DepartmentTable.Id
                             WHERE 
                                 Pathology.[IsDeleted]=0
                                 ;
@@ -552,6 +546,7 @@ namespace BCMCH.OTM.Data.Booking
             string Query = @"
                             INSERT INTO [OTM].[Pathology]
                                 (
+                                    [OperationId] ,
                                     [RegistrationNo] ,
                                     [status] ,
                                     [PostedBy],
@@ -560,6 +555,7 @@ namespace BCMCH.OTM.Data.Booking
                                 )
                             VALUES
                                 (
+                                    @OperationId,
                                     @RegNo,
                                     @status,
                                     @PostedBy,
@@ -595,6 +591,7 @@ namespace BCMCH.OTM.Data.Booking
                             SELECT @PathologyId
                            ";
             var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@OperationId", Pathology.OperationId);
             SqlParameters.Add("@RegNo", Pathology.RegistrationNo);
             SqlParameters.Add("@PostedBy", Pathology.PostedBy);
             SqlParameters.Add("@nestedData", Pathology.NestedData);
