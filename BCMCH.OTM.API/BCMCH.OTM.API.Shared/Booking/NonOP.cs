@@ -10,6 +10,7 @@ namespace BCMCH.OTM.API.Shared.Booking
         public string? PatientMiddleName { get; set; }
         public string? PatientLastName { get; set; }
         public int ProcedureToPerform { get; set; }
+        public string? ProcedureName { get; set; }
         public int PriorityLevel { get; set; }
         public string? ProvisionalDiagnosis { get; set; }
         public string? Comments { get; set; }

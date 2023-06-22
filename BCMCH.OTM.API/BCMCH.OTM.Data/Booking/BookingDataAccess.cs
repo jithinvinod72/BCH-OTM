@@ -956,7 +956,7 @@ namespace BCMCH.OTM.Data.Booking
         public async Task<IEnumerable<NonOP>> GetNonOPRequests()
         {
             const string Query = @"
-                                    SELECT 
+                                    SELECT
                                           [Procedures].[Id]                         AS Id
                                         , [Procedures].[ProcedureToPerform]         AS ProcedureToPerform
                                         , [Procedures].[PriorityLevel]              AS PriorityLevel
@@ -970,9 +970,11 @@ namespace BCMCH.OTM.Data.Booking
                                         , ISNULL([PatientTable].[FirstName], '')    AS PatientFirstName
                                         , ISNULL([PatientTable].[MiddleName], '')   AS PatientMiddleName
                                         , ISNULL([PatientTable].[LastName], '')     AS PatientLastName
+                                        ,[ProceduresList].[Name]                    AS ProcedureName
                                     FROM [OTM].[NonOP] AS Procedures
                                         LEFT JOIN [OTM].[Bookings] AS Bookings ON Procedures.OperationId = Bookings.id
                                         LEFT JOIN [dbo].[PatientMaster] AS PatientTable ON Bookings.RegistrationNo = [PatientTable].[RegistrationNo]
+                                        LEFT JOIN [OTM].[NonOperativeProceduresListMaster] AS ProceduresList ON Procedures.ProcedureToPerform = ProceduresList.Id
                                  ";
             var SqlParameters = new DynamicParameters();
             var result = await _sqlHelper.QueryAsync<NonOP>(Query, SqlParameters, CommandType.Text);
