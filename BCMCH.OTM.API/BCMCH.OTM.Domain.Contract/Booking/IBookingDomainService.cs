@@ -14,6 +14,7 @@ namespace BCMCH.OTM.Domain.Contract.Booking
     public interface IBookingDomainService
     {
         Task<IEnumerable<Bookings>> GetBookingList(string fromDate, string toDate);
+        Task<IEnumerable<Bookings>> GetBookingsForPathology(string? fromDate, string? toDate);
         Task<IEnumerable<Bookings>> GetBookingListWithDepartment(string departmentIds, string? fromDate,string? toDate);
         Task<IEnumerable<Bookings>> GetBookingListWithOtId(string otIds, string? fromDate,string? toDate);
         Task<IEnumerable<Bookings>> GetBookingsSorted(bool PaginationEnabled=false, int pageNumber=0,string? sortValue="",string? sortType="",string? fromDate="",string? toDate="");

@@ -13,6 +13,8 @@ namespace BCMCH.OTM.Data.Contract.Booking
     public interface IBookingDataAccess
     {
         Task<IEnumerable<Bookings>> GetBookingList(string? fromDate,string? toDate);
+        Task<IEnumerable<Bookings>> GetBookingsForPathology(string? fromDate, string? toDate);
+
         Task<IEnumerable<Equipments>> GetEventEquipments(int bookingId);
         Task<IEnumerable<Equipments>> GetEventMedicines(int bookingId);
         Task<IEnumerable<Equipments>> GetEventMaterials(int bookingId);

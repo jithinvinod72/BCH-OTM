@@ -579,6 +579,11 @@ namespace BCMCH.OTM.Domain.Booking
             result.Allocations = filteredAllocations;
             return result;
         }
+        public async Task<IEnumerable<Bookings>> GetBookingsForPathology(string? fromDate, string? toDate)
+        {
+            var result = await _bookingDataAccess.GetBookingsForPathology(fromDate, toDate);
+            return result;
+        }
         public async Task<IEnumerable<int?>> SelectAllocatedTheatres(int departmentId, string? fromDate,string? toDate)
         {
             // sellects the unique operation theatre id those are allocated for the given departments

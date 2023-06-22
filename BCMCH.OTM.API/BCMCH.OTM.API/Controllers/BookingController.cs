@@ -44,6 +44,21 @@ namespace BCMCH.OTM.API.Controllers
         }
 
         [HttpGet]
+        [Route("get-events-forpathology-and-removable-devcices")]
+        public async Task<IActionResult> GetBookingsForPathology(string? fromDate="",string? toDate="")
+        {
+            try
+            {
+                var result = await _bookingService.GetBookingsForPathology(fromDate, toDate);
+                return Ok(new ResponseVM<IEnumerable<Bookings>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+        [HttpGet]
         [Route("get-events-sorted")]
         public async Task<IActionResult> SelectEventsSorted(bool PaginationEnabled=false, int pageNumber=0,string? sortValue="",string? sortType="",string? fromDate="",string? toDate="")
         {

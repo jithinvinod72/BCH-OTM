@@ -32,6 +32,110 @@ namespace BCMCH.OTM.Data.Booking
             return result;
         }
 
+        public async Task<IEnumerable<Bookings>> GetBookingsForPathology(string? fromDate, string? toDate)
+        {
+            // used to fetch the employees with their booking Id
+            string Query = @"
+                            SELECT
+                                BookingsTable.Id                                     AS event_id,
+                                BookingsTable.OperationTheatreId                     AS OperationTheatreId,
+                                BookingsTable.DoctorId                               AS BookedByEmployee,
+                                BookingsTable.DepartmentId                           AS BookedByDepartment,
+                                DepartmentTable.Name                                 AS DepartmentName,
+                                BookingsTable.AnaesthetistId                         AS AnaesthetistId,
+                                BookingsTable.AnaesthesiaTypeId                      AS AnaesthesiaTypeId,
+
+                                BookingsTable.SurgeryId                              AS SurgeryId,
+                                BookingsTable.OtherSurgery                           AS OtherSurgery,
+                                SurgeryDetails.[Name]                                AS SurgeryName,
+                                SurgeryDetails.[PrintName]                           AS SurgeryPrintName,
+                                SurgeryDetails.[AliasName]                           AS SurgeryAliasName,
+                                SurgeryDetails.[InstructionsToPatient]               AS SurgeryInstructionsToPatient,
+
+                                BookingsTable.RegistrationNo                         AS PatientRegistrationNo,
+                                BookingsTable.StartDate                              AS StartDate,
+                                BookingsTable.EndDate                                AS EndDate,
+                                BookingsTable.Duration                               AS OperationDuration,
+                                BookingsTable.InstructionToNurse                     AS InstructionToNurse,
+                                BookingsTable.InstructionToAnaesthetist              AS InstructionToAnaesthetist,
+                                BookingsTable.InstructionToOperationTeatrePersons    AS InstructionToOperationTeatrePersons,
+                                BookingsTable.RequestForSpecialMeterial              AS RequestForSpecialMeterial,
+                                BookingsTable.ModifiedBy                             AS ModifiedBy,
+                                BookingsTable.IsDeleted                              AS IsDeleted,
+
+                                OTM.OperationTheatreMaster.Name                      AS TheatreName,
+                                OTM.OperationTheatreMaster.Location                  AS TheatreLocation,
+                                OTM.OperationTheatreMaster.shortName                 AS TheatreShortName,
+
+                                OTM.OperationTheatreMaster.DepartmentId              AS TheatreDefaultDepartment,
+                                OTM.OperationTheatreMaster.CleaningTime              AS TheatreCleaningTime ,
+
+                                AnaesthetistTable.[FirstName]                        AS AnaesthetistFirstName,
+                                AnaesthetistTable.[LastName]                         AS AnaesthetistLastName,
+                                AnaesthetistTable.[MiddleName]                       AS AnaesthetistMiddleName,
+                                AnaesthetistTable.[DepartmentID]                     AS AnaesthetistDepartmentId,
+
+                                SurgeonTable.[FirstName]                             AS BookedByDoctorFirstName,
+                                SurgeonTable.[LastName]                              AS BookedByDoctorLastName,
+                                SurgeonTable.[MiddleName]                            AS BookedByDoctorMiddleName,
+                                SurgeonTable.[DepartmentID]                          AS BookedByDoctorDepartmentId,
+
+                                AnaesthesiaTypes.Name                                As AnaesthesiaType,
+
+                                OTMStatusTable.Code                                  AS StatusCode ,
+                                OTMStatusTable.Name                                  AS StatusName ,
+
+                                PatientTable.[FirstName]                             AS PatientFirstName,
+                                PatientTable.[MiddleName]                            AS PatientMiddleName,
+                                PatientTable.[LastName]                              AS PatientLastName,
+                                PatientTable.[DateOfBirth]                           AS PatientDateOfBirth,
+                                PatientTable.[Gender]                                AS PatientGender,
+                                BookingsTable.OtComplexEntry                         AS OtComplexEntry,
+                                BookingsTable.PreOpEntryTime                         AS PreOpEntryTime,
+                                BookingsTable.PreOpExitTime                          AS PreOpExitTime,
+                                BookingsTable.OtEntryTime                            AS OtEntryTime,
+                                BookingsTable.OtExitTime                             AS OtExitTime,
+                                BookingsTable.PostOpEntryTime                        AS PostOpEntryTime,
+                                BookingsTable.PostOpExitTime                         AS PostOpExitTime,
+                                BookingsTable.AverageSurgeryTime                     AS AverageSurgeryTime
+
+                            FROM
+                                OTM.Bookings AS BookingsTable
+
+                                LEFT JOIN [OTM].[OperationTheatreMaster] ON BookingsTable.OperationTheatreId =OTM.[OperationTheatreMaster].Id
+                                LEFT JOIN [OTM].[Status] AS OTMStatusTable ON BookingsTable.StatusId =OTMStatusTable.Id
+                                LEFT JOIN [HR].[Employees] AS AnaesthetistTable ON BookingsTable.AnaesthetistId = AnaesthetistTable.Id
+                                LEFT JOIN [HR].[Employees] AS SurgeonTable ON BookingsTable.DoctorId = [SurgeonTable].Id
+                                LEFT JOIN [OTM].[AnaesthesiaTypeMaster] AS AnaesthesiaTypes ON BookingsTable.AnaesthesiaTypeId =AnaesthesiaTypes.Id
+                                LEFT JOIN [dbo].[PatientMaster] AS PatientTable ON BookingsTable.RegistrationNo = [PatientTable].[RegistrationNo]
+                                LEFT JOIN [dbo].[View_SurgeryServices] AS SurgeryDetails ON BookingsTable.SurgeryId = SurgeryDetails.Id
+                                LEFT JOIN [dbo].[Departments] AS DepartmentTable ON BookingsTable.DepartmentId = DepartmentTable.Id
+
+                            WHERE
+                                ( StartDate >= @startDate )
+                                AND
+                                ( EndDate   <= @endDate )
+                                AND
+                                (BookingsTable.IsDeleted=0)
+                                AND
+                                (
+                                    OTMStatusTable.Name = 'BOOKED'
+                                    OR
+                                    OTMStatusTable.Name = 'EMERGENCY'
+                                )
+                            ORDER BY 
+                                    StartDate
+                            ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@startDate", fromDate);
+            SqlParameters.Add("@endDate", toDate);
+            var result = await _sqlHelper.QueryAsync<Bookings>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
+
+        
+
         public async Task<IEnumerable<int>> AddBooking(PostBookingModel booking)
         {
             const string StoredProcedure = "[OTM].[InsertBooking]";
@@ -69,7 +173,6 @@ namespace BCMCH.OTM.Data.Booking
         {
             const string StoredProcedure = "[OTM].[SelectAllocation]";
             var SqlParameters = new DynamicParameters();
-            // SqlParameters.Add("@DeartmentId"    , departmentId );
             SqlParameters.Add("@StartDate", startDate);
             SqlParameters.Add("@EndDate", endDate);
             var result = await _sqlHelper.QueryAsync<GetAllocation>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
@@ -807,50 +910,37 @@ namespace BCMCH.OTM.Data.Booking
             try
             {
                 string Query = @"
-                INSERT INTO [OTM].[NonOP]
-                    (
-                    [PatientUHID],
-                    [PatientName],
-                    [PatientAge],
-                    [AdmittedLocation],
-                    [ProcedureToPerform],
-                    [PriorityLevel],
-                    [ProvisionalDiagnosis],
-                    [Comments],
-                    [Status],
-                    [DateToBePerformed],
-                    [PostedDateTime]
+                    INSERT INTO [OTM].[NonOP]
+                        (
+                            [OperationId],
+                            [ProcedureToPerform],
+                            [PriorityLevel],
+                            [ProvisionalDiagnosis],
+                            [Comments],
+                            [Status],
+                            [DateToBePerformed],
+                            [PostedDateTime]
+                        )
+                    VALUES
+                        (
+                            @OperationId,
+                            @ProcedureToPerform,
+                            @PriorityLevel,
+                            @ProvisionalDiagnosis,
+                            @Comments,
+                            @Status,
+                            @DateToBePerformed,
+                            GETDATE()
                     )
-                VALUES
-                    (
-                        @PatientUHID,
-                        @PatientName,
-                        @PatientAge,
-                        @AdmittedLocation,
-                        @ProcedureToPerform,
-                        @PriorityLevel,
-                        @ProvisionalDiagnosis,
-                        @Comments,
-                        @Status,
-                        @DateToBePerformed,
-                        GETDATE()
-                )
                 ";
                 var SqlParameters = new DynamicParameters();
-                
-                
-                // const string StoredProcedure = "[OTM].[InsertNonOP]";
-                // var SqlParameters = new DynamicParameters();
-                SqlParameters.Add("@PatientUHID", nonOP.PatientUHID);
-                SqlParameters.Add("@PatientName", nonOP.PatientName);
-                SqlParameters.Add("@PatientAge", nonOP.PatientAge);
+                SqlParameters.Add("@OperationId", nonOP.OperationId);
                 SqlParameters.Add("@PriorityLevel", nonOP.PriorityLevel);
                 SqlParameters.Add("@DateToBePerformed", nonOP.DateToBePerformed);
                 SqlParameters.Add("@Comments", nonOP.Comments);
                 SqlParameters.Add("@Status", nonOP.Status);
                 SqlParameters.Add("@ProcedureToPerform", nonOP.ProcedureToPerform);
                 SqlParameters.Add("@ProvisionalDiagnosis", nonOP.ProvisionalDiagnosis);
-                SqlParameters.Add("@AdmittedLocation", nonOP.AdmittedLocation);
                 
                 var result = await _sqlHelper.QueryAsync<NonOP>(Query, SqlParameters, CommandType.Text);
                 return result;
@@ -867,19 +957,22 @@ namespace BCMCH.OTM.Data.Booking
         {
             const string Query = @"
                                     SELECT 
-                                         [Id]
-                                        ,[PatientUHID]
-                                        ,[PatientName]
-                                        ,[PatientAge]
-                                        ,[AdmittedLocation]
-                                        ,[ProcedureToPerform]
-                                        ,[PriorityLevel]
-                                        ,[ProvisionalDiagnosis]
-                                        ,[Comments]
-                                        ,[DateToBePerformed]
-                                        ,[PostedDateTime]
-                                        ,[status]
-                                    FROM [OTM].[NonOP]
+                                          [Procedures].[Id]                         AS Id
+                                        , [Procedures].[ProcedureToPerform]         AS ProcedureToPerform
+                                        , [Procedures].[PriorityLevel]              AS PriorityLevel
+                                        , [Procedures].[ProvisionalDiagnosis]       AS ProvisionalDiagnosis
+                                        , [Procedures].[Comments]                   AS Comments
+                                        , [Procedures].[DateToBePerformed]          AS DateToBePerformed
+                                        , [Procedures].[Status]                     AS Status
+                                        , [Procedures].[PostedDateTime]             AS PostedDateTime
+                                        , [Procedures].[OperationId]                AS OperationId
+                                        , [Bookings].RegistrationNo                 AS PatientUHID
+                                        , ISNULL([PatientTable].[FirstName], '')    AS PatientFirstName
+                                        , ISNULL([PatientTable].[MiddleName], '')   AS PatientMiddleName
+                                        , ISNULL([PatientTable].[LastName], '')     AS PatientLastName
+                                    FROM [OTM].[NonOP] AS Procedures
+                                        LEFT JOIN [OTM].[Bookings] AS Bookings ON Procedures.OperationId = Bookings.id
+                                        LEFT JOIN [dbo].[PatientMaster] AS PatientTable ON Bookings.RegistrationNo = [PatientTable].[RegistrationNo]
                                  ";
             var SqlParameters = new DynamicParameters();
             var result = await _sqlHelper.QueryAsync<NonOP>(Query, SqlParameters, CommandType.Text);
@@ -888,19 +981,28 @@ namespace BCMCH.OTM.Data.Booking
 
         public async Task<IEnumerable<NonOP>> EditNonOPRequests(NonOP nonOP)
         {
-            const string StoredProcedure = "[OTM].[UpdateNonOP]";
+
+            string Query = @"
+                            UPDATE  [OTM].[NonOP]
+                            SET
+                                [ProcedureToPerform]    = @ProcedureToPerform,
+                                [PriorityLevel]         = @PriorityLevel,
+                                [ProvisionalDiagnosis]  = @ProvisionalDiagnosis,
+                                [Comments]              = @Comments,
+                                [Status]                = @Status,
+                                [DateToBePerformed]     = @DateToBePerformed 
+                            WHERE Id = @Id
+                           ";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@PatientUHID", nonOP.PatientUHID);
-            SqlParameters.Add("@PatientName", nonOP.PatientName);
-            SqlParameters.Add("@PatientAge", nonOP.PatientAge);
-            SqlParameters.Add("@PriorityLevel", nonOP.PriorityLevel);
-            SqlParameters.Add("@DateToBePerformed", nonOP.DateToBePerformed);
-            SqlParameters.Add("@Comments", nonOP.Comments);
-            SqlParameters.Add("@ProcedureToPerform", nonOP.ProcedureToPerform);
-            SqlParameters.Add("@ProvisionalDiagnosis", nonOP.ProvisionalDiagnosis);
-            SqlParameters.Add("@AdmittedLocation", nonOP.AdmittedLocation);
-            SqlParameters.Add("@Id", nonOP.Id);
-            var result = await _sqlHelper.QueryAsync<NonOP>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            SqlParameters.Add( "@Id"                     , nonOP.Id ) ;
+            SqlParameters.Add( "@ProcedureToPerform"     , nonOP.ProcedureToPerform ) ;
+            SqlParameters.Add( "@Status"                 , nonOP.Status ) ;
+            SqlParameters.Add( "@PriorityLevel"          , nonOP.PriorityLevel ) ;
+            SqlParameters.Add( "@ProvisionalDiagnosis"   , nonOP.ProvisionalDiagnosis ) ;
+            SqlParameters.Add( "@Comments"               , nonOP.Comments ) ;
+            SqlParameters.Add( "@DateToBePerformed"      , nonOP.DateToBePerformed ) ;
+
+            var result = await _sqlHelper.QueryAsync<NonOP>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 
