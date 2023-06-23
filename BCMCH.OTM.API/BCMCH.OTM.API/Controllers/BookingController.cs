@@ -337,6 +337,21 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
+
+        [HttpGet]
+        [Route("get-pathology-samples-summary")]
+        public async Task<IActionResult> GetPathologySummaryWithOperationId(int operationId )
+        {
+            try
+            {
+                var result = await _bookingService.GetPathologySummaryWithOperationId(operationId);
+                return Ok(new ResponseVM<PathologySampleSummary>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
         
 
         [HttpPost]

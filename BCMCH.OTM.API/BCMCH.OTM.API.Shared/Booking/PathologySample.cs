@@ -10,6 +10,7 @@ namespace BCMCH.OTM.API.Shared.Booking
     {
         public int? Id {get;set;}
         public int? ProcedureId {get;set;}
+        public int? OperationId {get;set;}
         public int? HistopathologyId {get;set;}
         public string? SpecimenNature {get;set;}
         public string? BiposySite {get;set;}

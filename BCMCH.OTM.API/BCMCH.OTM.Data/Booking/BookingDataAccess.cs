@@ -521,6 +521,44 @@ namespace BCMCH.OTM.Data.Booking
             return result;
         }
 
+        public async Task<IEnumerable<Pathology>> GetPathologyWithOperationId(int operationId)
+        {
+            string Query = @"
+                            SELECT
+                                Pathology.[Id],
+                                Pathology.[datetime]                      AS Datetime,
+                                Pathology.[status]                        AS Status,
+                                Pathology.[IsDeleted],
+                                Pathology.[PostedBy],
+                                Pathology.[OperationId]                   AS OperationId,
+                                EmployeeTable.[DepartmentID]              AS BookedDepartment,
+                                SurgeonTable.[FullName]                   AS BookedByName,
+                                DepartmentTable.Name                      AS DepartmentName,
+                                [Bookings].RegistrationNo                 AS RegistrationNo,
+                                ISNULL([PatientTable].[FirstName], '')    AS PatientFirstName,
+                                ISNULL([PatientTable].[MiddleName], '')   AS PatientMiddleName,
+                                ISNULL([PatientTable].[LastName], '')     AS PatientLastName
+                            FROM
+                                [behive-dev-otm].[OTM].[Pathology] AS Pathology
+                                LEFT JOIN [OTM].[Bookings] AS Bookings ON Pathology.OperationId = Bookings.id
+                                LEFT JOIN [dbo].[PatientMaster] AS PatientTable ON Bookings.RegistrationNo = [PatientTable].[RegistrationNo]
+                                LEFT JOIN
+                                [dbo].[Users] AS SurgeonTable ON  Pathology.PostedBy = [SurgeonTable].EmployeeId
+                                LEFT JOIN [HR].[Employees] AS EmployeeTable
+                                ON Pathology.[PostedBy] = [EmployeeTable].Id
+                                LEFT JOIN
+                                [dbo].[Departments] AS DepartmentTable
+                                ON  EmployeeTable.[DepartmentID] = DepartmentTable.Id
+                            WHERE 
+                                Pathology.[IsDeleted]=0 AND OperationId=@operationId
+                                ;
+                           ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@operationId", operationId);
+            var result = await _sqlHelper.QueryAsync<Pathology>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
         public async Task<IEnumerable<PathologySample>> GetPathologyDataWithId(int id)
         {
             string Query = @"
@@ -542,13 +580,14 @@ namespace BCMCH.OTM.Data.Booking
             return result;
         }
 
+       
+
         public async Task<IEnumerable<int>> PostPathology(Pathology Pathology)
         {
             string Query = @"
                             INSERT INTO [OTM].[Pathology]
                                 (
                                     [OperationId] ,
-                                    [RegistrationNo] ,
                                     [status] ,
                                     [PostedBy],
                                     [IsDeleted],
@@ -557,7 +596,6 @@ namespace BCMCH.OTM.Data.Booking
                             VALUES
                                 (
                                     @OperationId,
-                                    @RegNo,
                                     @status,
                                     @PostedBy,
                                     @IsDeleted,
@@ -593,7 +631,6 @@ namespace BCMCH.OTM.Data.Booking
                            ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@OperationId", Pathology.OperationId);
-            SqlParameters.Add("@RegNo", Pathology.RegistrationNo);
             SqlParameters.Add("@PostedBy", Pathology.PostedBy);
             SqlParameters.Add("@nestedData", Pathology.NestedData);
             SqlParameters.Add("@status", 1);

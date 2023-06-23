@@ -621,6 +621,29 @@ namespace BCMCH.OTM.Domain.Booking
             var result = await _bookingDataAccess.GetPathology();
             return result;
         }
+        public async Task<PathologySampleSummary> GetPathologySummaryWithOperationId(int operationId)
+        {
+            var pathology = await _bookingDataAccess.GetPathologyWithOperationId(operationId);
+            var firstRemovableDevice = pathology.FirstOrDefault();
+            if (firstRemovableDevice != null)
+            {
+                int id = (int)firstRemovableDevice.Id;
+                var samples = await _bookingDataAccess.GetPathologyDataWithId(id);
+                PathologySampleSummary pathologySampleSummary = new PathologySampleSummary();
+
+                pathologySampleSummary.pathology=pathology;
+                pathologySampleSummary.samples=samples;
+                return pathologySampleSummary;
+                
+            }
+            
+            PathologySampleSummary emptyPathologySampleSummary = new PathologySampleSummary();
+            emptyPathologySampleSummary.pathology = Enumerable.Empty<Pathology>();
+            emptyPathologySampleSummary.samples = Enumerable.Empty<PathologySample>();
+            return emptyPathologySampleSummary;
+
+            
+        }
         public async Task<IEnumerable<PathologySample>> GetPathologyDataWithId(int id)
         {
             var result = await _bookingDataAccess.GetPathologyDataWithId(id);

@@ -36,6 +36,7 @@ namespace BCMCH.OTM.Domain.Contract.Booking
         // Pathology smaple
         Task<IEnumerable<Pathology>> GetPathology();
         Task<IEnumerable<PathologySample>> GetPathologyDataWithId(int id);
+        Task<PathologySampleSummary> GetPathologySummaryWithOperationId(int operationId);
         Task<IEnumerable<int>> PostPathology(Pathology Pathology);
         Task<IEnumerable<int>> PatchPathology(Pathology pathology);
         Task<IEnumerable<int>> DeletePathology(string idArray);
