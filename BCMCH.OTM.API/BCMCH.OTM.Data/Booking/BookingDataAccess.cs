@@ -868,6 +868,40 @@ namespace BCMCH.OTM.Data.Booking
             return result;
         }
 
+        public async Task<IEnumerable<RemovableDevicesMain>> GetRemovableDevicesWithOperationId(int operationId)
+        {
+            string Query = @"
+                                SELECT 
+                                  [RemovableMain].[Id]                      AS Id
+                                , [RemovableMain].[OperationId]             AS OperationId
+                                , [RemovableMain].[status]                  AS status
+                                , [RemovableMain].[IsDeleted]               AS IsDeleted
+                                , [RemovableMain].[PostedBy]                AS PostedBy
+                                , [RemovableMain].[DateTime]                AS DateTime
+                                , [Bookings].RegistrationNo                 AS RegistrationNo
+                                , ISNULL([PatientTable].[FirstName], '')    AS PatientFirstName
+                                , ISNULL([PatientTable].[MiddleName], '')   AS PatientMiddleName
+                                , ISNULL([PatientTable].[LastName], '')     AS PatientLastName
+                                , EmployeeTable.[DepartmentID]              AS BookedDepartment
+                                , SurgeonTable.[FullName]                   AS BookedByName
+                                , DepartmentTable.Name                      AS DepartmentName
+
+                            FROM [behive-dev-otm].[OTM].[RemovableDevicesMain] AS RemovableMain
+                                LEFT JOIN [OTM].[Bookings] AS Bookings ON RemovableMain.OperationId = Bookings.id
+                                LEFT JOIN [dbo].[PatientMaster] AS PatientTable ON Bookings.RegistrationNo = [PatientTable].[RegistrationNo]
+                                LEFT JOIN [dbo].[Users] AS SurgeonTable ON  RemovableMain.PostedBy = [SurgeonTable].EmployeeId
+                                LEFT JOIN [HR].[Employees] AS EmployeeTable ON RemovableMain.[PostedBy] = [EmployeeTable].Id
+                                LEFT JOIN [dbo].[Departments] AS DepartmentTable ON  EmployeeTable.[DepartmentID] = DepartmentTable.Id
+                            WHERE 
+                                RemovableMain.[IsDeleted]=0 AND RemovableMain.[OperationId]=@operationId
+                            
+                           ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@operationId", operationId);
+            var result = await _sqlHelper.QueryAsync<RemovableDevicesMain>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
 
         public async Task<IEnumerable<RemovableDevicesSelcted>> GetRemovableDevicesSelected(int id)
         {

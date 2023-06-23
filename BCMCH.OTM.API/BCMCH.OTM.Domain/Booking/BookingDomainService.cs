@@ -672,6 +672,25 @@ namespace BCMCH.OTM.Domain.Booking
         }
 
         // Removable Devices START
+        public async Task<RemovableDeviceSummary> GetRemovableDevicesSummaryWithId(int operationId)
+        {
+            var removableDeviceMain = await _bookingDataAccess.GetRemovableDevicesWithOperationId(operationId);
+            var firstRemovableDevice = removableDeviceMain.FirstOrDefault();
+            if (firstRemovableDevice != null)
+            {
+                int id = (int)firstRemovableDevice.Id;
+                var removableDevicesSelected = await _bookingDataAccess.GetRemovableDevicesSelected(id);
+                RemovableDeviceSummary removableDeviceSummary = new RemovableDeviceSummary();
+                removableDeviceSummary.RemovableDevicesMain = removableDeviceMain;
+                removableDeviceSummary.RemovableDevicesSelcted = removableDevicesSelected;
+                return removableDeviceSummary;
+            }
+            
+            RemovableDeviceSummary emptyRemovableDeviceSummary = new RemovableDeviceSummary();
+            emptyRemovableDeviceSummary.RemovableDevicesMain = Enumerable.Empty<RemovableDevicesMain>();
+            emptyRemovableDeviceSummary.RemovableDevicesSelcted = Enumerable.Empty<RemovableDevicesSelcted>();
+            return emptyRemovableDeviceSummary;
+        }
 
 
 

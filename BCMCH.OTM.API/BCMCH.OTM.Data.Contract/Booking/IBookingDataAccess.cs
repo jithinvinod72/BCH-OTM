@@ -50,6 +50,7 @@ namespace BCMCH.OTM.Data.Contract.Booking
         Task<IEnumerable<int>> DeletePathology(String idArray);
 
         // Removable Devices
+        Task<IEnumerable<RemovableDevicesMain>> GetRemovableDevicesWithOperationId(int operationId);
         Task<IEnumerable<RemovableDevicesMain>> GetRemovableDevices();
         Task<IEnumerable<RemovableDevicesSelcted>> GetRemovableDevicesSelected(int id);
         Task<IEnumerable<int>> DeleteRemovableDeviceMain(string idArray);
@@ -68,6 +69,5 @@ namespace BCMCH.OTM.Data.Contract.Booking
 
         // DASHBOARD 
         Task<IEnumerable<DashboardOperation>> GetTodaysOtStatuses();
-        
     }
 }

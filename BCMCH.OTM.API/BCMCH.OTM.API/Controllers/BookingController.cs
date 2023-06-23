@@ -57,6 +57,7 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
+        
 
         [HttpGet]
         [Route("get-events-sorted")]
@@ -421,7 +422,22 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
 
-        
+
+        [HttpGet]
+        [Route("get-removable-devices-summary")]
+        public async Task<IActionResult> GetRemovableDevicesSummaryWithId(int operationId )
+        {
+            try
+            {
+                var result = await _bookingService.GetRemovableDevicesSummaryWithId(operationId);
+                return Ok(new ResponseVM<RemovableDeviceSummary>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
 
         [HttpPost]
         [Route("post-removable-devices-form")]
