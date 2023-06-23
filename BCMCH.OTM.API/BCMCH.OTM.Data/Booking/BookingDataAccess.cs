@@ -1045,6 +1045,37 @@ namespace BCMCH.OTM.Data.Booking
             return result;
         }
 
+        public async Task<IEnumerable<NonOP>> GetNonOPRequestsWithOperationId(int operationId)
+        {
+            const string Query = @"
+                                    SELECT
+                                          [Procedures].[Id]                         AS Id
+                                        , [Procedures].[ProcedureToPerform]         AS ProcedureToPerform
+                                        , [Procedures].[PriorityLevel]              AS PriorityLevel
+                                        , [Procedures].[ProvisionalDiagnosis]       AS ProvisionalDiagnosis
+                                        , [Procedures].[Comments]                   AS Comments
+                                        , [Procedures].[DateToBePerformed]          AS DateToBePerformed
+                                        , [Procedures].[Status]                     AS Status
+                                        , [Procedures].[PostedDateTime]             AS PostedDateTime
+                                        , [Procedures].[OperationId]                AS OperationId
+                                        , [Bookings].RegistrationNo                 AS PatientUHID
+                                        , ISNULL([PatientTable].[FirstName], '')    AS PatientFirstName
+                                        , ISNULL([PatientTable].[MiddleName], '')   AS PatientMiddleName
+                                        , ISNULL([PatientTable].[LastName], '')     AS PatientLastName
+                                        ,[ProceduresList].[Name]                    AS ProcedureName
+                                    FROM [OTM].[NonOP] AS Procedures
+                                        LEFT JOIN [OTM].[Bookings] AS Bookings ON Procedures.OperationId = Bookings.id
+                                        LEFT JOIN [dbo].[PatientMaster] AS PatientTable ON Bookings.RegistrationNo = [PatientTable].[RegistrationNo]
+                                        LEFT JOIN [OTM].[NonOperativeProceduresListMaster] AS ProceduresList ON Procedures.ProcedureToPerform = ProceduresList.Id
+                                    WHERE OperationId=@OperationId
+                                 ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add( "@OperationId", operationId ) ;
+            
+            var result = await _sqlHelper.QueryAsync<NonOP>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
         public async Task<IEnumerable<NonOP>> EditNonOPRequests(NonOP nonOP)
         {
 

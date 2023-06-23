@@ -537,6 +537,22 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
 
+
+        [Route("get-non-op-requests-summary")]
+        public async Task<IActionResult> GetNonOPRequestsummaryOperationId(int operationId)
+        {
+            try
+            {
+                var result = await _bookingService.GetNonOPRequestsummaryOperationId(operationId);
+                return Ok(new ResponseVM<IEnumerable<NonOP>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+
         [HttpPost]
         [Route("edit-non-op-requests")]
         public async Task<IActionResult> EditBlocking(NonOP nonOP)

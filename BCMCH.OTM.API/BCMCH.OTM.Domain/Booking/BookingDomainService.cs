@@ -730,6 +730,12 @@ namespace BCMCH.OTM.Domain.Booking
             return result;
         }
 
+        public async Task<IEnumerable<NonOP>> GetNonOPRequestsummaryOperationId(int operationId)
+        {
+            var result = await _bookingDataAccess.GetNonOPRequestsWithOperationId(operationId);
+            return result;
+        }
+
         public async Task<Envelope<IEnumerable<NonOP>>> EditNonOPRequests(NonOP nonOP)
         {           
             var result = await _bookingDataAccess.EditNonOPRequests(nonOP);
