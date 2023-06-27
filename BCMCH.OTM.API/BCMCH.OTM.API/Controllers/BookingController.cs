@@ -277,6 +277,7 @@ namespace BCMCH.OTM.API.Controllers
         {
             try
             {
+                 
                 var result = await _bookingService.DeleteBooking(IdArray);
                 return Ok(result);
             }
@@ -567,6 +568,22 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
+
+        [HttpDelete]
+        [Route("delete-non-op-requests")]
+        public async Task<IActionResult>DeleteNonOPRequests(string idArray)
+        {
+            try
+            {
+                var result = await _bookingService.DeleteNonOPRequests(idArray);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        
         #endregion
 
         // update timeing 

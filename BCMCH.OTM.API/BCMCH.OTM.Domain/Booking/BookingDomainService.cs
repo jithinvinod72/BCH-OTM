@@ -741,6 +741,11 @@ namespace BCMCH.OTM.Domain.Booking
             var result = await _bookingDataAccess.EditNonOPRequests(nonOP);
             return new Envelope<IEnumerable<NonOP>>(true, "data-update-success", result);
         }
+        public async Task<IEnumerable<NonOP>> DeleteNonOPRequests(string idArray)
+        {
+            var result = await _bookingDataAccess.DeleteNonOPRequests(idArray);
+            return result;
+        }
         #endregion
 
 

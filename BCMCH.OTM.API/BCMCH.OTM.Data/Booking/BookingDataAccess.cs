@@ -1030,6 +1030,7 @@ namespace BCMCH.OTM.Data.Booking
                                         , [Procedures].[Status]                     AS Status
                                         , [Procedures].[PostedDateTime]             AS PostedDateTime
                                         , [Procedures].[OperationId]                AS OperationId
+                                        , [Procedures].[IsDeleted]                  AS IsDeleted
                                         , [Bookings].RegistrationNo                 AS PatientUHID
                                         , ISNULL([PatientTable].[FirstName], '')    AS PatientFirstName
                                         , ISNULL([PatientTable].[MiddleName], '')   AS PatientMiddleName
@@ -1039,6 +1040,8 @@ namespace BCMCH.OTM.Data.Booking
                                         LEFT JOIN [OTM].[Bookings] AS Bookings ON Procedures.OperationId = Bookings.id
                                         LEFT JOIN [dbo].[PatientMaster] AS PatientTable ON Bookings.RegistrationNo = [PatientTable].[RegistrationNo]
                                         LEFT JOIN [OTM].[NonOperativeProceduresListMaster] AS ProceduresList ON Procedures.ProcedureToPerform = ProceduresList.Id
+                                    WHERE 
+                                        [Procedures].[IsDeleted]=0
                                  ";
             var SqlParameters = new DynamicParameters();
             var result = await _sqlHelper.QueryAsync<NonOP>(Query, SqlParameters, CommandType.Text);
@@ -1099,6 +1102,22 @@ namespace BCMCH.OTM.Data.Booking
             SqlParameters.Add( "@Comments"               , nonOP.Comments ) ;
             SqlParameters.Add( "@DateToBePerformed"      , nonOP.DateToBePerformed ) ;
 
+            var result = await _sqlHelper.QueryAsync<NonOP>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
+        public async Task<IEnumerable<NonOP>> DeleteNonOPRequests(string idArray)
+        {
+
+            string Query = @"
+                            UPDATE  [OTM].[NonOP]
+                            SET
+                                IsDeleted=1
+                            WHERE 
+                                Id IN (SELECT value FROM OPENJSON(@IdArray))
+                           ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add( "@IdArray" , idArray ) ;
             var result = await _sqlHelper.QueryAsync<NonOP>(Query, SqlParameters, CommandType.Text);
             return result;
         }
