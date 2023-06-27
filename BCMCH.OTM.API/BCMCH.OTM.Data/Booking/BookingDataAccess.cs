@@ -483,7 +483,7 @@ namespace BCMCH.OTM.Data.Booking
 
         // PATHOLOGY START
         #region PATHOLOGY
-        public async Task<IEnumerable<Pathology>> GetPathology()
+        public async Task<IEnumerable<Pathology>> GetPathology(string startDate, string endDate)
         {
             string Query = @"
                             SELECT
@@ -512,11 +512,18 @@ namespace BCMCH.OTM.Data.Booking
                                 [dbo].[Departments] AS DepartmentTable
                                 ON  EmployeeTable.[DepartmentID] = DepartmentTable.Id
                             WHERE 
-                                Pathology.[IsDeleted]=0
+                                    Pathology.[IsDeleted]=0 
+                                AND
+                                    @startDate < Pathology.[datetime] 
+                                AND 
+                                    @endDate > Pathology.[datetime] 
                                 ;
                            ";
             var SqlParameters = new DynamicParameters();
-            // SqlParameters.Add("@RegNo", Pathology.RegistrationNo);
+            SqlParameters.Add("@startDate"  , startDate);
+            SqlParameters.Add("@endDate"    , endDate);
+            
+            
             var result = await _sqlHelper.QueryAsync<Pathology>(Query, SqlParameters, CommandType.Text);
             return result;
         }

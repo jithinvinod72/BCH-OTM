@@ -312,11 +312,11 @@ namespace BCMCH.OTM.API.Controllers
         #region PATHOLOGY-SECTION
         [HttpGet]
         [Route("get-pathology")]
-        public async Task<IActionResult> GetPathology()
+        public async Task<IActionResult> GetPathology(string startDate, string endDate)
         {
             try
             {
-                var result = await _bookingService.GetPathology();
+                var result = await _bookingService.GetPathology(startDate, endDate);
                 return Ok(new ResponseVM<IEnumerable<Pathology>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
             }
             catch (Exception ex)
@@ -633,11 +633,11 @@ namespace BCMCH.OTM.API.Controllers
 
         [HttpGet]
         [Route("get-pathology-exported")]
-        public async Task<IActionResult> ExportPathology()
+        public async Task<IActionResult> ExportPathology(string startDate,string endDate)
         {
             try
             {
-                var result = await _bookingService.ExportPathology();
+                var result = await _bookingService.ExportPathology(startDate, endDate);
                 return File(result, "application/octet-stream", "test.xlsx");
             }
             catch (Exception ex)

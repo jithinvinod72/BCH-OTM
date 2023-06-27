@@ -34,7 +34,8 @@ namespace BCMCH.OTM.Domain.Contract.Booking
         Task<IEnumerable<Patient>> GetPatientData(string registrationNo);
 
         // Pathology smaple
-        Task<IEnumerable<Pathology>> GetPathology();
+        // Task<IEnumerable<Pathology>> GetPathology();
+        Task<IEnumerable<Pathology>> GetPathology(string startDate, string endDate);
         Task<IEnumerable<PathologySample>> GetPathologyDataWithId(int id);
         Task<PathologySampleSummary> GetPathologySummaryWithOperationId(int operationId);
         Task<IEnumerable<int>> PostPathology(Pathology Pathology);
@@ -63,7 +64,7 @@ namespace BCMCH.OTM.Domain.Contract.Booking
 
         // EXPORTING 
         Task<Stream> ExportAllocation( string? sortValue="",string? sortType="",string? fromDate="",string? toDate="");
-        Task<Stream> ExportPathology();
+        Task<Stream> ExportPathology(string start,string end);
         Task<Stream> ExportNonOperativeProcedure(string start,string end);
 
         // DASHBOARD SECTION 

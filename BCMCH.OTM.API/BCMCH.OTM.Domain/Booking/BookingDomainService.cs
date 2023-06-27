@@ -381,9 +381,9 @@ namespace BCMCH.OTM.Domain.Booking
             var stream = ConvertIEnumerableToExcelStream( new string[0] , result, "alocation", 1,2,3);
             return stream;
         }
-        public async Task<Stream> ExportPathology( )
+        public async Task<Stream> ExportPathology( string startDate, string endDate )
         {
-            var result = await _bookingDataAccess.GetPathology();   
+            var result = await _bookingDataAccess.GetPathology(startDate, endDate);   
             var stream = ConvertIEnumerableToExcelStream(new string[0], result, "pathology", "Id","IsDeleted" ,"BookedDepartment", "NestedData","PostedBy","Status");
             return stream;
         }
@@ -616,9 +616,9 @@ namespace BCMCH.OTM.Domain.Booking
 
 
         // PATHOLOGY Sample START
-        public async Task<IEnumerable<Pathology>> GetPathology()
+        public async Task<IEnumerable<Pathology>> GetPathology(string startDate, string endDate)
         {
-            var result = await _bookingDataAccess.GetPathology();
+            var result = await _bookingDataAccess.GetPathology(startDate, endDate);
             return result;
         }
         public async Task<PathologySampleSummary> GetPathologySummaryWithOperationId(int operationId)
