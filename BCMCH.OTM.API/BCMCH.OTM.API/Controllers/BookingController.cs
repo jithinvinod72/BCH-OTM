@@ -524,12 +524,13 @@ namespace BCMCH.OTM.API.Controllers
         }
 
         [Route("get-non-op-requests")]
-        public async Task<IActionResult> GetNoonOPRequests()
+        public async Task<IActionResult> GetNonOPRequests(string start,string end)
         {
 
             try
             {
-                var result = await _bookingService.GetNonOPRequests();
+                var result = await _bookingService.GetNonOPRequests(start, end);
+                // Task<IEnumerable<NonOP>> GetNonOPRequests(string start, string end);
                 return Ok(new ResponseVM<IEnumerable<NonOP>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
             }
             catch (Exception ex)
@@ -647,11 +648,11 @@ namespace BCMCH.OTM.API.Controllers
 
         [HttpGet]
         [Route("get-nonop-exported")]
-        public async Task<IActionResult> ExportNonOperativeProcedure()
+        public async Task<IActionResult> ExportNonOperativeProcedure(string start,string end)
         {
             try
             {
-                var result = await _bookingService.ExportNonOperativeProcedure();
+                var result = await _bookingService.ExportNonOperativeProcedure(start,end);
                 return File(result, "application/octet-stream", "test.xlsx");
             }
             catch (Exception ex)

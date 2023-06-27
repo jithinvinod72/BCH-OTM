@@ -54,7 +54,7 @@ namespace BCMCH.OTM.Domain.Contract.Booking
         // non op
         Task<Envelope<IEnumerable<NonOP>>> AddNonOPRequest(NonOP nonOP);
         Task<IEnumerable<NonOP>> GetNonOPRequestsummaryOperationId(int operationId);
-        Task<IEnumerable<NonOP>> GetNonOPRequests();
+        Task<IEnumerable<NonOP>> GetNonOPRequests(string start, string end);
         Task<Envelope<IEnumerable<NonOP>>> EditNonOPRequests(NonOP nonOP);
         Task<IEnumerable<NonOP>> DeleteNonOPRequests(string idArray);
 
@@ -64,7 +64,7 @@ namespace BCMCH.OTM.Domain.Contract.Booking
         // EXPORTING 
         Task<Stream> ExportAllocation( string? sortValue="",string? sortType="",string? fromDate="",string? toDate="");
         Task<Stream> ExportPathology();
-        Task<Stream> ExportNonOperativeProcedure();
+        Task<Stream> ExportNonOperativeProcedure(string start,string end);
 
         // DASHBOARD SECTION 
         Task<IEnumerable<DashbordOTGroup>> GetTodaysOtStatuses();

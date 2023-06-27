@@ -387,9 +387,9 @@ namespace BCMCH.OTM.Domain.Booking
             var stream = ConvertIEnumerableToExcelStream(new string[0], result, "pathology", "Id","IsDeleted" ,"BookedDepartment", "NestedData","PostedBy","Status");
             return stream;
         }
-        public async Task<Stream> ExportNonOperativeProcedure()
+        public async Task<Stream> ExportNonOperativeProcedure(string start,string end)
         {
-            var result = await _bookingDataAccess.GetNonOPRequests();
+            var result = await _bookingDataAccess.GetNonOPRequests(start, end);
             var stream = ConvertIEnumerableToExcelStream(new string[0], result, "pathology");
             return stream;
         }
@@ -724,9 +724,9 @@ namespace BCMCH.OTM.Domain.Booking
             return new Envelope<IEnumerable<NonOP>>(true, "data-update-success", result);
         }
 
-        public async Task<IEnumerable<NonOP>> GetNonOPRequests()
+        public async Task<IEnumerable<NonOP>> GetNonOPRequests(string start, string end)
         {
-            var result = await _bookingDataAccess.GetNonOPRequests();
+            var result = await _bookingDataAccess.GetNonOPRequests(start,end);
             return result;
         }
 

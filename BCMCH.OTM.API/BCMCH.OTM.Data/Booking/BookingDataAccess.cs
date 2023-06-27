@@ -1017,7 +1017,7 @@ namespace BCMCH.OTM.Data.Booking
 
         }
 
-        public async Task<IEnumerable<NonOP>> GetNonOPRequests()
+        public async Task<IEnumerable<NonOP>> GetNonOPRequests(string start, string end)
         {
             const string Query = @"
                                     SELECT
@@ -1042,8 +1042,14 @@ namespace BCMCH.OTM.Data.Booking
                                         LEFT JOIN [OTM].[NonOperativeProceduresListMaster] AS ProceduresList ON Procedures.ProcedureToPerform = ProceduresList.Id
                                     WHERE 
                                         [Procedures].[IsDeleted]=0
+                                        AND 
+                                            [Procedures].[DateToBePerformed] >= @StartDate
+                                        AND 
+                                            [Procedures].[DateToBePerformed] <= @EndDate
                                  ";
             var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@StartDate", start);
+            SqlParameters.Add("@EndDate", end);
             var result = await _sqlHelper.QueryAsync<NonOP>(Query, SqlParameters, CommandType.Text);
             return result;
         }
