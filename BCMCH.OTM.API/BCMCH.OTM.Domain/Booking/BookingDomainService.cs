@@ -673,6 +673,12 @@ namespace BCMCH.OTM.Domain.Booking
             var result = await _bookingDataAccess.GetRemovableDevices();
             return result;
         }
+
+        public async Task<IEnumerable<RemovableDevices>> GetRemovableDevicesWithDate(string start, string end)
+        {
+            var result = await _bookingDataAccess.GetRemovableDevicesWithDate(start,end);
+            return result;
+        }
         public async Task<IEnumerable<RemovableDevicesSelcted>> GetRemovableDevicesSelected(int id)
         {
             var result = await _bookingDataAccess.GetRemovableDevicesSelected(id);

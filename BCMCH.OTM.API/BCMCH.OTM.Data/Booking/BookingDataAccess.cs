@@ -951,7 +951,7 @@ namespace BCMCH.OTM.Data.Booking
         {
             string Query = @"
                             SELECT
-                                [Id]
+                                 [Id]
                                 ,[RemovableDeviceMainId]
                                 ,[RemovableDeviceId]
                                 ,[RemovableDeviceName]
@@ -968,6 +968,48 @@ namespace BCMCH.OTM.Data.Booking
             var result = await _sqlHelper.QueryAsync<RemovableDevicesSelcted>(Query, SqlParameters, CommandType.Text);
             return result;
         }
+        public async Task<IEnumerable<RemovableDevices>> GetRemovableDevicesWithDate(string start, string end)
+        {
+            string Query = @"
+                            SELECT
+                                  [SelectedDevices].[Id]                      AS Id
+                                , [SelectedDevices].[RemovableDeviceMainId]   AS RemovableDeviceMainId
+                                , [SelectedDevices].[RemovableDeviceId]       AS RemovableDeviceId
+                                , [SelectedDevices].[RemovableDeviceName]     AS RemovableDeviceName
+                                , [SelectedDevices].[Notes]                   AS Notes
+                                , [SelectedDevices].[PlacedIn]                AS PlacedIn
+                                , [SelectedDevices].[PlacedDate]              AS PlacedDate
+                                , [SelectedDevices].[DateToRemove]            AS DateToRemove
+                                , [SelectedDevices].[IsRemoved]               AS IsRemoved
+                                , [Main].[Id]                                 AS MainId
+                                , [Main].[OperationId]                        AS OperationId
+                                , [Main].[status]                             AS status
+                                , [Main].[IsDeleted]                          AS IsDeleted
+                                , [Main].[PostedBy]                           AS PostedBy
+                                , [Main].[DateTime]                           AS DateTime
+                                , [Bookings].Id                               AS BookingId
+                                , [Bookings].RegistrationNo                   AS RegistrationNo
+                                , ISNULL([PatientTable].[FirstName], '')      AS PatientFirstName
+                                , ISNULL([PatientTable].[MiddleName], '')     AS PatientMiddleName
+                                , ISNULL([PatientTable].[LastName], '')       AS PatientLastName
+                                                                
+
+                            FROM 
+                                [OTM].[RemovableDevicesSelected] AS SelectedDevices
+                            LEFT JOIN 
+                                [OTM].[RemovableDevicesMain] AS Main ON SelectedDevices.RemovableDeviceMainId = Main.Id
+                            LEFT JOIN 
+                                [OTM].[Bookings] AS Bookings ON Main.OperationId = Bookings.id
+                            LEFT JOIN 
+                                [dbo].[PatientMaster] AS PatientTable ON Bookings.RegistrationNo = [PatientTable].[RegistrationNo]
+                            
+                           ";
+            var SqlParameters = new DynamicParameters();
+            // SqlParameters.Add("@RemovableDeviceId", id);
+            var result = await _sqlHelper.QueryAsync<RemovableDevices>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+        
         #endregion
         // Removable Devices END
 
