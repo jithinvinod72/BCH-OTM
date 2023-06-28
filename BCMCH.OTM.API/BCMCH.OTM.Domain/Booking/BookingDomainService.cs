@@ -674,9 +674,9 @@ namespace BCMCH.OTM.Domain.Booking
             return result;
         }
 
-        public async Task<bool> UpdateIsRemovedStatus(int removableDeviceId)
+        public async Task<bool> UpdateIsRemovedStatus(int removableDeviceId, bool isRemoved)
         {
-            var result = await _bookingDataAccess.UpdateIsRemovedStatus(removableDeviceId);
+            var result = await _bookingDataAccess.UpdateIsRemovedStatus(removableDeviceId, isRemoved);
             return result;
         }
 

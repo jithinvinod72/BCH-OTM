@@ -968,15 +968,15 @@ namespace BCMCH.OTM.Data.Booking
             var result = await _sqlHelper.QueryAsync<RemovableDevicesSelcted>(Query, SqlParameters, CommandType.Text);
             return result;
         }
-        public async Task<bool> UpdateIsRemovedStatus(int removableDeviceId)
+        public async Task<bool> UpdateIsRemovedStatus(int removableDeviceId, bool isRemoved)
         {
             string query = @"
                                 UPDATE [OTM].[RemovableDevicesSelected]
-                                SET [IsRemoved] = 1
+                                SET [IsRemoved] = @IsRemoved
                                 WHERE [Id] = @RemovableDeviceId
                             ";
             var parameters = new DynamicParameters();
-            // parameters.Add("@IsRemoved", isRemoved);
+            parameters.Add("@IsRemoved", isRemoved);
             parameters.Add("@RemovableDeviceId", removableDeviceId);
             int rowsAffected = await _sqlHelper.ExecuteAsync(query, parameters, CommandType.Text);    
             return rowsAffected > 0; // Return true if at least one row was affected, indicating a successful update.
