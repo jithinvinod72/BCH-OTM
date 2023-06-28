@@ -55,6 +55,7 @@ namespace BCMCH.OTM.Data.Contract.Booking
         Task<IEnumerable<RemovableDevicesMain>> GetRemovableDevicesWithOperationId(int operationId);
         Task<IEnumerable<RemovableDevicesMain>> GetRemovableDevices();
         Task<IEnumerable<RemovableDevicesSelcted>> GetRemovableDevicesSelected(int id);
+        Task<bool> UpdateIsRemovedStatus(int removableDeviceId);
         Task<IEnumerable<RemovableDevices>> GetRemovableDevicesWithDate(string start, string end);
 
         Task<IEnumerable<int>> DeleteRemovableDeviceMain(string idArray);

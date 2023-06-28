@@ -488,6 +488,23 @@ namespace BCMCH.OTM.API.Controllers
 
 
         [HttpDelete]
+        [Route("update-removable-device-removal-status")]
+        public async Task<IActionResult> UpdateIsRemovedStatus( int removableDeviceId )
+        {
+            try
+            {
+                var result = await _bookingService.UpdateIsRemovedStatus(removableDeviceId);
+                return Ok(new ResponseVM<bool>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        // public async Task<bool> UpdateIsRemovedStatus(int removableDeviceId)
+
+
+        [HttpDelete]
         [Route("delete-removable-device-main")]
         public async Task<IActionResult> DeleteRemovableDeviceMain(string idArray )
         {

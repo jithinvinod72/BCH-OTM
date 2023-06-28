@@ -968,6 +968,20 @@ namespace BCMCH.OTM.Data.Booking
             var result = await _sqlHelper.QueryAsync<RemovableDevicesSelcted>(Query, SqlParameters, CommandType.Text);
             return result;
         }
+        public async Task<bool> UpdateIsRemovedStatus(int removableDeviceId)
+        {
+            string query = @"
+                                UPDATE [OTM].[RemovableDevicesSelected]
+                                SET [IsRemoved] = 1
+                                WHERE [Id] = @RemovableDeviceId
+                            ";
+            var parameters = new DynamicParameters();
+            // parameters.Add("@IsRemoved", isRemoved);
+            parameters.Add("@RemovableDeviceId", removableDeviceId);
+            int rowsAffected = await _sqlHelper.ExecuteAsync(query, parameters, CommandType.Text);    
+            return rowsAffected > 0; // Return true if at least one row was affected, indicating a successful update.
+        }
+
         public async Task<IEnumerable<RemovableDevices>> GetRemovableDevicesWithDate(string start, string end)
         {
             string Query = @"
@@ -992,8 +1006,6 @@ namespace BCMCH.OTM.Data.Booking
                                 , ISNULL([PatientTable].[FirstName], '')      AS PatientFirstName
                                 , ISNULL([PatientTable].[MiddleName], '')     AS PatientMiddleName
                                 , ISNULL([PatientTable].[LastName], '')       AS PatientLastName
-                                                                
-
                             FROM 
                                 [OTM].[RemovableDevicesSelected] AS SelectedDevices
                             LEFT JOIN 
@@ -1002,10 +1014,14 @@ namespace BCMCH.OTM.Data.Booking
                                 [OTM].[Bookings] AS Bookings ON Main.OperationId = Bookings.id
                             LEFT JOIN 
                                 [dbo].[PatientMaster] AS PatientTable ON Bookings.RegistrationNo = [PatientTable].[RegistrationNo]
-                            
+                            WHERE 
+                                DateToRemove > @startDate 
+                                AND
+                                DateToRemove < @endDate
                            ";
             var SqlParameters = new DynamicParameters();
-            // SqlParameters.Add("@RemovableDeviceId", id);
+            SqlParameters.Add("@startDate", start);
+            SqlParameters.Add("@endDate", end);
             var result = await _sqlHelper.QueryAsync<RemovableDevices>(Query, SqlParameters, CommandType.Text);
             return result;
         }
