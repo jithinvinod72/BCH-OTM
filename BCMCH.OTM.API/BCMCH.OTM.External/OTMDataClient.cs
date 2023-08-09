@@ -74,6 +74,7 @@ namespace BCMCH.OTM.External
                 }
 
                 string content = await response.Content.ReadAsStringAsync();
+                
 
                 
                 if (response.IsSuccessStatusCode && !string.IsNullOrEmpty(content))

@@ -56,7 +56,6 @@ namespace BCMCH.OTM.API.Controllers
         public async Task<IActionResult> GetUserAuth()
         {
 
-            Console.WriteLine("here");
             try
             {
 
@@ -68,7 +67,7 @@ namespace BCMCH.OTM.API.Controllers
 
 
                 var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
-                Console.WriteLine(authHeader);
+                
                 var token = authHeader.Parameter;
 
                 BodyExternalAPI key = new BodyExternalAPI();

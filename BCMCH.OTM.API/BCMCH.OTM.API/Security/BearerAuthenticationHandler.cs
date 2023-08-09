@@ -26,6 +26,8 @@ namespace BCMCH.OTM.API.Security
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
+            
+
             if (!Request.Headers.ContainsKey("Authorization"))
                 return AuthenticateResult.Fail("Missing Authorization Header");
 
@@ -36,7 +38,18 @@ namespace BCMCH.OTM.API.Security
                 var _token = authHeader.Parameter;
                 if (authHeader != null)
                 {
-                    auth = await _oTMDataClient.AuthenticateUser(_token);
+                    // auth = await _oTMDataClient.AuthenticateUser(_token);
+                    // above calls the auth api and do the function 
+                    // uncomment above to call auth api 
+
+
+                    // comment below when we apply the auth api START
+                    auth = new Authentication();
+                    auth.Authenticated=true;
+                    auth.Id=0;
+                    auth.UserName="";
+                    auth.key="";
+                    // comment below when we apply the auth api END
                 }
             }
             catch
