@@ -89,6 +89,7 @@ namespace BCMCH.OTM.Domain.Booking
         public async Task<IEnumerable<Bookings>> GetBookingList(string fromDate, string toDate)
         {
             var result = await _bookingDataAccess.GetBookingList(fromDate, toDate);
+            result = (IEnumerable<Bookings>) await PopulateBookingsWithSurgeries(result);
             return result;
         }
 
