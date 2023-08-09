@@ -164,6 +164,23 @@ namespace BCMCH.OTM.API.Controllers
         }
 
         [HttpGet]
+        [Route("get-role-resources-with-role-id")]
+        public async Task<IActionResult> GetOTRolePermissions(int? roleId)
+        {
+            try
+            {
+                var result = await _masterService.GetOTRolePermissions(roleId);
+                return Ok(new ResponseVM<IEnumerable<UserResources>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+        
+
+        [HttpGet]
         [Route("get-departments")]
         public async Task<IActionResult> GetDepartments()
         {
