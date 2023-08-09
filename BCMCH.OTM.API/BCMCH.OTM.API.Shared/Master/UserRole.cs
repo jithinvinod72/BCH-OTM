@@ -8,7 +8,7 @@ namespace BCMCH.OTM.API.Shared.Master
 {
     public class UserRole
     {
-        public IEnumerable<UserRoleDetails> UserDetails { get; set; }
+        public IEnumerable<UserAndHisRole> UserDetails { get; set; }
         public IEnumerable<UserResources> UserResources { get; set; }
     }
 }

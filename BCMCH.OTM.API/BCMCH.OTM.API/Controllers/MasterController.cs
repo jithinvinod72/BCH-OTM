@@ -132,6 +132,22 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
+
+        [HttpGet]
+        [Route("get-users-and-roles-list")]
+        public async Task<IActionResult> GetUsersAndRoles()
+        {
+            try
+            {
+                var result = await _masterService.GetUsersAndRoles();
+                // return Ok(new ResponseVM<UserRole>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+                return Ok(new ResponseVM<IEnumerable<UserAndHisRole>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
         [HttpGet]
         [Route("get-available-roles")]
         public async Task<IActionResult> GetOTRoles()
@@ -180,7 +196,7 @@ namespace BCMCH.OTM.API.Controllers
 
         [HttpPost]
         [Route("post-new-ot-user")]
-        public async Task<IActionResult> PostNewOTUser(UserRoleDetails userRole)
+        public async Task<IActionResult> PostNewOTUser(UserAndHisRole userRole)
         {
             try
             {

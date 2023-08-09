@@ -15,9 +15,10 @@ namespace BCMCH.OTM.Domain.Contract.Master
 
         // OT ROLE START
         Task<UserRole> GetOTUserRole(int employeeId);
+        Task<IEnumerable<UserAndHisRole>> GetUsersAndRoles();
         Task<IEnumerable<AvailableRoles>> GetOTRoles();
         Task<IEnumerable<Resources>> GetOTResources();
-        Task<IEnumerable<int>> PostNewOTUser(UserRoleDetails userRoleDetails);
+        Task<IEnumerable<int>> PostNewOTUser(UserAndHisRole UserAndHisRole);
         Task<IEnumerable<int>> CreateAdminRolesAndRigthts(PostAdminRolesAndRights otAdminAndRights);
         // OT ROLE END
 

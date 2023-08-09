@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BCMCH.OTM.API.Shared.Master
 {
-    public class UserRoleDetails
+    public class UserAndHisRole
     {
         public int OtmUserId { get; set; }
         public int EmployeeId { get; set; }
@@ -16,6 +16,7 @@ namespace BCMCH.OTM.API.Shared.Master
         public string? FirstName  { get; set; }
         public string? LastName  { get; set; }
         public string? MiddleName  { get; set; }
+        public string? FullName  { get; set; }
         public int? DepartmentID  { get; set; }
         public int?  DepartmentTypeCode  { get; set; }
         public string? DepartmentName  { get; set; }
