@@ -227,6 +227,22 @@ namespace BCMCH.OTM.API.Controllers
         }
 
         [HttpPost]
+        [Route("update-ot-users-role")]
+        public async Task<IActionResult> UpdateOTUser(UserAndHisRole userRole)
+        {
+            try
+            {
+                var result = await _masterService.UpdateOTUser(userRole);                
+                return Ok(new ResponseVM<IEnumerable<int>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        // public async Task<IEnumerable<int>> UpdateOTUser(UserAndHisRole UserAndHisRole)
+
+        [HttpPost]
         [Route("post-new-admin-roles-and-rights")]
         public async Task<IActionResult> CreateAdminRolesAndRigthts(PostAdminRolesAndRights otAdminAndRights)
         {
@@ -240,7 +256,23 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
-        // Task<IEnumerable<int>> CreateNewOTAdminAndRights(PostOtAdminAndRights otAdminAndRights)
+
+
+        [HttpPost]
+        [Route("update-roles-and-rights")]
+        public async Task<IActionResult> UpdateRolePermissions(PostAdminRolesAndRights otAdminAndRights)
+        {
+            try
+            {
+                var result = await _masterService.UpdateRolePermissions(otAdminAndRights);                
+                return Ok(new ResponseVM<IEnumerable<int>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        // public async Task<IEnumerable<UserResources>> UpdateRolePermissions(PostAdminRolesAndRights otAdminAndRights)
 
         [HttpGet]
         [Route("get-resources")]

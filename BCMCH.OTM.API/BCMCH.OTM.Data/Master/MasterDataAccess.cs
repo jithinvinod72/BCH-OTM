@@ -121,6 +121,9 @@ namespace BCMCH.OTM.Data.Master
         // Employees END
 
 
+
+        // ROLE handlers START
+
         public async Task<IEnumerable<UserAndHisRole>> GetOTUserRole(int employeeId)
         {
             const string Query = @"
@@ -227,6 +230,21 @@ namespace BCMCH.OTM.Data.Master
             var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
             return result;
         }
+
+        public async Task<IEnumerable<int>> UpdateOTUser(UserAndHisRole userAndHisRole)
+        {
+            const string Query = @"
+                                    UPDATE [OTM].[Users]
+                                        SET [UserRoleId] = @userRoleId
+                                    WHERE 
+                                        [userId] = @userId;
+                                 ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@userId", userAndHisRole.EmployeeId);
+            SqlParameters.Add("@userRoleId", userAndHisRole.UserRoleId);
+            var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
         public async Task<IEnumerable<int>> CreateAdminRolesAndRigthts(PostAdminRolesAndRights otAdminAndRights)
         {
             const string Query = @"
@@ -238,7 +256,7 @@ namespace BCMCH.OTM.Data.Master
                                         )
                                         VALUES
                                         (
-                                            @UserRoleName,1,@UserRoleName
+                                            @UserRoleName,1,@UserDisplayName
                                         );
                                         
 
@@ -272,10 +290,49 @@ namespace BCMCH.OTM.Data.Master
                                  ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@UserRoleName", otAdminAndRights.UserRoleName);
+            SqlParameters.Add("@UserDisplayName", otAdminAndRights.UserDisplayName);
             SqlParameters.Add("@ResourceAndAccess", otAdminAndRights.ResourceAndAccess);
             var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
             return result;
         }
+         // role updation section 
+
+        public async Task<IEnumerable<int>> UpdateRolePermissions(PostAdminRolesAndRights otAdminAndRights)
+        {
+            const string Query = @"
+                                    DELETE FROM 
+                                        [OTM].[RoleHasPermissions] 
+                                    WHERE 
+                                        UserRoleId = @userRoleId;
+
+                                    -- insert role permissions start
+                                    INSERT INTO [OTM].[RoleHasPermissions]
+                                    (
+                                        [ResourceId],
+                                        [AccessType],
+                                        [UserRoleId]
+                                    )
+                                    SELECT 
+                                        [ResourceId],
+                                        [AccessType],
+                                        [UserRoleId]=@userRoleId
+                                    FROM 
+                                        OPENJSON(@resourceAndAccess)
+                                        WITH  
+                                        (
+                                            ResourceId        int     '$.resourceId',  
+                                            AccessType        int     '$.PermissionId'
+                                        );
+                                    -- insert role permissions end
+                                  ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@userRoleId"         , otAdminAndRights.RoleId);
+            SqlParameters.Add("@ResourceAndAccess"  , otAdminAndRights.ResourceAndAccess);
+
+            var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
         public async Task<IEnumerable<UserResources>> GetOTRolePermissions(int? roleId)
         {
             const string Query = @"
@@ -314,6 +371,13 @@ namespace BCMCH.OTM.Data.Master
             return result;
         }
 
+       
+
+
+        // ROLE handlers END
+
+
+
         public async Task<IEnumerable<OperationTheatre>> GetOperationTheatres()
         {
             const string Query = @"
@@ -344,6 +408,9 @@ namespace BCMCH.OTM.Data.Master
             return result;
         }
 
+
+        // Allocation 
+
         public async Task<IEnumerable<GetAllocation>> GetAllocations(string startDate, string endDate)
         {
             const string StoredProcedure = "[OTM].[SelectAllocation]";
@@ -353,6 +420,7 @@ namespace BCMCH.OTM.Data.Master
             var result = await _sqlHelper.QueryAsync<GetAllocation>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
         }
+        
 
 
         public async Task<IEnumerable<Allocation>> PostAllocation(Allocation _allocation)

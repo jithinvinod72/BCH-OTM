@@ -105,11 +105,22 @@ namespace BCMCH.OTM.Domain.Master
             var result = await _masterDataAccess.PostNewOTUser(UserAndHisRole.EmployeeId,UserAndHisRole.UserRoleId);
             return result;
         }
+        public async Task<IEnumerable<int>> UpdateOTUser(UserAndHisRole UserAndHisRole)
+        {
+            var result = await _masterDataAccess.UpdateOTUser(UserAndHisRole);
+            return result;
+        }
         public async Task<IEnumerable<int>> CreateAdminRolesAndRigthts(PostAdminRolesAndRights otAdminAndRights)
         {
             var result = await _masterDataAccess.CreateAdminRolesAndRigthts(otAdminAndRights);
             return result;
         }
+        public async Task<IEnumerable<int>> UpdateRolePermissions(PostAdminRolesAndRights otAdminAndRights)
+        {
+            var result = await _masterDataAccess.UpdateRolePermissions(otAdminAndRights);
+            return result;
+        }
+
         public async Task<IEnumerable<Resources>> GetOTResources()
         {
             var result = await _masterDataAccess.GetOTResources();
