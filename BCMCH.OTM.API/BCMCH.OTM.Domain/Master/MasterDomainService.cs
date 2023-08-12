@@ -413,8 +413,12 @@ namespace BCMCH.OTM.Domain.Master
             var result = await _masterDataAccess.GetFormQuestions();
             var filteredResult = result.Where( o=> otStageId==o.otStageId);
             filteredResult = result.Where( o=> accessibleTo==o.accessibleTo);
-            // result.Where()
             return filteredResult;
+        }
+        public async Task<IEnumerable<GetQuestions>> GetAllFormQuestions()
+        {
+            var result = await _masterDataAccess.GetFormQuestions();
+            return result;
         }
         #endregion
 

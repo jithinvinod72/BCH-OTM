@@ -553,6 +553,22 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
+
+        [HttpGet]
+        [Route("get-all-form-questions")]
+        public async Task<IActionResult> GetAllFormQuestions()
+        {
+            try
+            {
+                var result = await _masterService.GetAllFormQuestions();
+                return Ok(new ResponseVM<IEnumerable<GetQuestions>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        
         // Question section Fetch END
 
         // Question section Fetch START
