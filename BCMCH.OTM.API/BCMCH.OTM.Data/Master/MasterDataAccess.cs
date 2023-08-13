@@ -248,7 +248,7 @@ namespace BCMCH.OTM.Data.Master
         public async Task<IEnumerable<int>> CreateAdminRolesAndRigthts(PostAdminRolesAndRights otAdminAndRights)
         {
             const string Query = @"
-                                        INSERT INTO [behive-dev-otm].[OTM].[UserRoles]
+                                        INSERT INTO [OTM].[UserRoles]
                                         (
                                              [name]
                                             ,[Active]
@@ -266,7 +266,7 @@ namespace BCMCH.OTM.Data.Master
                                         SET @NewRoleId = SCOPE_IDENTITY();
 
                                         -- insert role permissions start
-                                        INSERT INTO [behive-dev-otm].[OTM].[RoleHasPermissions]
+                                        INSERT INTO [OTM].[RoleHasPermissions]
                                         (
                                             [ResourceId],
                                             [AccessType],

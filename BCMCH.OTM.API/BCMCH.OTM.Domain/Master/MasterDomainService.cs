@@ -72,6 +72,8 @@ namespace BCMCH.OTM.Domain.Master
             return result;
         }
 
+
+        // Roles Section START
         public async Task<IEnumerable<AvailableRoles>> GetOTRoles()
         {
             var result = await _masterDataAccess.GetOTRoles();
@@ -100,21 +102,39 @@ namespace BCMCH.OTM.Domain.Master
             return result;
         }
 
-        public async Task<IEnumerable<int>> PostNewOTUser(UserAndHisRole UserAndHisRole)
+        public async Task<Envelope<IEnumerable<int>>> PostNewOTUser(UserAndHisRole userAndHisRole)
         {
-            var result = await _masterDataAccess.PostNewOTUser(UserAndHisRole.EmployeeId,UserAndHisRole.UserRoleId);
-            return result;
+            var otUsers = await _masterDataAccess.GetUsersAndRoles();
+            var userRoleExistance = otUsers.FirstOrDefault(role => role.EmployeeId == userAndHisRole.EmployeeId);
+
+            if(userRoleExistance==null){
+                var result = await _masterDataAccess.PostNewOTUser(userAndHisRole.EmployeeId,userAndHisRole.UserRoleId);
+                return new Envelope<IEnumerable<int>>(true, "User created Successfully", result);
+            }
+            return new Envelope<IEnumerable<int>>(false, $"Selected User already exists in another role {userRoleExistance.RoleName}");
         }
         public async Task<IEnumerable<int>> UpdateOTUser(UserAndHisRole UserAndHisRole)
         {
             var result = await _masterDataAccess.UpdateOTUser(UserAndHisRole);
             return result;
         }
-        public async Task<IEnumerable<int>> CreateAdminRolesAndRigthts(PostAdminRolesAndRights otAdminAndRights)
+        public async Task<Envelope<IEnumerable<int>>> CreateAdminRolesAndRigthts(PostAdminRolesAndRights otAdminAndRights)
         {
-            var result = await _masterDataAccess.CreateAdminRolesAndRigthts(otAdminAndRights);
-            return result;
+            var rolesList = await _masterDataAccess.GetOTRoles();
+            var userRoleName  = otAdminAndRights.UserRoleName;
+            var adminRoleExistance = rolesList.FirstOrDefault(role => role.name == userRoleName);
+
+            // validation
+            if(adminRoleExistance==null){
+                var result = await _masterDataAccess.CreateAdminRolesAndRigthts(otAdminAndRights);
+                return new Envelope<IEnumerable<int>>(true, "Role created Successfully", result);
+            }
+            
+            return new Envelope<IEnumerable<int>>(false, $"Selected role name already exists");
+
         }
+
+
         public async Task<IEnumerable<int>> UpdateRolePermissions(PostAdminRolesAndRights otAdminAndRights)
         {
             var result = await _masterDataAccess.UpdateRolePermissions(otAdminAndRights);
@@ -135,9 +155,6 @@ namespace BCMCH.OTM.Domain.Master
 
         public async  Task<IEnumerable<Surgery>> GetSurgeryList(int _pageNumber, int _rowsPerPage, string? _searchKeyword="")
         {
-            // Console.WriteLine(_searchKeyword);
-            // _searchKeyword = _searchKeyword.Replace(" ", "%");
-            // _searchKeyword = "%"+_searchKeyword+"%";
             _searchKeyword="%%";
             var result = await _masterDataAccess.GetSurgeryList(_pageNumber, _rowsPerPage, _searchKeyword);
             return result;

@@ -55,24 +55,6 @@ namespace BCMCH.OTM.Domain.Booking
                 var surgeriesMapping = await _bookingDataAccess.GetEventSurgeries(item.event_id);
                 item.SurgeriesMapping = (List<Surgeries>)surgeriesMapping;
                 item.SurgeriesSelectedString  = string.Join(", \n", item.SurgeriesMapping.Select(s => s.Name));
-
-                Console.WriteLine("");
-                Console.Write( "item.event_id : " );
-                Console.Write( item.event_id );
-                Console.WriteLine("");
-                Console.Write("item.OtEntryTime : ");
-                Console.Write( item.OtEntryTime );
-                Console.WriteLine("");
-                Console.Write( "item.OtExitTime : " );
-                Console.Write( item.OtExitTime );
-
-                Console.WriteLine("");
-                Console.Write( "CalculateHourDifference : " );
-                Console.Write( CalculateHourDifference(item.OtEntryTime, item.OtExitTime) );
-                
-                Console.WriteLine("");
-                
-
                 item.AverageSurgeryTime = CalculateHourDifference(item.OtEntryTime, item.OtExitTime);
             }
             
@@ -462,7 +444,7 @@ namespace BCMCH.OTM.Domain.Booking
             booking.MedicineIdArray="["+booking .MedicineIdArray+"]";
             
             var result = await _bookingDataAccess.AddBooking(booking);
-            return new Envelope<IEnumerable<int>>(true, "booking created", result); ;
+            return new Envelope<IEnumerable<int>>(true, "booking created", result);
         }
 
         public async Task<Envelope<IEnumerable<int>>> AddWaitingList(PostBookingModel booking)

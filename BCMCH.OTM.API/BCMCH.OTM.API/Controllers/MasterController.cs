@@ -217,8 +217,8 @@ namespace BCMCH.OTM.API.Controllers
         {
             try
             {
-                var result = await _masterService.PostNewOTUser(userRole);                
-                return Ok(new ResponseVM<IEnumerable<int>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+                var result = await _masterService.PostNewOTUser(userRole);
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -249,7 +249,8 @@ namespace BCMCH.OTM.API.Controllers
             try
             {
                 var result = await _masterService.CreateAdminRolesAndRigthts(otAdminAndRights);                
-                return Ok(new ResponseVM<IEnumerable<int>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+                // return Ok(new ResponseVM<IEnumerable<int>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+                return Ok(result);
             }
             catch (Exception ex)
             {
