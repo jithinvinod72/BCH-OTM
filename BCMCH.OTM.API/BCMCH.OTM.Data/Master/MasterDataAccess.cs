@@ -151,6 +151,8 @@ namespace BCMCH.OTM.Data.Master
                                         [OTM].[UserRoles] as UserRoles ON OtmUser.userRoleId = UserRoles.Id
                                     WHERE 
                                         [OtmUser].[userId]=@EmployeeId
+                                            AND 
+                                        [OtmUser].[IsDeleted]=0
                                  ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@EmployeeId", employeeId);
@@ -186,7 +188,9 @@ namespace BCMCH.OTM.Data.Master
                                 LEFT JOIN 
                                     [dbo].[Departments] ON [Employees].[DepartmentID]= [dbo].[Departments].[Id]
                                 LEFT JOIN 
-                                    [OTM].[UserRoles] as UserRoles ON OtmUser.userRoleId = UserRoles.Id;
+                                    [OTM].[UserRoles] as UserRoles ON OtmUser.userRoleId = UserRoles.Id
+                                WHERE 
+                                    [OtmUser].[IsDeleted]=0
             ";
             var SqlParameters = new DynamicParameters();
             var result = await _sqlHelper.QueryAsync<UserAndHisRole>(Query, SqlParameters, CommandType.Text);
@@ -204,7 +208,9 @@ namespace BCMCH.OTM.Data.Master
                                         ,[Active]
                                         ,[DisplayName]
                                     FROM 
-                                        [behive-dev-otm].[OTM].[UserRoles]
+                                        [OTM].[UserRoles]
+                                    WHERE 
+                                        [IsDeleted]=0
                                  ";
             var SqlParameters = new DynamicParameters();
             var result = await _sqlHelper.QueryAsync<AvailableRoles>(Query, SqlParameters, CommandType.Text);
@@ -245,6 +251,31 @@ namespace BCMCH.OTM.Data.Master
             var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
             return result;
         }
+        public async Task<IEnumerable<int>> DeleteOTUser(string userIdList)
+        {
+            const string Query = @"
+                                    UPDATE 
+                                        [OTM].[Users]
+                                    SET 
+                                        [IsDeleted] = 1
+                                    WHERE 
+                                    [userId] IN (
+                                        SELECT value
+                                        FROM OPENJSON(@userIdList)
+                                    );
+            ";
+            // const string Query = @"
+            //                         UPDATE [OTM].[Users]
+            //                             SET [IsDeleted] = 1
+            //                         WHERE 
+            //                             [userId] = @userId;
+            //                      ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@userIdList", userIdList);
+            var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
         public async Task<IEnumerable<int>> CreateAdminRolesAndRigthts(PostAdminRolesAndRights otAdminAndRights)
         {
             const string Query = @"
@@ -347,7 +378,10 @@ namespace BCMCH.OTM.Data.Master
                                         [behive-dev-otm].[OTM].[RoleHasPermissions] as Permissions
                                     LEFT JOIN
                                         [OTM].[Resources] AS Resources ON ResourceId = Resources.Id
-                                    WHERE UserRoleId =@roleId
+                                    WHERE 
+                                        UserRoleId =@roleId
+                                    AND 
+                                        Permissions.IsDeleted=0
                                  ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@roleId", roleId);

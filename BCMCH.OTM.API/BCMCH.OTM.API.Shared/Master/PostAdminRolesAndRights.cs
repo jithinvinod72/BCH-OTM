@@ -12,5 +12,6 @@ namespace BCMCH.OTM.API.Shared.Master
         public string? UserRoleName  { get; set; }
         public string? UserDisplayName  { get; set; }
         public string? ResourceAndAccess { get; set; }
+        public int? IsDeleted  { get; set; }
     }
 }

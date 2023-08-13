@@ -240,7 +240,21 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
-        // public async Task<IEnumerable<int>> UpdateOTUser(UserAndHisRole UserAndHisRole)
+
+        [HttpPost]
+        [Route("delete-ot-user")]
+        public async Task<IActionResult> DeleteOTUser(string userIdList)
+        {
+            try
+            {
+                var result = await _masterService.DeleteOTUser(userIdList);                
+                return Ok(new ResponseVM<IEnumerable<int>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
 
         [HttpPost]
         [Route("post-new-admin-roles-and-rights")]

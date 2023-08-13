@@ -118,6 +118,11 @@ namespace BCMCH.OTM.Domain.Master
             var result = await _masterDataAccess.UpdateOTUser(UserAndHisRole);
             return result;
         }
+        public async Task<IEnumerable<int>> DeleteOTUser(string userIdList)
+        {
+            var result = await _masterDataAccess.DeleteOTUser(userIdList);
+            return result;
+        }
         public async Task<Envelope<IEnumerable<int>>> CreateAdminRolesAndRigthts(PostAdminRolesAndRights otAdminAndRights)
         {
             var rolesList = await _masterDataAccess.GetOTRoles();

@@ -20,5 +20,6 @@ namespace BCMCH.OTM.API.Shared.Master
         public int? DepartmentID  { get; set; }
         public int?  DepartmentTypeCode  { get; set; }
         public string? DepartmentName  { get; set; }
+        public int? IsDeleted { get; set; }
     }
 }
