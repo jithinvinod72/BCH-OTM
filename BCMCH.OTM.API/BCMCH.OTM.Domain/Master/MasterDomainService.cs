@@ -89,7 +89,7 @@ namespace BCMCH.OTM.Domain.Master
         {
             var result = await _masterDataAccess.GetOTUserRole(employeeId);
             var data = result.ElementAt(0);
-            var resources =await _masterDataAccess.GetOTRolePermissions(data.UserRoleId);
+            var resources =await _masterDataAccess.GetOTRolePermissions(data.RoleId);
 
             UserRole userRole = new UserRole();
             userRole.UserDetails = result;
@@ -108,7 +108,7 @@ namespace BCMCH.OTM.Domain.Master
             var userRoleExistance = otUsers.FirstOrDefault(role => role.EmployeeId == userAndHisRole.EmployeeId);
 
             if(userRoleExistance==null){
-                var result = await _masterDataAccess.PostNewOTUser(userAndHisRole.EmployeeId,userAndHisRole.UserRoleId);
+                var result = await _masterDataAccess.PostNewOTUser(userAndHisRole.EmployeeId,userAndHisRole.RoleId);
                 return new Envelope<IEnumerable<int>>(true, "User created Successfully", result);
             }
             return new Envelope<IEnumerable<int>>(false, $"Selected User already exists in another role {userRoleExistance.RoleName}");

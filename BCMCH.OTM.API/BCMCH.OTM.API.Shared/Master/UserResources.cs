@@ -9,7 +9,7 @@ namespace BCMCH.OTM.API.Shared.Master
     public class UserResources
     {
         public int PermissionId { get; set; }
-        public int UserRoleId { get; set; }
+        public int RoleId { get; set; }
         public int? ResourceId  { get; set; }
         public string? ResourceName  { get; set; }
         public string? ResourceDescription { get; set; }
@@ -18,7 +18,7 @@ namespace BCMCH.OTM.API.Shared.Master
 }
 
 // PermissionId
-// UserRoleId
+// RoleId
 // ResourceId
 // ResourceName
 // ResourceDescription

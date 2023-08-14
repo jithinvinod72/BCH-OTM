@@ -10,7 +10,7 @@ namespace BCMCH.OTM.API.Shared.Master
     {
         public int? OtmUserId { get; set; }
         public int EmployeeId { get; set; }
-        public int UserRoleId  { get; set; }
+        public int RoleId  { get; set; }
         public string? RoleName  { get; set; }
         public string? UserName { get; set; }
         public string? FirstName  { get; set; }

@@ -130,8 +130,8 @@ namespace BCMCH.OTM.Data.Master
                                     SELECT
                                         [OtmUser].[Id]                   AS OtmUserId           ,
                                         [OtmUser].[EmployeeId]           AS EmployeeId          ,
-                                        [OtmUser].[UserRoleId]           AS UserRoleId          ,
-                                        [UserRoles].[name]               AS RoleName            ,
+                                        [OtmUser].[RoleId]               AS RoleId          ,
+                                        [Roles].[name]                   AS RoleName            ,
                                         [dboUsers].[userName]            AS UserName            ,
                                         [Employees].[FirstName]          AS FirstName           ,
                                         [Employees].[LastName]           AS LastName            ,
@@ -139,19 +139,19 @@ namespace BCMCH.OTM.Data.Master
                                         [Employees].[DepartmentID]       AS DepartmentID        ,
                                         [dbo].[Departments].[TypeCode]   AS DepartmentTypeCode  ,
                                         [dbo].[Departments].[Name]       AS DepartmentName
-                                    FROM 
-                                        [behive-dev-otm].[OTM].[Users] AS OtmUser 
-                                    LEFT JOIN  
+                                    FROM
+                                        [behive-dev-otm].[OTM].[Users] AS OtmUser
+                                        LEFT JOIN
                                         [dbo].[Users] AS dboUsers ON OtmUser.EmployeeId = dboUsers.EmployeeId
-                                    LEFT JOIN 
+                                        LEFT JOIN
                                         [HR].[Employees] as Employees ON OtmUser.EmployeeId = Employees.Id
-                                    LEFT JOIN 
+                                        LEFT JOIN
                                         [dbo].[Departments] ON [Employees].[DepartmentID]= [dbo].[Departments].[Id]
-                                    LEFT JOIN 
-                                        [OTM].[UserRoles] as UserRoles ON OtmUser.userRoleId = UserRoles.Id
+                                        LEFT JOIN
+                                        [OTM].[Roles] ON OtmUser.RoleId = Roles.Id
                                     WHERE 
                                         [OtmUser].[EmployeeId]=@EmployeeId
-                                            AND 
+                                        AND
                                         [OtmUser].[IsDeleted]=0
                                  ";
             var SqlParameters = new DynamicParameters();
@@ -166,7 +166,7 @@ namespace BCMCH.OTM.Data.Master
                                 SELECT
                                     [OtmUser].[Id]                   AS OtmUserId           ,
                                     [OtmUser].[EmployeeId]           AS EmployeeId          ,
-                                    [OtmUser].[UserRoleId]           AS UserRoleId          ,
+                                    [OtmUser].[RoleId]               AS RoleId          ,
                                     [UserRoles].[name]               AS RoleName            ,
                                     [dboUsers].[userName]            AS UserName            ,
                                     [Employees].[FirstName]          AS FirstName           ,
@@ -188,7 +188,7 @@ namespace BCMCH.OTM.Data.Master
                                 LEFT JOIN 
                                     [dbo].[Departments] ON [Employees].[DepartmentID]= [dbo].[Departments].[Id]
                                 LEFT JOIN 
-                                    [OTM].[UserRoles] as UserRoles ON OtmUser.userRoleId = UserRoles.Id
+                                    [OTM].[Roles] as UserRoles ON OtmUser.RoleId = UserRoles.Id
                                 WHERE 
                                     [OtmUser].[IsDeleted]=0
             ";
@@ -208,7 +208,7 @@ namespace BCMCH.OTM.Data.Master
                                         ,[Active]
                                         ,[DisplayName]
                                     FROM 
-                                        [OTM].[UserRoles]
+                                        [OTM].[Roles]
                                     WHERE 
                                         [IsDeleted]=0
                                  ";
@@ -222,19 +222,19 @@ namespace BCMCH.OTM.Data.Master
                                     INSERT INTO [behive-dev-otm].[OTM].[Users]
                                     (
                                         [EmployeeId] ,
-                                        [UserRoleId], 
+                                        [RoleId], 
                                         [IsDeleted]
                                     )
                                     VALUES
                                     (
                                         @EmployeeId,
-                                        @userRoleId, 
+                                        @RoleId, 
                                         0
                                     )
                                  ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@EmployeeId", EmployeeId);
-            SqlParameters.Add("@userRoleId", roleId);
+            SqlParameters.Add("@RoleId", roleId);
             var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
             return result;
         }
@@ -243,13 +243,13 @@ namespace BCMCH.OTM.Data.Master
         {
             const string Query = @"
                                     UPDATE [OTM].[Users]
-                                        SET [UserRoleId] = @userRoleId
+                                        SET [RoleId] = @RoleId
                                     WHERE 
                                         [EmployeeId] = @EmployeeId;
                                  ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@EmployeeId", userAndHisRole.EmployeeId);
-            SqlParameters.Add("@userRoleId", userAndHisRole.UserRoleId);
+            SqlParameters.Add("@RoleId", userAndHisRole.RoleId);
             var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
             return result;
         }
@@ -275,7 +275,7 @@ namespace BCMCH.OTM.Data.Master
         public async Task<IEnumerable<int>> CreateAdminRolesAndRigthts(PostAdminRolesAndRights otAdminAndRights)
         {
             const string Query = @"
-                                        INSERT INTO [OTM].[UserRoles]
+                                        INSERT INTO [OTM].[Roles]
                                         (
                                              [name]
                                             ,[Active]
@@ -297,12 +297,12 @@ namespace BCMCH.OTM.Data.Master
                                         (
                                             [ResourceId],
                                             [AccessType],
-                                            [UserRoleId]
+                                            [RoleId]
                                         )
                                         SELECT 
                                             [ResourceId],
                                             [AccessType],
-                                            [UserRoleId]=@NewRoleId
+                                            [RoleId]=@NewRoleId
                                         FROM 
                                             OPENJSON(@ResourceAndAccess)
                                             WITH  
@@ -330,19 +330,19 @@ namespace BCMCH.OTM.Data.Master
                                     DELETE FROM 
                                         [OTM].[RoleHasPermissions] 
                                     WHERE 
-                                        UserRoleId = @userRoleId;
+                                        RoleId = @RoleId;
 
                                     -- insert role permissions start
                                     INSERT INTO [OTM].[RoleHasPermissions]
                                     (
                                         [ResourceId],
                                         [AccessType],
-                                        [UserRoleId]
+                                        [RoleId]
                                     )
                                     SELECT 
                                         [ResourceId],
                                         [AccessType],
-                                        [UserRoleId]=@userRoleId
+                                        [RoleId]=@RoleId
                                     FROM 
                                         OPENJSON(@resourceAndAccess)
                                         WITH  
@@ -353,7 +353,7 @@ namespace BCMCH.OTM.Data.Master
                                     -- insert role permissions end
                                   ";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@userRoleId"         , otAdminAndRights.RoleId);
+            SqlParameters.Add("@RoleId"         , otAdminAndRights.RoleId);
             SqlParameters.Add("@ResourceAndAccess"  , otAdminAndRights.ResourceAndAccess);
 
             var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
@@ -365,7 +365,7 @@ namespace BCMCH.OTM.Data.Master
             const string Query = @"
                                     SELECT
                                          [Permissions].[Id]           AS PermissionId
-                                        ,[Permissions].[UserRoleId]   AS UserRoleId
+                                        ,[Permissions].[RoleId]       AS RoleId
                                         ,[Permissions].[ResourceId]   AS ResourceId
                                         ,[Resources].[name]           AS ResourceName
                                         ,[Resources].[Description]    AS ResourceDescription
@@ -375,7 +375,7 @@ namespace BCMCH.OTM.Data.Master
                                     LEFT JOIN
                                         [OTM].[Resources] AS Resources ON ResourceId = Resources.Id
                                     WHERE 
-                                        UserRoleId =@roleId
+                                        RoleId =@roleId
                                     AND 
                                         Permissions.IsDeleted=0
                                  ";
