@@ -241,7 +241,7 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Route("delete-ot-user")]
         public async Task<IActionResult> DeleteOTUser(string EmployeeIdList)
         {
