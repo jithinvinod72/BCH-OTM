@@ -222,12 +222,14 @@ namespace BCMCH.OTM.Data.Master
                                     INSERT INTO [behive-dev-otm].[OTM].[Users]
                                     (
                                         [EmployeeId] ,
-                                        [UserRoleId]
+                                        [UserRoleId], 
+                                        [IsDeleted]
                                     )
                                     VALUES
                                     (
                                         @EmployeeId,
-                                        @userRoleId
+                                        @userRoleId, 
+                                        0
                                     )
                                  ";
             var SqlParameters = new DynamicParameters();
@@ -264,12 +266,6 @@ namespace BCMCH.OTM.Data.Master
                                         FROM OPENJSON(@EmployeeIdList)
                                     );
             ";
-            // const string Query = @"
-            //                         UPDATE [OTM].[Users]
-            //                             SET [IsDeleted] = 1
-            //                         WHERE 
-            //                             [EmployeeId] = @EmployeeId;
-            //                      ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@EmployeeIdList", EmployeeIdList);
             var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
