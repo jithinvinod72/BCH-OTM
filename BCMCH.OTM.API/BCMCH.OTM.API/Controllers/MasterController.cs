@@ -243,11 +243,11 @@ namespace BCMCH.OTM.API.Controllers
 
         [HttpPost]
         [Route("delete-ot-user")]
-        public async Task<IActionResult> DeleteOTUser(string userIdList)
+        public async Task<IActionResult> DeleteOTUser(string EmployeeIdList)
         {
             try
             {
-                var result = await _masterService.DeleteOTUser(userIdList);                
+                var result = await _masterService.DeleteOTUser(EmployeeIdList);                
                 return Ok(new ResponseVM<IEnumerable<int>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)

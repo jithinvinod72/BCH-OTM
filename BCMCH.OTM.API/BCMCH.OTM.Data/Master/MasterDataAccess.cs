@@ -129,7 +129,7 @@ namespace BCMCH.OTM.Data.Master
             const string Query = @"
                                     SELECT
                                         [OtmUser].[Id]                   AS OtmUserId           ,
-                                        [OtmUser].[userId]               AS EmployeeId          ,
+                                        [OtmUser].[EmployeeId]           AS EmployeeId          ,
                                         [OtmUser].[UserRoleId]           AS UserRoleId          ,
                                         [UserRoles].[name]               AS RoleName            ,
                                         [dboUsers].[userName]            AS UserName            ,
@@ -142,15 +142,15 @@ namespace BCMCH.OTM.Data.Master
                                     FROM 
                                         [behive-dev-otm].[OTM].[Users] AS OtmUser 
                                     LEFT JOIN  
-                                        [dbo].[Users] AS dboUsers ON OtmUser.userId = dboUsers.EmployeeId
+                                        [dbo].[Users] AS dboUsers ON OtmUser.EmployeeId = dboUsers.EmployeeId
                                     LEFT JOIN 
-                                        [HR].[Employees] as Employees ON OtmUser.userId = Employees.Id
+                                        [HR].[Employees] as Employees ON OtmUser.EmployeeId = Employees.Id
                                     LEFT JOIN 
                                         [dbo].[Departments] ON [Employees].[DepartmentID]= [dbo].[Departments].[Id]
                                     LEFT JOIN 
                                         [OTM].[UserRoles] as UserRoles ON OtmUser.userRoleId = UserRoles.Id
                                     WHERE 
-                                        [OtmUser].[userId]=@EmployeeId
+                                        [OtmUser].[EmployeeId]=@EmployeeId
                                             AND 
                                         [OtmUser].[IsDeleted]=0
                                  ";
@@ -165,7 +165,7 @@ namespace BCMCH.OTM.Data.Master
             const string Query = @"
                                 SELECT
                                     [OtmUser].[Id]                   AS OtmUserId           ,
-                                    [OtmUser].[userId]               AS EmployeeId          ,
+                                    [OtmUser].[EmployeeId]           AS EmployeeId          ,
                                     [OtmUser].[UserRoleId]           AS UserRoleId          ,
                                     [UserRoles].[name]               AS RoleName            ,
                                     [dboUsers].[userName]            AS UserName            ,
@@ -182,9 +182,9 @@ namespace BCMCH.OTM.Data.Master
                                 FROM 
                                     [behive-dev-otm].[OTM].[Users] AS OtmUser 
                                 LEFT JOIN  
-                                    [dbo].[Users] AS dboUsers ON OtmUser.userId = dboUsers.EmployeeId
+                                    [dbo].[Users] AS dboUsers ON OtmUser.EmployeeId = dboUsers.EmployeeId
                                 LEFT JOIN 
-                                    [HR].[Employees] as Employees ON OtmUser.userId = Employees.Id
+                                    [HR].[Employees] as Employees ON OtmUser.EmployeeId = Employees.Id
                                 LEFT JOIN 
                                     [dbo].[Departments] ON [Employees].[DepartmentID]= [dbo].[Departments].[Id]
                                 LEFT JOIN 
@@ -216,22 +216,22 @@ namespace BCMCH.OTM.Data.Master
             var result = await _sqlHelper.QueryAsync<AvailableRoles>(Query, SqlParameters, CommandType.Text);
             return result;
         }
-        public async Task<IEnumerable<int>> PostNewOTUser(int userId, int roleId)
+        public async Task<IEnumerable<int>> PostNewOTUser(int EmployeeId, int roleId)
         {
             const string Query = @"
                                     INSERT INTO [behive-dev-otm].[OTM].[Users]
                                     (
-                                        [userId] ,
+                                        [EmployeeId] ,
                                         [UserRoleId]
                                     )
                                     VALUES
                                     (
-                                        @userId,
+                                        @EmployeeId,
                                         @userRoleId
                                     )
                                  ";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@userId", userId);
+            SqlParameters.Add("@EmployeeId", EmployeeId);
             SqlParameters.Add("@userRoleId", roleId);
             var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
             return result;
@@ -243,15 +243,15 @@ namespace BCMCH.OTM.Data.Master
                                     UPDATE [OTM].[Users]
                                         SET [UserRoleId] = @userRoleId
                                     WHERE 
-                                        [userId] = @userId;
+                                        [EmployeeId] = @EmployeeId;
                                  ";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@userId", userAndHisRole.EmployeeId);
+            SqlParameters.Add("@EmployeeId", userAndHisRole.EmployeeId);
             SqlParameters.Add("@userRoleId", userAndHisRole.UserRoleId);
             var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
             return result;
         }
-        public async Task<IEnumerable<int>> DeleteOTUser(string userIdList)
+        public async Task<IEnumerable<int>> DeleteOTUser(string EmployeeIdList)
         {
             const string Query = @"
                                     UPDATE 
@@ -259,19 +259,19 @@ namespace BCMCH.OTM.Data.Master
                                     SET 
                                         [IsDeleted] = 1
                                     WHERE 
-                                    [userId] IN (
+                                    [EmployeeId] IN (
                                         SELECT value
-                                        FROM OPENJSON(@userIdList)
+                                        FROM OPENJSON(@EmployeeIdList)
                                     );
             ";
             // const string Query = @"
             //                         UPDATE [OTM].[Users]
             //                             SET [IsDeleted] = 1
             //                         WHERE 
-            //                             [userId] = @userId;
+            //                             [EmployeeId] = @EmployeeId;
             //                      ";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@userIdList", userIdList);
+            SqlParameters.Add("@EmployeeIdList", EmployeeIdList);
             var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
             return result;
         }
