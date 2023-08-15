@@ -368,14 +368,15 @@ namespace BCMCH.OTM.Data.Master
 
         public async Task<IEnumerable<int>> DeleteRolesAndPermissions(string roleIdList)
         {
+            Console.WriteLine(roleIdList);
             const string Query = @"
                                     UPDATE 
                                         [OTM].[RoleHasPermissions]
                                     SET 
                                         [IsDeleted] = 1
-                                    WHERE [RoleId] IN (
-                                        SELECT value
-                                        FROM OPENJSON(@RoleIdList)
+                                    WHERE 
+                                    [RoleId] IN (
+                                            SELECT value FROM OPENJSON(@RoleIdList)
                                     );
 
 
@@ -383,15 +384,12 @@ namespace BCMCH.OTM.Data.Master
                                         [OTM].[Roles]
                                     SET 
                                         [IsDeleted] = 1
-                                    WHERE [Id] IN (
-                                            SELECT value
-                                        FROM OPENJSON(@RoleIdList)
+                                    WHERE 
+                                    [Id] IN (
+                                        SELECT value FROM OPENJSON(@RoleIdList)   
                                     );
                                   ";
-                                //   [EmployeeId] IN (
-                                //         SELECT value
-                                //         FROM OPENJSON(@EmployeeIdList)
-                                //     );
+
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@RoleIdList"         , roleIdList);
             var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);

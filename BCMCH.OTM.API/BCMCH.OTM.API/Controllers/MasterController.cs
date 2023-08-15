@@ -287,6 +287,7 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
+
         [HttpDelete]
         [Route("delete-roles-and-rights")]
         public async Task<IActionResult> DeleteRolesAndPermissions(string roleIdList)
