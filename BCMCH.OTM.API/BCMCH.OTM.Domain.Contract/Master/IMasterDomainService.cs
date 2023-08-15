@@ -24,6 +24,8 @@ namespace BCMCH.OTM.Domain.Contract.Master
         Task<Envelope<IEnumerable<int>>> CreateAdminRolesAndRigthts(PostAdminRolesAndRights otAdminAndRights);
         Task<IEnumerable<UserResources>> GetOTRolePermissions(int? roleId);
         Task<IEnumerable<int>> UpdateRolePermissions(PostAdminRolesAndRights otAdminAndRights);
+        Task<IEnumerable<int>> DeleteRolesAndPermissions(string roleIdList);
+
         // OT ROLE END
 
         Task<IEnumerable<OperationTheatre>> GetOperationTheatres();

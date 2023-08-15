@@ -136,13 +136,16 @@ namespace BCMCH.OTM.Domain.Master
             }
             
             return new Envelope<IEnumerable<int>>(false, $"Selected role name already exists");
-
         }
-
 
         public async Task<IEnumerable<int>> UpdateRolePermissions(PostAdminRolesAndRights otAdminAndRights)
         {
             var result = await _masterDataAccess.UpdateRolePermissions(otAdminAndRights);
+            return result;
+        }
+        public async  Task<IEnumerable<int>> DeleteRolesAndPermissions(string roleIdList)
+        {
+            var result = await _masterDataAccess.DeleteRolesAndPermissions(roleIdList);
             return result;
         }
 

@@ -287,7 +287,21 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
-        // public async Task<IEnumerable<UserResources>> UpdateRolePermissions(PostAdminRolesAndRights otAdminAndRights)
+        [HttpDelete]
+        [Route("delete-roles-and-rights")]
+        public async Task<IActionResult> DeleteRolesAndPermissions(string roleIdList)
+        {
+            try
+            {
+                var result = await _masterService.DeleteRolesAndPermissions(roleIdList);
+                return Ok(new ResponseVM<IEnumerable<int>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        // public async  Task<IEnumerable<int>> DeleteRolesAndPermissions(int roleId)
 
         [HttpGet]
         [Route("get-resources")]

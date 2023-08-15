@@ -280,10 +280,11 @@ namespace BCMCH.OTM.Data.Master
                                              [name]
                                             ,[Active]
                                             ,[DisplayName]
+                                            ,[IsDeleted]
                                         )
                                         VALUES
                                         (
-                                            @UserRoleName,1,@UserDisplayName
+                                            @UserRoleName,1,@UserDisplayName,0
                                         );
                                         
 
@@ -297,12 +298,14 @@ namespace BCMCH.OTM.Data.Master
                                         (
                                             [ResourceId],
                                             [AccessType],
-                                            [RoleId]
+                                            [RoleId],
+                                            [IsDeleted]
                                         )
                                         SELECT 
                                             [ResourceId],
                                             [AccessType],
-                                            [RoleId]=@NewRoleId
+                                            [RoleId]=@NewRoleId,
+                                            [IsDeleted]=0
                                         FROM 
                                             OPENJSON(@ResourceAndAccess)
                                             WITH  
@@ -322,6 +325,7 @@ namespace BCMCH.OTM.Data.Master
             var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
             return result;
         }
+
          // role updation section 
 
         public async Task<IEnumerable<int>> UpdateRolePermissions(PostAdminRolesAndRights otAdminAndRights)
@@ -342,7 +346,8 @@ namespace BCMCH.OTM.Data.Master
                                     SELECT 
                                         [ResourceId],
                                         [AccessType],
-                                        [RoleId]=@RoleId
+                                        [RoleId]=@RoleId,
+                                        [IsDeleted]=0
                                     FROM 
                                         OPENJSON(@resourceAndAccess)
                                         WITH  
@@ -360,6 +365,38 @@ namespace BCMCH.OTM.Data.Master
             return result;
         }
 
+
+        public async Task<IEnumerable<int>> DeleteRolesAndPermissions(string roleIdList)
+        {
+            const string Query = @"
+                                    UPDATE 
+                                        [OTM].[RoleHasPermissions]
+                                    SET 
+                                        [IsDeleted] = 1
+                                    WHERE [RoleId] IN (
+                                        SELECT value
+                                        FROM OPENJSON(@RoleIdList)
+                                    );
+
+
+                                    UPDATE 
+                                        [OTM].[Roles]
+                                    SET 
+                                        [IsDeleted] = 1
+                                    WHERE [Id] IN (
+                                            SELECT value
+                                        FROM OPENJSON(@RoleIdList)
+                                    );
+                                  ";
+                                //   [EmployeeId] IN (
+                                //         SELECT value
+                                //         FROM OPENJSON(@EmployeeIdList)
+                                //     );
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@RoleIdList"         , roleIdList);
+            var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
         public async Task<IEnumerable<UserResources>> GetOTRolePermissions(int? roleId)
         {
             const string Query = @"

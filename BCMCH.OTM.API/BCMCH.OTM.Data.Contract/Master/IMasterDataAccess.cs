@@ -20,6 +20,8 @@ namespace BCMCH.OTM.Data.Contract.Master
         Task<IEnumerable<int>> UpdateOTUser(UserAndHisRole userAndHisRole);
         Task<IEnumerable<int>> DeleteOTUser(string EmployeeIdList);
         Task<IEnumerable<int>> CreateAdminRolesAndRigthts(PostAdminRolesAndRights otAdminAndRights);
+        
+        Task<IEnumerable<int>> DeleteRolesAndPermissions(string roleIdList);
         Task<IEnumerable<Resources>> GetOTResources();
         Task<IEnumerable<int>> UpdateRolePermissions(PostAdminRolesAndRights otAdminAndRights);
 
