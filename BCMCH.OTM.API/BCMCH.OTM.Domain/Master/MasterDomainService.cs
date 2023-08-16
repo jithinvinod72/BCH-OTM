@@ -441,10 +441,10 @@ namespace BCMCH.OTM.Domain.Master
         public async Task<IEnumerable<GetQuestions>> GetFormQuestions(int otStageId, string accessibleTo)
         {
             var result = await _masterDataAccess.GetFormQuestions();
-            var filteredResult = result.Where( o=> otStageId==o.otStageId);
-            filteredResult = result.Where( o=> accessibleTo==o.accessibleTo);
-            filteredResult = result.Where( o=> o.IsDisabled!=1);
-            return filteredResult;
+            var filteredWithStage       = result.Where( o=> otStageId==o.otStageId);
+            var filteredWithAccess      = filteredWithStage.Where( o=> accessibleTo==o.accessibleTo);
+            var filteredWithDisabled    = filteredWithAccess.Where( o=> o.IsDisabled!=1);
+            return filteredWithDisabled;
         }
         public async Task<IEnumerable<GetQuestions>> GetAllFormQuestions()
         {
