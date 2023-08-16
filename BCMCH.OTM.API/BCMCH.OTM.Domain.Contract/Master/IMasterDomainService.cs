@@ -45,6 +45,7 @@ namespace BCMCH.OTM.Domain.Contract.Master
 
         // QUESTION SECTIION START
         Task<IEnumerable<PostQuestionsModel>> PostQuestion(PostQuestionsModel question);
+        Task<IEnumerable<string>> DisableQuestions(int id);
         Task<IEnumerable<string>> PostQuestionType(string name,string label);
         Task<IEnumerable<string>>  PostOtStages(string name,string label);
         Task<IEnumerable<GetQuestions>> GetFormQuestions(int otStageId, string accessibleTo);

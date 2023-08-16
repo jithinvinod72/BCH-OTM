@@ -538,6 +538,22 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("disable-question")]
+        public async Task<IActionResult> DisableQuestions(int id)
+        {
+            try
+            {
+                var result = await _masterService.DisableQuestions(id);
+                return Ok(new ResponseVM<IEnumerable<string>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        
+
         [HttpPost]
         [Route("post-question-type")]
         public async Task<IActionResult> PostQuestionType(string name,string label)

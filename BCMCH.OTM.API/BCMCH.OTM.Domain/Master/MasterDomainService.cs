@@ -421,6 +421,11 @@ namespace BCMCH.OTM.Domain.Master
             var result = await _masterDataAccess.PostQuestion(question);
             return result;
         }
+        public async Task<IEnumerable<string>> DisableQuestions(int id)
+        {
+            var result = await _masterDataAccess.DisableQuestions(id);
+            return result;
+        }
         public async Task<IEnumerable<string>> PostQuestionType(string name,string label)
         {
             var result = await _masterDataAccess.PostQuestionType(name,label);
@@ -438,6 +443,7 @@ namespace BCMCH.OTM.Domain.Master
             var result = await _masterDataAccess.GetFormQuestions();
             var filteredResult = result.Where( o=> otStageId==o.otStageId);
             filteredResult = result.Where( o=> accessibleTo==o.accessibleTo);
+            filteredResult = result.Where( o=> o.IsDisabled!=1);
             return filteredResult;
         }
         public async Task<IEnumerable<GetQuestions>> GetAllFormQuestions()

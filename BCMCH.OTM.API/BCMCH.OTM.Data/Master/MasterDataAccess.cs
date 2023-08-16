@@ -622,6 +622,24 @@ namespace BCMCH.OTM.Data.Master
             var result = await _sqlHelper.QueryAsync<string>(Query, SqlParameters, CommandType.Text);
             return result;
         }
+
+        public async Task<IEnumerable<string>> DisableQuestions(int id)
+        {
+            string Query = @"
+                                UPDATE [OTM].[FormQuestions] 
+                                SET 
+                                    [IsDisabled]=1
+                                WHERE
+                                Id=@id 
+                                    OR 
+                                parentId=@id
+                            ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("id", id);
+            
+            var result = await _sqlHelper.QueryAsync<string>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
         public async Task<IEnumerable<string>> PostOtStages(string name, string label)
         {
             string Query = @"
