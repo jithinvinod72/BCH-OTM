@@ -1028,6 +1028,8 @@ namespace BCMCH.OTM.Data.Booking
                                 DateToRemove > @startDate 
                                 AND
                                 DateToRemove < @endDate
+                                AND 
+                                IsDeleted=0
                            ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@startDate", start);
