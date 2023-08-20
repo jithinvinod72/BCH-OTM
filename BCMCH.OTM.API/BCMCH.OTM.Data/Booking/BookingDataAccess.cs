@@ -763,7 +763,8 @@ namespace BCMCH.OTM.Data.Booking
                                 [PlacedIn],
                                 [PlacedDate],
                                 [DateToRemove],
-                                [IsRemoved]
+                                [IsRemoved], 
+                                [IsDeleted]
                             )
                             SELECT
                                 @RemovableDevicesMainId ,
@@ -773,6 +774,7 @@ namespace BCMCH.OTM.Data.Booking
                                 devicePlaced            ,
                                 placedDate              ,
                                 removedDate             ,
+                                0                       , 
                                 0
                             FROM OPENJSON(@nestedData)
                             WITH (
@@ -784,7 +786,6 @@ namespace BCMCH.OTM.Data.Booking
                                 placedDate DATETIME     
                             );
                             SELECT @RemovableDevicesMainId
-                            
                            ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@OperationId", removableDevicesMain.OperationId);
@@ -825,7 +826,8 @@ namespace BCMCH.OTM.Data.Booking
                                 [PlacedIn],
                                 [PlacedDate],
                                 [DateToRemove],
-                                [IsRemoved]
+                                [IsRemoved] , 
+                                [IsDeleted]
                             )
                             SELECT
                                 @RemovableDevicesMainId ,
@@ -835,6 +837,7 @@ namespace BCMCH.OTM.Data.Booking
                                 devicePlaced            ,
                                 placedDate              ,
                                 removedDate             ,
+                                0                       ,
                                 0
                             FROM OPENJSON(@nestedData)
                             WITH (
@@ -871,7 +874,14 @@ namespace BCMCH.OTM.Data.Booking
                             SET
                                 [IsDeleted] = 1
                             WHERE
-                                Id IN (SELECT value FROM OPENJSON(@IdArray))
+                                Id IN (SELECT value FROM OPENJSON(@IdArray));
+
+                            
+                            UPDATE [OTM].[RemovableDevicesSelected]
+                            SET
+                                [IsDeleted] = 1
+                            WHERE
+                                RemovableDeviceMainId IN (SELECT value FROM OPENJSON(@IdArray))
                            ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@IdArray", idArray);
@@ -961,7 +971,7 @@ namespace BCMCH.OTM.Data.Booking
                                 ,[DateToRemove]
                                 ,[IsRemoved]
                             FROM [behive-dev-otm].[OTM].[RemovableDevicesSelected]
-                            WHERE RemovableDeviceMainId=@RemovableDeviceId
+                            WHERE RemovableDeviceMainId=@RemovableDeviceId AND IsDeleted=0
                            ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@RemovableDeviceId", id);
