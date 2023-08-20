@@ -1029,7 +1029,7 @@ namespace BCMCH.OTM.Data.Booking
                                 AND
                                 DateToRemove < @endDate
                                 AND 
-                                IsDeleted=0
+                                SelectedDevices.IsDeleted=0
                            ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@startDate", start);
