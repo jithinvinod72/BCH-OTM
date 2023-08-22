@@ -656,7 +656,7 @@ namespace BCMCH.OTM.Data.Booking
             string Query = @"
                             UPDATE [OTM].[Pathology]
                             SET
-                                [RegistrationNo]    = @RegNo    ,
+                                [OperationId]       = @OperationId    ,
                                 [status]            = @status    ,
                                 [PostedBy]          = @PostedBy    ,
                                 [IsDeleted]         = @IsDeleted    ,
@@ -694,7 +694,7 @@ namespace BCMCH.OTM.Data.Booking
                            ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@PathologyId", pathology.Id);
-            SqlParameters.Add("@RegNo", pathology.RegistrationNo);
+            SqlParameters.Add("@OperationId", pathology.OperationId);
             SqlParameters.Add("@PostedBy", pathology.PostedBy);
             SqlParameters.Add("@nestedData", pathology.NestedData);
             SqlParameters.Add("@DateTime", pathology.Datetime);

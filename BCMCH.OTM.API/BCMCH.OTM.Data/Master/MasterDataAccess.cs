@@ -130,7 +130,7 @@ namespace BCMCH.OTM.Data.Master
                                     SELECT
                                         [OtmUser].[Id]                   AS OtmUserId           ,
                                         [OtmUser].[EmployeeId]           AS EmployeeId          ,
-                                        [OtmUser].[RoleId]               AS RoleId          ,
+                                        [OtmUser].[RoleId]               AS RoleId              ,
                                         [Roles].[name]                   AS RoleName            ,
                                         [dboUsers].[userName]            AS UserName            ,
                                         [Employees].[FirstName]          AS FirstName           ,
@@ -166,7 +166,7 @@ namespace BCMCH.OTM.Data.Master
                                 SELECT
                                     [OtmUser].[Id]                   AS OtmUserId           ,
                                     [OtmUser].[EmployeeId]           AS EmployeeId          ,
-                                    [OtmUser].[RoleId]               AS RoleId          ,
+                                    [OtmUser].[RoleId]               AS RoleId              ,
                                     [UserRoles].[name]               AS RoleName            ,
                                     [dboUsers].[userName]            AS UserName            ,
                                     [Employees].[FirstName]          AS FirstName           ,
