@@ -17,5 +17,7 @@ namespace BCMCH.OTM.API.Shared.Master
         public IEnumerable<Anaesthesia> AnaesthesiaList {get; set;}
         public IEnumerable<Departments> DepartmentsList {get; set;}
         public IEnumerable<Medicines> MedicinesList {get; set;}
+        public IEnumerable<Materials> MaterialsList {get; set;}
+        
     }
 }

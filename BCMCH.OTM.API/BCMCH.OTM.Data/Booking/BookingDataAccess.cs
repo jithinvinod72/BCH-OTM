@@ -208,7 +208,7 @@ namespace BCMCH.OTM.Data.Booking
 
                                 FROM [behive-dev-otm].[OTM].[EquipmentsMapping] AS Mapping 
                                 LEFT JOIN [dbo].[Medicine] AS Medicines ON [MedicineId] = Medicines.ItemID
-                                where Mapping.BookingId=@bookingid
+                                where Mapping.BookingId=@bookingid  AND (Mapping.[MedicineId] IS NOT NULL)
                             ";
 
             var SqlParameters = new DynamicParameters();
@@ -216,25 +216,20 @@ namespace BCMCH.OTM.Data.Booking
             var result = await _sqlHelper.QueryAsync<Medicines>(Query, SqlParameters, CommandType.Text);
             return result;
         }
-        public async Task<IEnumerable<Equipments>> GetEventMaterials(int bookingId)
+        public async Task<IEnumerable<Materials>> GetEventMaterials(int bookingId)
         {
-            string Query = @"
+            string Query = @"                            
                             SELECT
-                                [EquipmentsMaster].Id ,
-                                [Name],
-                                [Description]
-                            FROM [OTM].[EquipmentsMapping]
-                                LEFT JOIN
-                                [OTM].[EquipmentsMaster] ON [MaterialId] =[OTM].[EquipmentsMaster].[Id]
-                            WHERE 
-                                BookingId=@bookingId
-                                AND
-                                [OTM].[EquipmentsMapping].[MaterialId] IS NOT NULL
+                                Mapping.[MaterialId]    AS Id
+                                , Materials.ItemName      AS Name
+                            FROM [behive-dev-otm].[OTM].[EquipmentsMapping] AS Mapping
+                                LEFT JOIN [dbo].[Consumables] AS Materials ON [MaterialId] = Materials.ItemID
+                            where Mapping.BookingId=@bookingId  AND (Mapping.[MaterialId] IS NOT NULL)
                             ";
 
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@bookingId", bookingId);
-            var result = await _sqlHelper.QueryAsync<Equipments>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<Materials>(Query, SqlParameters, CommandType.Text);
             return result;
         }
 
@@ -257,7 +252,7 @@ namespace BCMCH.OTM.Data.Booking
                                 LEFT JOIN 
                                     [HR].[EmployeeCategories] AS EmployeeCategories ON [HR].[Employees].CategoryID = EmployeeCategories.[Id]
                                 WHERE 
-                                    BookingId=@bookingId
+                                    BookingId=@bookingId  
                             ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@bookingId", bookingId.ToString());

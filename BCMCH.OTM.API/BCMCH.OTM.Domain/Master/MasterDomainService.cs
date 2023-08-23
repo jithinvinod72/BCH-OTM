@@ -180,11 +180,14 @@ namespace BCMCH.OTM.Domain.Master
             
             allMasters.EquipmentList = await _masterDataAccess.GetEquipments();
             allMasters.MedicinesList = await _masterDataAccess.GetMedicines();
+            allMasters.MaterialsList = await _masterDataAccess.GetMaterials();
+
             allMasters.AnaesthetistList = await _masterDataAccess.GetEmployees("[2]"); // 2 is the department of anaesthetists
             allMasters.OperationTheatreList = await _masterDataAccess.GetOperationTheatres();
             allMasters.AnaesthesiaList = await _masterDataAccess.GetAnaesthesiaList();
             allMasters.DepartmentsList = await _masterDataAccess.GetDepartments();
             allMasters.DateTimeToday = await GetDateToday();
+            
 
             return allMasters;
         }
