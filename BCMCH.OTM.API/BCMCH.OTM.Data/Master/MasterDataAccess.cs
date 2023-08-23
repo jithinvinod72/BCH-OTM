@@ -37,6 +37,19 @@ namespace BCMCH.OTM.Data.Master
             var result = await _sqlHelper.QueryAsync<Equipments>(Query, SqlParameters, CommandType.Text);
             return result;
         }
+        public async Task<IEnumerable<Medicines>> GetMedicines()
+        {
+            const string Query = @"
+                                  SELECT
+                                    [ItemId]   AS Id,
+                                    [ItemName] AS Name
+                                  FROM 
+                                    [dbo].[Medicine]
+                                 ";
+            var SqlParameters = new DynamicParameters();
+            var result = await _sqlHelper.QueryAsync<Medicines>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
 
         public async Task<IEnumerable<Departments>> GetDepartments()
         {

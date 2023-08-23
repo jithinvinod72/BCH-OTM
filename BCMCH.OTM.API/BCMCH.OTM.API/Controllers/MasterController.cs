@@ -49,6 +49,20 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
+        [HttpGet]
+        [Route("get-medicines")]
+        public async Task<IActionResult> GetMedicines()
+        {
+            try
+            {
+                var result = await _masterService.GetMedicines();
+                return Ok(new ResponseVM<IEnumerable<Medicines>>(true, ResponseMessages.DATA_ACCESS_SUCCESS,result));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
         
 
         [HttpGet]
@@ -515,17 +529,6 @@ namespace BCMCH.OTM.API.Controllers
         [Route("post-questions")]
         public async Task<IActionResult> PostQuestion(PostQuestionsModel question)
         {
-            // {
-            //   "formsectionId": 1,
-            //   "formQuestionType": 1,
-            //   "order": 1,
-            //   "name": "name",
-            //   "question": "question",
-            //   "parentId": 0,
-            //   "rolesToShow": "ADMIN",
-            //   "questionTypeId": 0,
-            //   "options": "{\"options\":{[\"yes\",\"no\"]}}"
-            // }
             try
             {
                 var result = await _masterService.PostQuestion(question);

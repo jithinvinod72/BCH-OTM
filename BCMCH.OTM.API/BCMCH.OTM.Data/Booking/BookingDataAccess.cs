@@ -199,25 +199,21 @@ namespace BCMCH.OTM.Data.Booking
             var result = await _sqlHelper.QueryAsync<Equipments>(Query, SqlParameters, CommandType.Text);
             return result;
         }
-        public async Task<IEnumerable<Equipments>> GetEventMedicines(int bookingId)
+        public async Task<IEnumerable<Medicines>> GetEventMedicines(int bookingId)
         {
             string Query = @"                            
-                            SELECT
-                                [EquipmentsMaster].Id ,
-                                [Name],
-                                [Description]
-                            FROM [OTM].[EquipmentsMapping]
-                                LEFT JOIN
-                                [OTM].[EquipmentsMaster] ON [MedicineId] =[OTM].[EquipmentsMaster].[Id]
-                            WHERE 
-                                BookingId=@bookingId
-                                AND
-                                [OTM].[EquipmentsMapping].[MedicineId] IS NOT NULL
+                                SELECT 
+                                     Mapping.[MedicineId]    AS Id
+                                    , Medicines.ItemName      AS Name
+
+                                FROM [behive-dev-otm].[OTM].[EquipmentsMapping] AS Mapping 
+                                LEFT JOIN [dbo].[Medicine] AS Medicines ON [MedicineId] = Medicines.ItemID
+                                where Mapping.BookingId=@bookingid
                             ";
 
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@bookingId", bookingId);
-            var result = await _sqlHelper.QueryAsync<Equipments>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<Medicines>(Query, SqlParameters, CommandType.Text);
             return result;
         }
         public async Task<IEnumerable<Equipments>> GetEventMaterials(int bookingId)

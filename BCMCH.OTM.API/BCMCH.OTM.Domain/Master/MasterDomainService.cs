@@ -44,6 +44,13 @@ namespace BCMCH.OTM.Domain.Master
             var result = await _masterDataAccess.GetEquipments();
             return result;
         }
+
+        public async Task<IEnumerable<Medicines>> GetMedicines()
+        {
+            var result = await _masterDataAccess.GetMedicines();
+            return result;
+        }
+        
         public async Task<IEnumerable<Departments>> GetDepartments()
         {
             var result = await _masterDataAccess.GetDepartments();
@@ -172,6 +179,7 @@ namespace BCMCH.OTM.Domain.Master
             AllMasters allMasters = new AllMasters();
             
             allMasters.EquipmentList = await _masterDataAccess.GetEquipments();
+            allMasters.MedicinesList = await _masterDataAccess.GetMedicines();
             allMasters.AnaesthetistList = await _masterDataAccess.GetEmployees("[2]"); // 2 is the department of anaesthetists
             allMasters.OperationTheatreList = await _masterDataAccess.GetOperationTheatres();
             allMasters.AnaesthesiaList = await _masterDataAccess.GetAnaesthesiaList();

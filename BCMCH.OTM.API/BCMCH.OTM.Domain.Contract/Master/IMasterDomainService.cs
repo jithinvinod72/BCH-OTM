@@ -8,6 +8,7 @@ namespace BCMCH.OTM.Domain.Contract.Master
     {
         Task<IEnumerable<Departments>> GetDepartments();
         Task<IEnumerable<Equipments>> GetEquipments();
+        Task<IEnumerable<Medicines>> GetMedicines();
         Task<IEnumerable<Anaesthesia>> GetAnaesthesiaList();
         Task<IEnumerable<Employee>> GetEmployees(string departmentArray);
         Task<IEnumerable<Employee>> GetEmployeeDetails(int employeeCode);
