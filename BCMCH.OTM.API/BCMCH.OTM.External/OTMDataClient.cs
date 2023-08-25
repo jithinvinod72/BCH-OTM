@@ -66,28 +66,37 @@ namespace BCMCH.OTM.External
             auth.Authenticated = false;
             string baseUrl= _configuration.GetSection("baseURL").Value + @"user/validate";
 
-            using (var response = await _httpClient.PostAsync(baseUrl, new JsonContent(key)))
-            {
-                if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
-                {
-                    return auth;
-                }
+            Console.WriteLine("ENTERING HERE");
 
-                string content = await response.Content.ReadAsStringAsync();
+            // comment tis for authentication 
+            auth.Authenticated = true;
+            return auth;
+            // comment tis for authentication 
+
+            // uncomment below for authentication 
+
+            // using (var response = await _httpClient.PostAsync(baseUrl, new JsonContent(key)))
+            // {
+            //     if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            //     {
+            //         return auth;
+            //     }
+
+            //     string content = await response.Content.ReadAsStringAsync();
                 
 
                 
-                if (response.IsSuccessStatusCode && !string.IsNullOrEmpty(content))
-                {
-                    var result= JsonConvert.DeserializeObject<ResponseModelExternalAPI>(content);
-                    if (result.success) {
-                        auth.Authenticated = true;
-                        return auth;
-                    }
-                }
+            //     if (response.IsSuccessStatusCode && !string.IsNullOrEmpty(content))
+            //     {
+            //         var result= JsonConvert.DeserializeObject<ResponseModelExternalAPI>(content);
+            //         if (result.success) {
+            //             auth.Authenticated = true;
+            //             return auth;
+            //         }
+            //     }
 
-                return auth;
-            }
+            //     return auth;
+            // }
         }
     }
     public class JsonContent : StringContent
