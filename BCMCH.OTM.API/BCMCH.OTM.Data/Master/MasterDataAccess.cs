@@ -367,7 +367,8 @@ namespace BCMCH.OTM.Data.Master
                                     (
                                         [ResourceId],
                                         [AccessType],
-                                        [RoleId]
+                                        [RoleId], 
+                                        [IsDeleted]
                                     )
                                     SELECT 
                                         [ResourceId],
