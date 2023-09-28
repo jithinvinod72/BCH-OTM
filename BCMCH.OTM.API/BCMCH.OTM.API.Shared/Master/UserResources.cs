@@ -13,6 +13,7 @@ namespace BCMCH.OTM.API.Shared.Master
         public int? ResourceId  { get; set; }
         public string? ResourceName  { get; set; }
         public string? ResourceDescription { get; set; }
+        public string? Type { get; set; }
         public int AccessType  { get; set; }
     }
 }

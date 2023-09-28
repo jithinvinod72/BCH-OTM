@@ -431,6 +431,7 @@ namespace BCMCH.OTM.Data.Master
                                         ,[Permissions].[ResourceId]   AS ResourceId
                                         ,[Resources].[name]           AS ResourceName
                                         ,[Resources].[Description]    AS ResourceDescription
+                                        ,[Resources].[Type]           AS Type
                                         ,[Permissions].[AccessType]   AS AccessType
                                     FROM 
                                         [behive-dev-otm].[OTM].[RoleHasPermissions] as Permissions

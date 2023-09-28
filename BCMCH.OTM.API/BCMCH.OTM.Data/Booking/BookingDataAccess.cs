@@ -1007,6 +1007,8 @@ namespace BCMCH.OTM.Data.Booking
                                 , ISNULL([PatientTable].[FirstName], '')      AS PatientFirstName
                                 , ISNULL([PatientTable].[MiddleName], '')     AS PatientMiddleName
                                 , ISNULL([PatientTable].[LastName], '')       AS PatientLastName
+                                , Bookings.DepartmentId                       AS BookedByDepartment
+                                , DepartmentTable.Name                        AS DepartmentName
                             FROM 
                                 [OTM].[RemovableDevicesSelected] AS SelectedDevices
                             LEFT JOIN 
@@ -1015,6 +1017,8 @@ namespace BCMCH.OTM.Data.Booking
                                 [OTM].[Bookings] AS Bookings ON Main.OperationId = Bookings.id
                             LEFT JOIN 
                                 [dbo].[PatientMaster] AS PatientTable ON Bookings.RegistrationNo = [PatientTable].[RegistrationNo]
+                            LEFT JOIN 
+                                [dbo].[Departments] AS DepartmentTable ON Bookings.DepartmentId = DepartmentTable.Id
                             WHERE 
                                 DateToRemove > @startDate 
                                 AND

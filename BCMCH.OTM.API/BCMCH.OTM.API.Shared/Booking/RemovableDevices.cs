@@ -28,6 +28,9 @@ namespace BCMCH.OTM.API.Shared.Booking
         public string? PatientFirstName {get; set; }
         public string? PatientMiddleName {get; set; }
         public string? PatientLastName {get; set; }
+        public int? BookedByDepartment {get; set; }
+        public string? DepartmentName {get; set; }
+        
 
 
     }
