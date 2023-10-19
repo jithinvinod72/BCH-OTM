@@ -302,6 +302,21 @@ namespace BCMCH.OTM.Domain.Master
             _allocation.GroupId = GenerateRandomString();
             var validation =await _masterDataAccess.CheckAllocationByOperationThearter(_allocation.StartDate, _allocation.EndDate , (int)_allocation.OperationTheatreId);
 
+            // DateTime today=await GetDateToday();
+            // DateTime startDateTimeConv = StringToDateTimeConverter(_allocation.StartDate);
+
+            // Console.WriteLine(today);
+            // Console.WriteLine(startDateTimeConv);
+
+            // if(startDateTimeConv<=today){
+            //     var envelope1 = new Envelope<IEnumerable<GetAllocation>>(false, "Please post allocations for today afterwards");
+            //     return envelope1;
+            // }
+            
+            // return new Envelope<IEnumerable<GetAllocation>>();
+
+            // _allocation.StartDate, _allocation.EndDate
+
             var envelope = new Envelope<IEnumerable<GetAllocation>>();
             if (validation.Any())
             {
@@ -356,6 +371,23 @@ namespace BCMCH.OTM.Domain.Master
             IEnumerable<GetAllocation> allocationValidation = Enumerable.Empty<GetAllocation>();
 
             // validation START
+            
+            // check if start date is greater or today START
+            DateTime today=await GetDateToday();
+
+            Console.WriteLine("today : ");
+            Console.WriteLine(today.Date);
+
+            Console.WriteLine("start : ");
+            Console.WriteLine(start.Date);
+
+            if(start.Date<today.Date){
+                var envelope1 = new Envelope<IEnumerable<GetAllocation>>(false, "Please post allocations for today afterwards");
+                return envelope1;
+            }
+            // check if start date is greater or today END
+
+
             foreach (DateTime dateRecurring in filteredDatesWithDay)
             {
                 DateTime starDateTime   =  AddDateAndTime(dateRecurring,_allocation.StartTime);
@@ -379,7 +411,7 @@ namespace BCMCH.OTM.Domain.Master
             {
                 // if any allocations are already posted in the given timeing it will return an errorr
                 var validationErrors = allocationValidation.Select(v => v.ToString());
-                var envelope = new Envelope<IEnumerable<GetAllocation>>();
+                var envelope = new Envelope<IEnumerable<GetAllocation>>(false, "ALLOCATION_ALREADY_EXISTS");
                 envelope.Data = allocationValidation;
                 return envelope;   
             }
