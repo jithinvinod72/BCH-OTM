@@ -628,7 +628,8 @@ namespace BCMCH.OTM.API.Controllers
             try
             {
                 var result = await _bookingService.PostOTTimings(bookingTime);
-                return Ok(result);
+                // return Ok(result);
+                return Ok(new ResponseVM<bool>(true, "success"));
             }
             catch (Exception ex)
             {
