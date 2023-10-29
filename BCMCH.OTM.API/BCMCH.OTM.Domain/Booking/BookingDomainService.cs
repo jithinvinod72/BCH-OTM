@@ -744,10 +744,30 @@ namespace BCMCH.OTM.Domain.Booking
         #endregion
 
 
-        // time controls  
+        // Post ot timings   START***
         public async Task<IEnumerable<BookingTime>> PostOTTimings(BookingTime bookingTime)
         {
             var result = await _bookingDataAccess.PostOTTimings(bookingTime);
+            return result;
+        }
+        public async Task<IEnumerable<BookingTime>> PostOTComplexEntryTiming(BookingTime bookingTime)
+        {
+            var result = await _bookingDataAccess.PostOTComplexEntryTiming(bookingTime);
+            return result;
+        }
+        public async Task<IEnumerable<BookingTime>> PostPreOpTimings(BookingTime bookingTime)
+        {
+            var result = await _bookingDataAccess.PostPreOpTimings(bookingTime);
+            return result;
+        }
+        public async Task<IEnumerable<BookingTime>> PostInsideOTTimings(BookingTime bookingTime)
+        {
+            var result = await _bookingDataAccess.PostInsideOTTimings(bookingTime);
+            return result;
+        }
+        public async Task<IEnumerable<BookingTime>> PostPostOpTimings(BookingTime bookingTime)
+        {
+            var result = await _bookingDataAccess.PostPostOpTimings(bookingTime);
             return result;
         }
 

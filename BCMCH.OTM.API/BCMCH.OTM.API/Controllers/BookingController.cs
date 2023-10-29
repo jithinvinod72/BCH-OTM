@@ -636,7 +636,73 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
-        // public async Task<IEnumerable<BookingTime>> PostOTTimings(BookingTime bookingTime)
+//         Task<IEnumerable<BookingTime>> PostOTTimings(BookingTime bookingTime);||
+// Task<IEnumerable<BookingTime>> PostOTComplexEntryTiming(BookingTime bookingTime);
+// Task<IEnumerable<BookingTime>> PostPreOpTimings(BookingTime bookingTime);
+
+// Task<IEnumerable<BookingTime>> PostInsideOTTimings(BookingTime bookingTime);
+// Task<IEnumerable<BookingTime>> PostPostOpTimings(BookingTime bookingTime);
+        [HttpPatch]
+        [Route("update-complex-entry-timing")]
+        public async Task<IActionResult> PostOTComplexEntryTiming(BookingTime bookingTime)
+        {
+            try
+            {
+                var result = await _bookingService.PostOTComplexEntryTiming(bookingTime);
+                // return Ok(result);
+                return Ok(new ResponseVM<bool>(true, "success"));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        [HttpPatch]
+        [Route("update-pre-op-timings")]
+        public async Task<IActionResult> PostPreOpTimings(BookingTime bookingTime)
+        {
+            try
+            {
+                var result = await _bookingService.PostPreOpTimings(bookingTime);
+                // return Ok(result);
+                return Ok(new ResponseVM<bool>(true, "success"));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+        [HttpPatch]
+        [Route("update-inside-ot-timings")]
+        public async Task<IActionResult> PostInsideOTTimings(BookingTime bookingTime)
+        {
+            try
+            {
+                var result = await _bookingService.PostInsideOTTimings(bookingTime);
+                // return Ok(result);
+                return Ok(new ResponseVM<bool>(true, "success"));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        [HttpPatch]
+        [Route("update-post-op-timings")]
+        public async Task<IActionResult> PostPostOpTimings(BookingTime bookingTime)
+        {
+            try
+            {
+                var result = await _bookingService.PostPostOpTimings(bookingTime);
+                return Ok(new ResponseVM<bool>(true, "success"));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        // TIMINGS END #####
 
 
         // EXPORT START

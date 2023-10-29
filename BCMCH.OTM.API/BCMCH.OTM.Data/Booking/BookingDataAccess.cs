@@ -1201,9 +1201,10 @@ namespace BCMCH.OTM.Data.Booking
         }
 
 
-        // Time Updates 
+        // Time Updates *****
         public async Task<IEnumerable<BookingTime>> PostOTTimings(BookingTime bookingTime)
         {
+            // all timings together 
             string Query = @"
                             UPDATE [OTM].[Bookings]
                             SET
@@ -1233,6 +1234,83 @@ namespace BCMCH.OTM.Data.Booking
             var result = await _sqlHelper.QueryAsync<BookingTime>(Query, SqlParameters, CommandType.Text);
             return result;
         }
+
+        public async Task<IEnumerable<BookingTime>> PostOTComplexEntryTiming(BookingTime bookingTime)
+        {
+            string Query = @"
+                            UPDATE [OTM].[Bookings]
+                            SET
+                                OtComplexEntry = @OtComplexEntry 
+                            WHERE  
+                                [Bookings].[Id]=@BookingId
+                           ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add( "@BookingId"         , bookingTime.BookingId ) ;
+            SqlParameters.Add( "@OtComplexEntry"    , bookingTime.OtComplexEntry ) ;
+            
+
+            var result = await _sqlHelper.QueryAsync<BookingTime>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
+       public async Task<IEnumerable<BookingTime>> PostPreOpTimings(BookingTime bookingTime)
+        {
+            string Query = @"
+                            UPDATE [OTM].[Bookings]
+                            SET
+                                PreOpEntryTime      = @PreOpEntryTime     ,
+                                PreOpExitTime       = @PreOpExitTime      
+                            WHERE  
+                                [Bookings].[Id]=@BookingId
+                           ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add( "@BookingId"         , bookingTime.BookingId ) ;
+            SqlParameters.Add( "@PreOpEntryTime"    , bookingTime.PreOpEntryTime ) ;
+            SqlParameters.Add( "@PreOpExitTime"     , bookingTime.PreOpExitTime ) ;
+
+            var result = await _sqlHelper.QueryAsync<BookingTime>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
+        public async Task<IEnumerable<BookingTime>> PostInsideOTTimings(BookingTime bookingTime)
+        {
+            string Query = @"
+                            UPDATE [OTM].[Bookings]
+                            SET
+                                OtEntryTime         = @OtEntryTime        ,
+                                OtExitTime          = @OtExitTime
+                            WHERE  
+                                [Bookings].[Id]=@BookingId
+                           ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add( "@BookingId"         , bookingTime.BookingId ) ;
+            SqlParameters.Add( "@OtEntryTime"       , bookingTime.OtEntryTime ) ;
+            SqlParameters.Add( "@OtExitTime"        , bookingTime.OtExitTime ) ;
+            var result = await _sqlHelper.QueryAsync<BookingTime>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
+        public async Task<IEnumerable<BookingTime>> PostPostOpTimings(BookingTime bookingTime)
+        {
+            string Query = @"
+                            UPDATE [OTM].[Bookings]
+                            SET
+                                PostOpEntryTime     = @PostOpEntryTime    ,
+                                PostOpExitTime      = @PostOpExitTime 
+                            WHERE  
+                                [Bookings].[Id]=@BookingId
+                           ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add( "@BookingId"         , bookingTime.BookingId ) ;
+            SqlParameters.Add( "@PostOpEntryTime"   , bookingTime.PostOpEntryTime ) ;
+            SqlParameters.Add( "@PostOpExitTime"    , bookingTime.PostOpExitTime ) ;
+            
+            var result = await _sqlHelper.QueryAsync<BookingTime>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
+
+        // TIMING UPDATE END ##
 
 
 
