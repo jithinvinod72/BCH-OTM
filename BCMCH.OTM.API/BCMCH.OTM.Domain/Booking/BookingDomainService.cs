@@ -745,6 +745,11 @@ namespace BCMCH.OTM.Domain.Booking
 
 
         // Post ot timings   START***
+        public async Task<IEnumerable<BookingTime>> GetOTTimings(int bookingId)
+        {
+            var result = await _bookingDataAccess.GetOTTimings(bookingId);
+            return result;
+        }
         public async Task<IEnumerable<BookingTime>> PostOTTimings(BookingTime bookingTime)
         {
             var result = await _bookingDataAccess.PostOTTimings(bookingTime);

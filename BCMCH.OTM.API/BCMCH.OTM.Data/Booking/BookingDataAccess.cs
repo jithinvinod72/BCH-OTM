@@ -1235,6 +1235,30 @@ namespace BCMCH.OTM.Data.Booking
             return result;
         }
 
+        // Time Updates *****
+        public async Task<IEnumerable<BookingTime>> GetOTTimings(int bookingId)
+        {
+            string Query = @"
+                            SELECT
+                                OtComplexEntry,
+                                PreOpEntryTime,
+                                PreOpExitTime,
+                                OtEntryTime,
+                                OtExitTime,
+                                PostOpEntryTime,
+                                PostOpExitTime,
+                                AverageSurgeryTime
+                            FROM
+                                [OTM].[Bookings]
+                            WHERE
+                                [Id] = @BookingId;
+                           ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add( "@BookingId" , bookingId ) ;
+            var result = await _sqlHelper.QueryAsync<BookingTime>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
         public async Task<IEnumerable<BookingTime>> PostOTComplexEntryTiming(BookingTime bookingTime)
         {
             string Query = @"

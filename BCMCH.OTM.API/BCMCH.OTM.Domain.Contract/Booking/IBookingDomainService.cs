@@ -62,6 +62,7 @@ namespace BCMCH.OTM.Domain.Contract.Booking
         Task<IEnumerable<NonOP>> DeleteNonOPRequests(string idArray);
 
         // timing START ***
+        Task<IEnumerable<BookingTime>> GetOTTimings(int bookingId);
         Task<IEnumerable<BookingTime>> PostOTTimings(BookingTime bookingTime);
         Task<IEnumerable<BookingTime>> PostOTComplexEntryTiming(BookingTime bookingTime);
         Task<IEnumerable<BookingTime>> PostPreOpTimings(BookingTime bookingTime);

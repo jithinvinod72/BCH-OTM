@@ -620,7 +620,23 @@ namespace BCMCH.OTM.API.Controllers
         #endregion
 
         // update timeing 
-
+        // public async Task<IEnumerable<BookingTime>> GetOTTimings(int bookingId)
+        [HttpGet]
+        [Route("get-booking-timings")]
+        public async Task<IActionResult> GetOTTimings(int bookingId)
+        {
+            try
+            {
+                var result = await _bookingService.GetOTTimings(bookingId);
+                // return Ok(result);
+                return Ok(new ResponseVM<bool>(true, "success"));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        
         [HttpPatch]
         [Route("update-booking-timing")]
         public async Task<IActionResult> PostOTTimings(BookingTime bookingTime)
@@ -636,12 +652,7 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
-//         Task<IEnumerable<BookingTime>> PostOTTimings(BookingTime bookingTime);||
-// Task<IEnumerable<BookingTime>> PostOTComplexEntryTiming(BookingTime bookingTime);
-// Task<IEnumerable<BookingTime>> PostPreOpTimings(BookingTime bookingTime);
 
-// Task<IEnumerable<BookingTime>> PostInsideOTTimings(BookingTime bookingTime);
-// Task<IEnumerable<BookingTime>> PostPostOpTimings(BookingTime bookingTime);
         [HttpPatch]
         [Route("update-complex-entry-timing")]
         public async Task<IActionResult> PostOTComplexEntryTiming(BookingTime bookingTime)
