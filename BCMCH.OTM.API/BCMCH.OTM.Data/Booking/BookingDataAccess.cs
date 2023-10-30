@@ -1240,6 +1240,7 @@ namespace BCMCH.OTM.Data.Booking
         {
             string Query = @"
                             SELECT
+                                Id AS BookingId,
                                 OtComplexEntry,
                                 PreOpEntryTime,
                                 PreOpExitTime,

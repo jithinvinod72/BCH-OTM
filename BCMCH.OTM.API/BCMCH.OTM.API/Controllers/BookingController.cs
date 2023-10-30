@@ -628,8 +628,7 @@ namespace BCMCH.OTM.API.Controllers
             try
             {
                 var result = await _bookingService.GetOTTimings(bookingId);
-                // return Ok(result);
-                return Ok(new ResponseVM<bool>(true, "success"));
+                return Ok(new ResponseVM<IEnumerable<BookingTime>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)
             {
