@@ -11,6 +11,7 @@ namespace BCMCH.OTM.API.Shared.Master
         public int questionId {get;set;}
         public int otStageId {get;set;}
         public int FormQuestionTypeId {get;set;}  
+        public int displayOrder {get;set;}  
         public int SubQuestionDisplayOptionId {get;set;}
         public string questionName {get;set;}
         public string question {get;set;}

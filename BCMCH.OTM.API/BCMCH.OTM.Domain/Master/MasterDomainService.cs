@@ -479,20 +479,25 @@ namespace BCMCH.OTM.Domain.Master
             var result = await _masterDataAccess.PostOtStages(name,label);
             return result;
         }
+        public async Task<IEnumerable<int>> changeQuestionOrder(QuestionOrder qustionOrders )
+        {
+            var result = await _masterDataAccess.changeQuestionOrder(qustionOrders);
+            return result;
+        }
         // insert question section END
 
         public async Task<IEnumerable<GetQuestions>> GetFormQuestions(int otStageId, string accessibleTo)
         {
             var result = await _masterDataAccess.GetFormQuestions();
             var filteredWithStage       = result.Where( o=> otStageId==o.otStageId);
-            // var filteredWithAccess      = filteredWithStage.Where( o=> accessibleTo==o.accessibleTo);
             var filteredWithDisabled    = filteredWithStage.Where( o=> o.IsDisabled!=1);
             return filteredWithDisabled;
         }
         public async Task<IEnumerable<GetQuestions>> GetAllFormQuestions()
         {
             var result = await _masterDataAccess.GetFormQuestions();
-            return result;
+            IEnumerable<GetQuestions> sortedQuestions = result.OrderBy(obj => obj.displayOrder);
+            return sortedQuestions;
         }
         #endregion
 

@@ -51,6 +51,7 @@ namespace BCMCH.OTM.Domain.Contract.Master
         Task<IEnumerable<string>>  PostOtStages(string name,string label);
         Task<IEnumerable<GetQuestions>> GetFormQuestions(int otStageId, string accessibleTo);
         Task<IEnumerable<GetQuestions>> GetAllFormQuestions();
+        Task<IEnumerable<int>> changeQuestionOrder(QuestionOrder qustionOrders);
         // QUESTION SECTIION END
         Task<FormMasters> GetFormMasters();
         Task<IEnumerable<PostAnswer>> PostFormAnswer(PostAnswer answer);

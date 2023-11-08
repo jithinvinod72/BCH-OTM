@@ -731,13 +731,34 @@ namespace BCMCH.OTM.Data.Master
             var result = await _sqlHelper.QueryAsync<FormSections>(Query, SqlParameters, CommandType.Text);
             return result;
         }
-        // SELECT section END
 
 
-        #endregion
-        // QUESTION_HANDLES SECTION END
+        public async Task<IEnumerable<int>> changeQuestionOrder(QuestionOrder qustionOrders )
+        {
+            // idOfSelected             - contains the current id of the question to change the order 
+            // orderNumberOfSelected    - contains the order number of the question to change the order 
 
-        // ANSWER HANDLE SECTION START
+            // idToExchange             - the id of the question to be replaced by current order id
+            // orderNumberOfExchange    - the order number of the question to be replaced by order number of current selectect question 
+
+            string Query = @"
+                                UPDATE [OTM].[FormQuestions]
+                                SET displayOrder = @orderNumberOfExchange
+                                WHERE Id=@idOfSelected;
+
+                                UPDATE [OTM].[FormQuestions]
+                                SET displayOrder = @orderNumberOfSelected
+                                WHERE Id=@idToExchange;
+                             ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@idOfSelected", qustionOrders.idOfSelected);
+            SqlParameters.Add("@idToExchange", qustionOrders.idToExchange);
+            SqlParameters.Add("@orderNumberOfSelected", qustionOrders.orderNumberOfSelected);
+            SqlParameters.Add("@orderNumberOfExchange", qustionOrders.orderNumberOfExchange);
+            var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
         public async Task<IEnumerable<PostAnswer>> PostFormAnswer(PostAnswer answer)
         {
             // Id IN (SELECT value FROM OPENJSON(@IdArray))
@@ -771,6 +792,16 @@ namespace BCMCH.OTM.Data.Master
             var result = await _sqlHelper.QueryAsync<PostAnswer>(Query, SqlParameters, CommandType.Text);
             return result;
         }
+
+
+        // SELECT section END
+
+
+        #endregion
+        // QUESTION_HANDLES SECTION END
+
+        // ANSWER HANDLE SECTION START
+        
         public async Task<IEnumerable<GetAnswer>> GetFormAnswer(int eventId)
         {
             string Query = @"

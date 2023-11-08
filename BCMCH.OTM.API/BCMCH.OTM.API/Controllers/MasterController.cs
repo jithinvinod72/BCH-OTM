@@ -239,6 +239,7 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
+        
 
         [HttpPost]
         [Route("update-ot-users-role")]
@@ -585,6 +586,21 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
+
+        [HttpPost]
+        [Route("change-question-order")]
+        public async Task<IActionResult> changeQuestionOrder(QuestionOrder qustionOrders)
+        {
+            try
+            {
+                var result = await _masterService.changeQuestionOrder(qustionOrders);
+                return Ok(new ResponseVM<IEnumerable<int>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
         // Question section post END
         // Question section Fetch START
         [HttpGet]
@@ -617,9 +633,7 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
         
-        // Question section Fetch END
-
-        // Question section Fetch START
+    
         [HttpGet]
         [Route("get-form-masters")]
         public async Task<IActionResult> GetFormMasters()
