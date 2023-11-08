@@ -461,6 +461,12 @@ namespace BCMCH.OTM.Domain.Master
         // insert question section START
         public async Task<IEnumerable<PostQuestionsModel>> PostQuestion(PostQuestionsModel question)
         {
+            var formQuestions = await GetFormQuestions(question.otStageId,"");
+            // fetch existing questions
+            int largestDisplayOrder = formQuestions.Max(obj => obj.displayOrder);
+            // get the largestDisplayOrder from the fetched questions
+            question.OrderNumber = largestDisplayOrder+1;
+            // increment it by one 
             var result = await _masterDataAccess.PostQuestion(question);
             return result;
         }

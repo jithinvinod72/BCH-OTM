@@ -613,6 +613,7 @@ namespace BCMCH.OTM.Data.Master
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@otStageId", question.otStageId.ToString());
             SqlParameters.Add("@FormQuestionTypeId", question.FormQuestionTypeId.ToString());
+            SqlParameters.Add("@questionOrder", question.OrderNumber);
             SqlParameters.Add("@SubQuestionDisplayOptionId", question.SubQuestionDisplayOptionId.ToString());
             SqlParameters.Add("@name", question.name);
             SqlParameters.Add("@question", question.question);
