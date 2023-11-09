@@ -64,10 +64,10 @@ namespace BCMCH.OTM.Domain.Contract.Booking
         // timing START ***
         Task<IEnumerable<BookingTime>> GetOTTimings(int bookingId);
         Task<IEnumerable<BookingTime>> PostOTTimings(BookingTime bookingTime);
-        Task<IEnumerable<BookingTime>> PostOTComplexEntryTiming(BookingTime bookingTime);
-        Task<IEnumerable<BookingTime>> PostPreOpTimings(BookingTime bookingTime);
-        Task<IEnumerable<BookingTime>> PostInsideOTTimings(BookingTime bookingTime);
-        Task<IEnumerable<BookingTime>> PostPostOpTimings(BookingTime bookingTime);
+        Task<Envelope<int>> PostOTComplexEntryTiming(BookingTime bookingTime);
+        Task<Envelope<int>> PostPreOpTimings(BookingTime bookingTime);
+        Task<Envelope<int>> PostInsideOTTimings(BookingTime bookingTime);
+        Task<Envelope<int>> PostPostOpTimings(BookingTime bookingTime);
         
         // timing END
 

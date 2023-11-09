@@ -755,25 +755,53 @@ namespace BCMCH.OTM.Domain.Booking
             var result = await _bookingDataAccess.PostOTTimings(bookingTime);
             return result;
         }
-        public async Task<IEnumerable<BookingTime>> PostOTComplexEntryTiming(BookingTime bookingTime)
+        public async Task<Envelope<int>> PostOTComplexEntryTiming(BookingTime bookingTime)
         {
             var result = await _bookingDataAccess.PostOTComplexEntryTiming(bookingTime);
-            return result;
+            return new Envelope<int>(true, "Successsfully posted",0);
         }
-        public async Task<IEnumerable<BookingTime>> PostPreOpTimings(BookingTime bookingTime)
+        public async Task<Envelope<int>> PostPreOpTimings(BookingTime bookingTime)
         {
+            // VALIDATION
+            var _timings = await _bookingDataAccess.GetOTTimings((int)bookingTime.BookingId);
+            var _firstElement = _timings.First();
+
+            if(_firstElement.OtComplexEntry==null){
+                return new Envelope<int>(false, "Please enter ot complex entry first",0);
+            }
+            // VALIDATION
+
             var result = await _bookingDataAccess.PostPreOpTimings(bookingTime);
-            return result;
+            return new Envelope<int>(true, "Successsfully posted",0);
+            // return result;
         }
-        public async Task<IEnumerable<BookingTime>> PostInsideOTTimings(BookingTime bookingTime)
+        public async Task<Envelope<int>> PostInsideOTTimings(BookingTime bookingTime)
         {
+            // VALIDATION
+            var _timings = await _bookingDataAccess.GetOTTimings((int)bookingTime.BookingId);
+            var _firstElement = _timings.First();
+
+            if(_firstElement.PreOpEntryTime==null){
+                return new Envelope<int>(false, "Please enter pre op timings first",0);
+            }
+            // VALIDATION   
+
             var result = await _bookingDataAccess.PostInsideOTTimings(bookingTime);
-            return result;
+            return new Envelope<int>(true, "Successsfully posted",0);
         }
-        public async Task<IEnumerable<BookingTime>> PostPostOpTimings(BookingTime bookingTime)
+        public async Task<Envelope<int>> PostPostOpTimings(BookingTime bookingTime)
         {
+            // VALIDATION
+            var _timings = await _bookingDataAccess.GetOTTimings((int)bookingTime.BookingId);
+            var _firstElement = _timings.First();
+
+            if(_firstElement.OtEntryTime ==null){
+                return new Envelope<int>(false, "Please enter ot entry timings first",0);
+            }
+            // VALIDATION   
+
             var result = await _bookingDataAccess.PostPostOpTimings(bookingTime);
-            return result;
+            return new Envelope<int>(true, "Successsfully posted",0);
         }
 
 

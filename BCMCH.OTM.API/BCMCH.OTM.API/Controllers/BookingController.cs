@@ -659,8 +659,9 @@ namespace BCMCH.OTM.API.Controllers
             try
             {
                 var result = await _bookingService.PostOTComplexEntryTiming(bookingTime);
+                return Ok(result);
                 // return Ok(result);
-                return Ok(new ResponseVM<bool>(true, "success"));
+                // return Ok(new ResponseVM<bool>(true, "success"));
             }
             catch (Exception ex)
             {
@@ -674,8 +675,8 @@ namespace BCMCH.OTM.API.Controllers
             try
             {
                 var result = await _bookingService.PostPreOpTimings(bookingTime);
-                // return Ok(result);
-                return Ok(new ResponseVM<bool>(true, "success"));
+                return Ok(result);
+                // return Ok(new ResponseVM<bool>(true, "success"));
             }
             catch (Exception ex)
             {
@@ -690,8 +691,8 @@ namespace BCMCH.OTM.API.Controllers
             try
             {
                 var result = await _bookingService.PostInsideOTTimings(bookingTime);
-                // return Ok(result);
-                return Ok(new ResponseVM<bool>(true, "success"));
+                return Ok(result);
+                // return Ok(new ResponseVM<bool>(true, "success"));
             }
             catch (Exception ex)
             {
@@ -705,7 +706,8 @@ namespace BCMCH.OTM.API.Controllers
             try
             {
                 var result = await _bookingService.PostPostOpTimings(bookingTime);
-                return Ok(new ResponseVM<bool>(true, "success"));
+                return Ok(result);
+                // return Ok(new ResponseVM<bool>(true, "success"));
             }
             catch (Exception ex)
             {
