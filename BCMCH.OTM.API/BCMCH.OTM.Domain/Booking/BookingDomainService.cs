@@ -30,7 +30,6 @@ namespace BCMCH.OTM.Domain.Booking
         {
             if ((!startTime.HasValue || startTime == DateTime.MinValue) || (!endTime.HasValue || endTime == DateTime.MinValue))
             {
-                Console.WriteLine(" first if ");
                 return 0;
             }
             if(endTime < startTime){

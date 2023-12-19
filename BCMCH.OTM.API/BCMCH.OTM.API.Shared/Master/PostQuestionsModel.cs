@@ -8,6 +8,7 @@ namespace BCMCH.OTM.API.Shared.Master
 {
     public class PostQuestionsModel
     {
+        public int? id {get;set;}
         public int otStageId {get;set;}
         public int FormQuestionTypeId {get;set;}
         public int? OrderNumber {get;set;}

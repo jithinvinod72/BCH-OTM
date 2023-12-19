@@ -541,6 +541,23 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
 
+        // Question section post START
+        [HttpPost]
+        [Route("update-questions")]
+        public async Task<IActionResult> UpdateQuestion(PostQuestionsModel question)
+        {
+            try
+            {
+                var result = await _masterService.UpdateQuestion(question);
+                return Ok(new ResponseVM<IEnumerable<PostQuestionsModel>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+
         [HttpDelete]
         [Route("disable-question")]
         public async Task<IActionResult> DisableQuestions(int id)

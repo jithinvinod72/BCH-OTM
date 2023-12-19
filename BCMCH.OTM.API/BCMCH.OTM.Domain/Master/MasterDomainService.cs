@@ -470,6 +470,21 @@ namespace BCMCH.OTM.Domain.Master
             var result = await _masterDataAccess.PostQuestion(question);
             return result;
         }
+
+        // insert question section START
+        public async Task<IEnumerable<PostQuestionsModel>> UpdateQuestion(PostQuestionsModel question)
+        {
+            // delete existing question
+            var disableResult = await _masterDataAccess.DisableQuestions((int)question.id);
+            // var formQuestions = await GetFormQuestions(question.otStageId,"");
+            // fetch existing questions
+            // int largestDisplayOrder = formQuestions.Max(obj => obj.displayOrder);
+            // get the largestDisplayOrder from the fetched questions
+            // question.OrderNumber = largestDisplayOrder+1;
+            // increment it by one 
+            var result = await _masterDataAccess.PostQuestion(question);
+            return result;
+        }
         public async Task<IEnumerable<string>> DisableQuestions(int id)
         {
             var result = await _masterDataAccess.DisableQuestions(id);
