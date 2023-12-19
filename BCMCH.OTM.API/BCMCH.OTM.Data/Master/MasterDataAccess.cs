@@ -629,7 +629,107 @@ namespace BCMCH.OTM.Data.Master
 
             var result = await _sqlHelper.QueryAsync<PostQuestionsModel>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
             return result;
+        }
 
+        public async Task<IEnumerable<PostQuestionsModel>> PostBulkQuestion(String question)
+        {
+            string Query = @"
+
+                            DECLARE @otStageId AS INT;
+                            DECLARE @FormQuestionTypeId AS INT;
+                            DECLARE @questionOrder AS INT;
+                            DECLARE @SubQuestionDisplayOptionId AS INT;
+                            DECLARE @name AS VARCHAR(1000);
+                            DECLARE @question AS VARCHAR(1000);
+                            DECLARE @accessibleTo AS VARCHAR(1000);
+                            DECLARE @Options AS VARCHAR(2000);
+                            DECLARE @IsRequired AS BIT;
+                            DECLARE @IsDisabled AS BIT;
+                            DECLARE @HasSubQuestion AS BIT;
+                            DECLARE @ModifiedBy AS VARCHAR(255);
+                            DECLARE @SubQuestionTypeId AS INT;
+                            DECLARE @SubQuestion AS VARCHAR(1000);
+                            DECLARE @SubQuestionOptions AS VARCHAR(1000);
+
+                            DECLARE @ParentId AS INT;
+
+                            -- Insert data from JSON array
+                            INSERT INTO [OTM].[FormQuestions]
+                            (
+                                [otStageId],
+                                [FormQuestionTypeId],
+                                [displayOrder],
+                                [SubQuestionDisplayOptionId],
+                                [name],
+                                [question],
+                                [accessibleTo],
+                                [Options], 
+                                [IsRequired],
+                                [IsDisabled],
+                                [ModifiedBy]
+                            )
+                            SELECT
+                                otStageId,
+                                FormQuestionTypeId,
+                                questionOrder,
+                                SubQuestionDisplayOptionId,
+                                name,
+                                question,
+                                accessibleTo,
+                                Options,
+                                IsRequired,
+                                IsDisabled,
+                                ModifiedBy
+                            FROM OPENJSON(@JsonArray)
+                            WITH (
+                                otStageId INT,
+                                FormQuestionTypeId INT,
+                                questionOrder INT,
+                                SubQuestionDisplayOptionId INT,
+                                name VARCHAR(1000),
+                                question VARCHAR(1000),
+                                accessibleTo VARCHAR(1000),
+                                Options VARCHAR(2000),
+                                IsRequired BIT,
+                                IsDisabled BIT,
+                                ModifiedBy VARCHAR(255),
+                                HasSubQuestion BIT
+                            )
+                            -- WHERE HasSubQuestion = 0;
+
+                            -- Retrieve the ID of the newly inserted main question
+                            SET @ParentId = SCOPE_IDENTITY();
+
+                            -- Insert sub-questions (if any)
+                            INSERT INTO [OTM].[FormQuestions]
+                            (
+                                [otStageId],
+                                [FormQuestionTypeId],
+                                [parentId],
+                                [question],
+                                [IsRequired]
+                            )
+                            SELECT
+                                otStageId,
+                                SubQuestionTypeId,
+                                @ParentId,
+                                SubQuestion,
+                                0
+                            FROM OPENJSON(@JsonArray)
+                            WITH (
+                                otStageId INT,
+                                HasSubQuestion BIT,
+                                SubQuestionTypeId INT,
+                                SubQuestion VARCHAR(1000)
+                            )
+                            WHERE HasSubQuestion = 1;
+
+                            ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@JsonArray", question);
+            // SqlParameters.Add("@label", label);
+            var result = await _sqlHelper.QueryAsync<string>(Query, SqlParameters, CommandType.Text);
+            return (IEnumerable<PostQuestionsModel>)result;
         }
         public async Task<IEnumerable<string>> PostQuestionType(string name, string label)
         {

@@ -471,6 +471,11 @@ namespace BCMCH.OTM.Domain.Master
             return result;
         }
 
+        public async Task<IEnumerable<PostQuestionsModel>> PostBulkQuestion(String question)
+        {
+            var result = await _masterDataAccess.PostBulkQuestion(question);
+            return result;
+        }
         // insert question section START
         public async Task<IEnumerable<PostQuestionsModel>> UpdateQuestion(PostQuestionsModel question)
         {

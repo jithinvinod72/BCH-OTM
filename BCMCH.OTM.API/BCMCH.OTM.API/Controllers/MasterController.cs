@@ -541,6 +541,24 @@ namespace BCMCH.OTM.API.Controllers
             }
         }
 
+
+        [HttpPost]
+        [Route("post-bulk-questions")]
+        public async Task<IActionResult> PostBulkQuestion(String question)
+        {
+            try
+            {
+                var result = await _masterService.PostBulkQuestion(question);
+                return Ok(new ResponseVM<IEnumerable<PostQuestionsModel>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
+        // public async Task<IEnumerable<PostQuestionsModel>> PostBulkQuestion(String question)
+
         // Question section post START
         [HttpPost]
         [Route("update-questions")]
