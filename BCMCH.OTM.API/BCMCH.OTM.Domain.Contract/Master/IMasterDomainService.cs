@@ -46,7 +46,7 @@ namespace BCMCH.OTM.Domain.Contract.Master
 
         // QUESTION SECTIION START
         Task<IEnumerable<PostQuestionsModel>> PostQuestion(PostQuestionsModel question);
-        Task<IEnumerable<PostQuestionsModel>> PostBulkQuestion(String question);
+        Task<IEnumerable<PostQuestionsModel>> PostBulkQuestion(PostBulkQuestionsModel question);
         Task<IEnumerable<PostQuestionsModel>> UpdateQuestion(PostQuestionsModel question);
         Task<IEnumerable<string>> DisableQuestions(int id);
         Task<IEnumerable<string>> PostQuestionType(string name,string label);

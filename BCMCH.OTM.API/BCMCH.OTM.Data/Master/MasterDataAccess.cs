@@ -631,7 +631,7 @@ namespace BCMCH.OTM.Data.Master
             return result;
         }
 
-        public async Task<IEnumerable<PostQuestionsModel>> PostBulkQuestion(String question)
+        public async Task<IEnumerable<PostQuestionsModel>> PostBulkQuestion(PostBulkQuestionsModel question)
         {
             string Query = @"
 
@@ -707,28 +707,41 @@ namespace BCMCH.OTM.Data.Master
                                 [FormQuestionTypeId],
                                 [parentId],
                                 [question],
-                                [IsRequired]
+                                [Options],
+                                [IsRequired],
+                                [IsDisabled],
+                                [ModifiedBy],
+                                [accessibleTo],
+                                [SubQuestionDisplayOptionId]
                             )
                             SELECT
                                 otStageId,
                                 SubQuestionTypeId,
                                 @ParentId,
                                 SubQuestion,
-                                0
+                                '',
+                                0,
+                                0,
+                                ModifiedBy,
+                                accessibleTo,
+                                SubQuestionDisplayOptionId
                             FROM OPENJSON(@JsonArray)
                             WITH (
                                 otStageId INT,
                                 HasSubQuestion BIT,
                                 SubQuestionTypeId INT,
-                                SubQuestion VARCHAR(1000)
+                                SubQuestion VARCHAR(1000),                                
+                                ModifiedBy VARCHAR(255),
+                                accessibleTo VARCHAR(1000),
+                                SubQuestionDisplayOptionId INT
                             )
                             WHERE HasSubQuestion = 1;
 
                             ";
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@JsonArray", question);
+            SqlParameters.Add("@JsonArray", question.questions);
             // SqlParameters.Add("@label", label);
-            var result = await _sqlHelper.QueryAsync<string>(Query, SqlParameters, CommandType.Text);
+            var result = await _sqlHelper.QueryAsync<PostQuestionsModel>(Query, SqlParameters, CommandType.Text);
             return (IEnumerable<PostQuestionsModel>)result;
         }
         public async Task<IEnumerable<string>> PostQuestionType(string name, string label)

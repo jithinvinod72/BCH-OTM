@@ -544,11 +544,11 @@ namespace BCMCH.OTM.API.Controllers
 
         [HttpPost]
         [Route("post-bulk-questions")]
-        public async Task<IActionResult> PostBulkQuestion(String question)
+        public async Task<IActionResult> PostBulkQuestion(PostBulkQuestionsModel questions)
         {
             try
             {
-                var result = await _masterService.PostBulkQuestion(question);
+                var result = await _masterService.PostBulkQuestion(questions);
                 return Ok(new ResponseVM<IEnumerable<PostQuestionsModel>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)
