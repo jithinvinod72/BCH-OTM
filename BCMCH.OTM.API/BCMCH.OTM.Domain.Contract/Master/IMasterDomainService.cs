@@ -50,7 +50,8 @@ namespace BCMCH.OTM.Domain.Contract.Master
         Task<IEnumerable<PostQuestionsModel>> UpdateQuestion(PostQuestionsModel question);
         Task<IEnumerable<string>> DisableQuestions(int id);
         Task<IEnumerable<string>> PostQuestionType(string name,string label);
-        Task<IEnumerable<string>>  PostOtStages(string name,string label);
+        Task<IEnumerable<string>>  PostOtStages(FormSections stages);
+        Task<IEnumerable<string>> SoftDeleteOtStages(FormSections stages);
         Task<IEnumerable<GetQuestions>> GetFormQuestions(int otStageId, string accessibleTo);
         Task<IEnumerable<GetQuestions>> GetAllFormQuestions();
         Task<IEnumerable<int>> changeQuestionOrder(QuestionOrder qustionOrders);

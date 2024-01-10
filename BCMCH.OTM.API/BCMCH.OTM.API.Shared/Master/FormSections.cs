@@ -8,7 +8,7 @@ namespace BCMCH.OTM.API.Shared.Master
 {
     public class FormSections
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string? Name { get; set; }
         public string? Label { get; set; }
 

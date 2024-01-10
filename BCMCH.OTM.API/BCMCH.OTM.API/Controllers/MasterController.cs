@@ -609,11 +609,12 @@ namespace BCMCH.OTM.API.Controllers
 
         [HttpPost]
         [Route("post-form-stages")]
-        public async Task<IActionResult>PostOtStages(string name,string label)
+        public async Task<IActionResult>PostOtStages(FormSections stages)
         {
+            
             try
             {
-                var result = await _masterService. PostOtStages(name,label);
+                var result = await _masterService.PostOtStages(stages);
                 return Ok(new ResponseVM<IEnumerable<string>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)
@@ -621,6 +622,22 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
+
+        [HttpPost]
+        [Route("delete-form-stage")]
+        public async Task<IActionResult>SoftDeleteOtStages(FormSections stages)
+        {
+            try
+            {
+                var result = await _masterService.SoftDeleteOtStages(stages);
+                return Ok(new ResponseVM<IEnumerable<string>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+        
 
         [HttpPost]
         [Route("change-question-order")]
@@ -636,6 +653,7 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
+
         // Question section post END
         // Question section Fetch START
         [HttpGet]

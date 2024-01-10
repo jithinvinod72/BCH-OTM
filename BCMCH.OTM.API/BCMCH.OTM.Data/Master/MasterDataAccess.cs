@@ -782,29 +782,51 @@ namespace BCMCH.OTM.Data.Master
             var result = await _sqlHelper.QueryAsync<string>(Query, SqlParameters, CommandType.Text);
             return result;
         }
-        public async Task<IEnumerable<string>> PostOtStages(string name, string label)
+        public async Task<IEnumerable<string>> PostOtStages(FormSections stages)
         {
             string Query = @"
-                                INSERT INTO [OTM].[OtStages] 
+                                INSERT INTO [OTM].[OtStages]
                                 (
-                                    [Name]
-                                    [Label]
+                                    [Name],
+                                    [Label],
+                                    [isDeleted]
                                 )
                                 VALUES 
                                 ( 
                                     @name,
-                                    @label
+                                    @label,
+                                    0
                                 ) 
                             ";
 
             var SqlParameters = new DynamicParameters();
-            SqlParameters.Add("@name", name);
-            SqlParameters.Add("@label", label);
+            SqlParameters.Add("@name",  stages.Name);
+            SqlParameters.Add("@label", stages.Label);
+
+            var result = await _sqlHelper.QueryAsync<string>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
+        public async Task<IEnumerable<string>> SoftDeleteOtStages(FormSections stages)
+        {
+            Console.WriteLine("STAGE : ", stages.Id);
+            Console.WriteLine(stages.Id);
+            string Query = @"
+                                UPDATE [OTM].[OtStages]
+                                    SET [isDeleted]=  1
+                                WHERE 
+                                    [Id]=@id
+                            ";
+
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("@id",  stages.Id);
 
             var result = await _sqlHelper.QueryAsync<string>(Query, SqlParameters, CommandType.Text);
             return result;
         }
         // Insert section END
+
+
 
         // SELECT section START
         public async Task<IEnumerable<GetQuestions>> GetFormQuestions()
@@ -825,12 +847,14 @@ namespace BCMCH.OTM.Data.Master
                                         [Name],
                                         [Label]
                                     FROM 
-                                    [OTM].[OtStages]
+                                        [OTM].[OtStages]
+                                    WHERE isDeleted=0
                              ";
             var SqlParameters = new DynamicParameters();
             var result = await _sqlHelper.QueryAsync<FormSections>(Query, SqlParameters, CommandType.Text);
             return result;
         }
+
         public async Task<IEnumerable<FormSections>> GetFormQuestionType()
         {
             string Query = @"

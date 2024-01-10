@@ -500,9 +500,14 @@ namespace BCMCH.OTM.Domain.Master
             var result = await _masterDataAccess.PostQuestionType(name,label);
             return result;
         }
-        public async Task<IEnumerable<string>> PostOtStages(string name,string label)
+        public async Task<IEnumerable<string>> PostOtStages(FormSections stages)
         {
-            var result = await _masterDataAccess.PostOtStages(name,label);
+            var result = await _masterDataAccess.PostOtStages(stages);
+            return result;
+        }
+        public async Task<IEnumerable<string>> SoftDeleteOtStages(FormSections stages){
+            // public async Task<IEnumerable<string>> SoftDeleteOtStages(FormSections stages)
+            var result = await _masterDataAccess.SoftDeleteOtStages(stages);
             return result;
         }
         public async Task<IEnumerable<int>> changeQuestionOrder(QuestionOrder qustionOrders )
