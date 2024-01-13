@@ -721,6 +721,12 @@ namespace BCMCH.OTM.Data.Booking
         #region RemovableDevices
         public async Task<IEnumerable<int>> PostRemovableDevices(RemovableDevicesMain removableDevicesMain)
         {
+            Console.WriteLine(removableDevicesMain.OperationId);
+            Console.WriteLine(removableDevicesMain.RegistrationNo);
+            Console.WriteLine(removableDevicesMain.Status);
+            Console.WriteLine(removableDevicesMain.PostedBy);
+            Console.WriteLine(removableDevicesMain.Datetime);
+            Console.WriteLine(removableDevicesMain.NestedData);
             string Query = @"
                             INSERT INTO [OTM].[RemovableDevicesMain]
                             (

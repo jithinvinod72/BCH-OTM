@@ -452,6 +452,10 @@ namespace BCMCH.OTM.Domain.Booking
             booking.EmployeeIdArray="["+booking.EmployeeIdArray+"]";
             booking.EquipmentsIdArray="["+booking.EquipmentsIdArray+"]";
             booking.SurgeriesIdArray="["+booking.SurgeriesIdArray+"]";
+            booking.MedicineIdArray="["+booking.MedicineIdArray+"]";
+            booking.MaterialsIdArray="["+booking.MaterialsIdArray+"]";
+            
+            
             var result = await _bookingDataAccess.AddBooking(booking);
             return new Envelope<IEnumerable<int>>(true, "booking created", result); ;
         }
@@ -468,6 +472,10 @@ namespace BCMCH.OTM.Domain.Booking
                 booking.EmployeeIdArray="["+booking.EmployeeIdArray+"]";
                 booking.EquipmentsIdArray="["+booking.EquipmentsIdArray+"]";
                 booking.SurgeriesIdArray="["+booking.SurgeriesIdArray+"]";
+                booking.MedicineIdArray="["+booking.MedicineIdArray+"]";
+                booking.MaterialsIdArray="["+booking.MaterialsIdArray+"]";
+            
+
                 var emerGencyResult = await _bookingDataAccess.UpdateBooking(booking);
                 return new Envelope<IEnumerable<UpdateBookingModel>>(true,"data-update-success", emerGencyResult);
             }

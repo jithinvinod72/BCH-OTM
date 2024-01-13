@@ -691,6 +691,7 @@ namespace BCMCH.OTM.API.Controllers
             try
             {
                 var result = await _bookingService.PostInsideOTTimings(bookingTime);
+                // return Ok(new ResponseVM<int>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result.Data ));
                 return Ok(result);
                 // return Ok(new ResponseVM<bool>(true, "success"));
             }
@@ -782,7 +783,8 @@ namespace BCMCH.OTM.API.Controllers
             try
             {
                 var result = await _bookingService.GetTodaysOtStatuses();
-                return Ok(result);
+                return Ok(new ResponseVM<IEnumerable<DashbordOTGroup>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+                // return Ok(result);
             }
             catch (Exception ex)
             {
