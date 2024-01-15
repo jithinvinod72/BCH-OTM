@@ -588,6 +588,58 @@ namespace BCMCH.OTM.Domain.Booking
             return result;
         }
 
+        // CURRENTLY WORKING
+        public async Task<BookingsAndAllocationsTheatres> SelectEventsTheatresAndDepartments(int? selectedOperationTheatreId , int departmentId, string? fromDate,string? toDate)
+        {
+            // sellects the unique operation theatre id those are allocated for the given departments
+            // in accordance with given startDate and endDate
+            
+            // ALLOCATIONS SECTION START
+            var allocations = await _bookingDataAccess.GetAllocation(fromDate, toDate);
+            var filteredAllocationsWithDepartment = allocations.Where( o=> departmentId==o.AssignedDepartmentId);
+            // ALLOCATIONS SECTION END
+
+            // THEATRES SECTION START
+            var allocatedOperationtheatres = filteredAllocationsWithDepartment.Select(o => o.OperationTheatreId).Distinct();
+
+            
+            // Find selected theatre 
+            if (!allocatedOperationtheatres.Contains(selectedOperationTheatreId)){
+                // if allocated theatre dosent contain selected theatre then select the first one as default 
+                selectedOperationTheatreId = allocatedOperationtheatres.FirstOrDefault();
+            }
+            // THEATRES SECTION END
+
+            // filter using selected ot id 
+            var filteredAllocationsWithDepartmentAndOt = filteredAllocationsWithDepartment.Where( o=> ( selectedOperationTheatreId==o.OperationTheatreId)  ) ;
+
+            // BOOKINGS SECTION START
+            // selects bookings and allocations in accordance with given 
+            // departmentId
+            // operationTheatreId
+            // fromDate
+            // toDate
+            var bookings = await _bookingDataAccess.GetBookingList(fromDate, toDate);
+            bookings = bookings.Where(
+                                        booking => (
+                                                    (booking.OperationTheatreId == selectedOperationTheatreId) 
+                                                    && 
+                                                    ((departmentId == booking.BookedByDepartment) || (booking.StatusName=="BLOCKED") )
+                                                 )
+                                     );
+            bookings = await PopulateBookingsWithSurgeries(bookings);
+            // BOOKINGS SECTION END 
+
+
+            var result = new BookingsAndAllocationsTheatres();
+            result.Bookings = bookings;
+            result.Theatres= allocatedOperationtheatres;
+            result.Allocations = filteredAllocationsWithDepartmentAndOt;
+            result.SelectedTheatre = selectedOperationTheatreId;            
+            return result;
+        }
+        // CURRENTLY WORKING
+
         public async Task<IEnumerable<Patient>> GetPatientData(string registrationNo)
         {
             var result = await _bookingDataAccess.GetPatientData(registrationNo);

@@ -156,6 +156,22 @@ namespace BCMCH.OTM.API.Controllers
                 return Ok(new ResponseVM<bool>(false, ex.Message));
             }
         }
+
+        [HttpGet]
+        [Route("get-events-allocation-theatres")]
+        public async Task<IActionResult> SelectEventsTheatresAndDepartments(int selectedOperationTheatreId , int departmentId, string? fromDate,string? toDate)
+        {
+            try
+            {
+                var result = await _bookingService.SelectEventsTheatresAndDepartments(selectedOperationTheatreId , departmentId, fromDate ,toDate);
+                return Ok(new ResponseVM<BookingsAndAllocationsTheatres>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseVM<bool>(false, ex.Message));
+            }
+        }
+
         [HttpGet]
         [Route("get-event-equipments-and-employees")]
         public async Task<IActionResult> SelectEventEquipmentsAndEmployees(int bookingId)
