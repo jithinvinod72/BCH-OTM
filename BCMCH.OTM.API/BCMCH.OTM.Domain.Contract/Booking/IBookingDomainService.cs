@@ -78,6 +78,7 @@ namespace BCMCH.OTM.Domain.Contract.Booking
         Task<Stream> ExportNonOperativeProcedure(string start,string end);
 
         // DASHBOARD SECTION 
-        Task<IEnumerable<DashbordOTGroup>> GetTodaysOtStatuses();
+        // Task<IEnumerable<DashbordOTGroup>> GetTodaysOtStatuses();
+        Task<DashboardData> GetTodaysOtStatuses();
     }
 }

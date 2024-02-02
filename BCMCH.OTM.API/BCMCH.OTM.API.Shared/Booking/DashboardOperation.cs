@@ -21,6 +21,7 @@ namespace BCMCH.OTM.API.Shared.Booking
         public string? StartDate {get;set;}
         public string? EndDate {get;set;}
         public string? DepartmentId {get;set;}
+        public string? DepartmentName {get;set;}
         public string? OtComplexEntry {get;set;}
         public string? PreOpEntryTime {get;set;}
         public string? PreOpExitTime {get;set;}

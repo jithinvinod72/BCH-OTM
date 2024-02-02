@@ -866,12 +866,27 @@ namespace BCMCH.OTM.Domain.Booking
 
         // DASHBOARD REGION START
         #region DASHBOARD-TODAY
-        public async Task<IEnumerable<DashbordOTGroup>> GetTodaysOtStatuses()
+        public async Task<DashboardData> GetTodaysOtStatuses()
         {
             
             var dataRes = new DashboardData();
             
             var result = await _bookingDataAccess.GetTodaysOtStatuses();
+
+            List<DashboardDepartmentGroups> departmentWise = result
+            .GroupBy(o => o.DepartmentId)
+            .Select(group => new DashboardDepartmentGroups
+            {
+                DepartmentId =  int.Parse(group.Key),
+                DepartmentName = group.First().DepartmentName,
+                OperationsList = group.ToList(),
+                TotalCases = group.ToList().Count
+            })
+            .ToList();
+
+
+
+
 
             List<DashbordOTGroup> groupedDataList = result
             .GroupBy(o => o.OperationTheatreId)
@@ -903,25 +918,25 @@ namespace BCMCH.OTM.Domain.Booking
                 foreach (var operation in operationsList)
                 {
                     todaysTotal++;
-                    string complexLocation="SCHEDULED";
+                    string complexLocation="scheduled";
                     if(operation.OtComplexEntry!=null){
-                        complexLocation="IN_COMPLEX_RECEPTION";
+                        complexLocation="complex";
                         complexEntryCount++;
                     }
                     if(operation.PreOpEntryTime!=null){
-                        complexLocation="PRE_OP";
+                        complexLocation="pre-op";
                         preOpCount++;
                     }
                     if(operation.OtEntryTime!=null){
-                        complexLocation="IN_OT";
+                        complexLocation="theatre";
                         inOtCount++;
                     }
                     if(operation.PostOpEntryTime!=null){
-                        complexLocation="POST_OP";
+                        complexLocation="post-op";
                         postOpCount++;
                     }
                     if(operation.PostOpExitTime!=null){
-                        complexLocation="EXIT";
+                        complexLocation="exit";
                     }
                     operation.ComplexLocation=complexLocation;
                 }
@@ -936,8 +951,9 @@ namespace BCMCH.OTM.Domain.Booking
             }
             
             // groupedDataList.OperationsList=operationsList;
-            // dataRes.OtStatuses = groupedDataList;
-            return groupedDataList;
+            dataRes.OtStatuses = groupedDataList;
+            dataRes.DepartmentsStatuses = departmentWise;
+            return  dataRes;
         }
         #endregion
         // DASHBOARD REGION END

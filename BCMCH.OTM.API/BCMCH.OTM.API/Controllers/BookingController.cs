@@ -799,7 +799,7 @@ namespace BCMCH.OTM.API.Controllers
             try
             {
                 var result = await _bookingService.GetTodaysOtStatuses();
-                return Ok(new ResponseVM<IEnumerable<DashbordOTGroup>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
+                return Ok(new ResponseVM<DashboardData>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result));
                 // return Ok(result);
             }
             catch (Exception ex)

@@ -1362,6 +1362,7 @@ namespace BCMCH.OTM.Data.Booking
                                 Bookings.[StartDate]             AS StartDate,
                                 Bookings.[EndDate]               AS EndDate,
                                 Bookings.[DepartmentId]          AS DepartmentId,
+                                Departments.[Name]               AS DepartmentName,
                                 Bookings.[PreOpEntryTime]        AS PreOpEntryTime,
                                 Bookings.[PreOpExitTime]         AS PreOpExitTime,
                                 Bookings.[OtEntryTime]           AS OtEntryTime,
@@ -1371,9 +1372,12 @@ namespace BCMCH.OTM.Data.Booking
                                 Bookings.[AverageSurgeryTime]    AS AverageSurgeryTime,
                                 Bookings.[OtComplexEntry]        AS OtComplexEntry
                             FROM [OTM].[Bookings] AS Bookings
-                            LEFT JOIN 
+                            LEFT JOIN  
                                 [OTM].[OperationTheatreMaster] AS OperationTheatre ON Bookings.OperationTheatreId = OperationTheatre.Id
-                            LEFT JOIN [dbo].[PatientMaster] AS Patients ON Bookings.RegistrationNo = [Patients].[RegistrationNo]
+                            LEFT JOIN  
+                                [dbo].[PatientMaster] AS Patients ON Bookings.RegistrationNo = [Patients].[RegistrationNo]
+                            LEFT JOIN  
+                                [dbo].[Departments] AS Departments ON Bookings.DepartmentId = Departments.Id
                             WHERE CONVERT(DATE, Bookings.[StartDate]) = CONVERT(DATE, GETDATE());
                             
                            ";

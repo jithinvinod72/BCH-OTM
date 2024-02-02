@@ -11,7 +11,9 @@ namespace BCMCH.OTM.API.Shared.Booking
 {
     public class DashboardData
     {
-        public IEnumerable<DashboardOperation> OtStatuses {get;set;}
+        public IEnumerable<DashbordOTGroup> OtStatuses {get;set;}
+        public IEnumerable<DashboardDepartmentGroups> DepartmentsStatuses {get;set;}
+        
         
     }
     
