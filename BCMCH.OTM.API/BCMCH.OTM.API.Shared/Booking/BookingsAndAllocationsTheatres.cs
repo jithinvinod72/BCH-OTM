@@ -11,6 +11,7 @@ namespace BCMCH.OTM.API.Shared.Booking
     {
         public IEnumerable<Bookings> Bookings {get;set;}
         public IEnumerable<GetAllocation> Allocations {get;set;}
+        public IEnumerable<GetAllocation> OtherDepartmentAllocations {get;set;}
         public IEnumerable<int?>? Theatres {get;set;}
         public int? SelectedTheatre {get;set;}
     }

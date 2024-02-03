@@ -596,11 +596,12 @@ namespace BCMCH.OTM.Domain.Booking
             
             // ALLOCATIONS SECTION START
             var allocations = await _bookingDataAccess.GetAllocation(fromDate, toDate);
-            var filteredAllocationsWithDepartment = allocations.Where( o=> departmentId==o.AssignedDepartmentId);
+            var filteredAllocationBySelectedDepartment = allocations.Where( o=> departmentId==o.AssignedDepartmentId);
+            var filteredAllocationByOtherDepartment = allocations.Where( o=> departmentId != o.AssignedDepartmentId);
             // ALLOCATIONS SECTION END
 
             // THEATRES SECTION START
-            var allocatedOperationtheatres = filteredAllocationsWithDepartment.Select(o => o.OperationTheatreId).Distinct();
+            var allocatedOperationtheatres = filteredAllocationBySelectedDepartment.Select(o => o.OperationTheatreId).Distinct();
 
             
             // Find selected theatre 
@@ -611,7 +612,8 @@ namespace BCMCH.OTM.Domain.Booking
             // THEATRES SECTION END
 
             // filter using selected ot id 
-            var filteredAllocationsWithDepartmentAndOt = filteredAllocationsWithDepartment.Where( o=> ( selectedOperationTheatreId==o.OperationTheatreId)  ) ;
+            var filteredAllocationBySelectedDepartmentAndOt = filteredAllocationBySelectedDepartment.Where( o=> ( selectedOperationTheatreId==o.OperationTheatreId)  ) ;
+            var filteredAllocationByOtherDepartmentAndOt = filteredAllocationByOtherDepartment.Where( o=> ( selectedOperationTheatreId==o.OperationTheatreId)  ) ;
 
             // BOOKINGS SECTION START
             // selects bookings and allocations in accordance with given 
@@ -634,7 +636,8 @@ namespace BCMCH.OTM.Domain.Booking
             var result = new BookingsAndAllocationsTheatres();
             result.Bookings = bookings;
             result.Theatres= allocatedOperationtheatres;
-            result.Allocations = filteredAllocationsWithDepartmentAndOt;
+            result.Allocations = filteredAllocationBySelectedDepartmentAndOt;
+            result.OtherDepartmentAllocations = filteredAllocationByOtherDepartmentAndOt;
             result.SelectedTheatre = selectedOperationTheatreId;            
             return result;
         }
