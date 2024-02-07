@@ -12,6 +12,8 @@ namespace BCMCH.OTM.API.Shared.Master
         public int orderNumberOfSelected {get;set;}
         public int idToExchange {get;set;}  
         public int orderNumberOfExchange {get;set;}
+        public int stageId {get;set;}
+        
     }
 
 }

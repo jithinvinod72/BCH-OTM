@@ -8,6 +8,7 @@ namespace BCMCH.OTM.API.Shared.Master
 {
     public class PostBulkQuestionsModel
     {
+        public int stageId {get;set;}
         public string questions {get;set;}
     }
 }

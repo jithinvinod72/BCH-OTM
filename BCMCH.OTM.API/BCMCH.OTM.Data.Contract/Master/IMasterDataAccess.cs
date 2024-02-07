@@ -44,7 +44,8 @@ namespace BCMCH.OTM.Data.Contract.Master
         // QUESTION SECTION START
         Task<IEnumerable<PostQuestionsModel>> PostQuestion(PostQuestionsModel question);
         Task<IEnumerable<PostQuestionsModel>> PostBulkQuestion(PostBulkQuestionsModel question);
-        Task<IEnumerable<string>> DisableQuestions(int id);
+        Task<IEnumerable<int>> DisableQuestions(int id);
+        Task<IEnumerable<string>> ReArrangeQuestionOrder(int otStageId);
         Task<IEnumerable<string>> PostQuestionType(string name,string label);
         Task<IEnumerable<string>> PostOtStages(FormSections stages);
         Task<IEnumerable<string>> SoftDeleteOtStages(FormSections stages);

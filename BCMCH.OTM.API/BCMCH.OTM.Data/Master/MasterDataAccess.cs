@@ -736,7 +736,6 @@ namespace BCMCH.OTM.Data.Master
                                 SubQuestionDisplayOptionId INT
                             )
                             WHERE HasSubQuestion = 1;
-
                             ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@JsonArray", question.questions);
@@ -765,23 +764,49 @@ namespace BCMCH.OTM.Data.Master
             return result;
         }
 
-        public async Task<IEnumerable<string>> DisableQuestions(int id)
+        public async Task<IEnumerable<int>> DisableQuestions(int id)
         {
             string Query = @"
                                 UPDATE [OTM].[FormQuestions] 
                                 SET 
-                                    [IsDisabled]=1
+                                    [IsDisabled]=1,
+                                    [displayOrder]=0
+                                OUTPUT deleted.otStageId
                                 WHERE
                                 Id=@id 
                                     OR 
                                 parentId=@id
+                                -- SELECT [otStageId] FROM [OTM].[FormQuestions] WHERE Id=@id 
                             ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("id", id);
             
+            var result = await _sqlHelper.QueryAsync<int>(Query, SqlParameters, CommandType.Text);
+            return result;
+        }
+
+        public async Task<IEnumerable<string>> ReArrangeQuestionOrder(int otStageId)
+        {
+            string Query = @"
+                WITH OrderedRows AS (
+                    SELECT Id, ROW_NUMBER() OVER (ORDER BY [Id]) AS NewDisplayOrder
+                    FROM [behive-dev-otm].[OTM].[FormQuestions]
+                    WHERE otStageId = @otStageId AND IsDisabled = 0 AND parentId IS NULL
+                )
+                UPDATE [behive-dev-otm].[OTM].[FormQuestions]
+                SET displayOrder = OrderedRows.NewDisplayOrder 
+                FROM OrderedRows WHERE [behive-dev-otm].[OTM].[FormQuestions].Id = OrderedRows.Id 
+                ";
+            var SqlParameters = new DynamicParameters();
+            SqlParameters.Add("otStageId", otStageId);
+            
+            
             var result = await _sqlHelper.QueryAsync<string>(Query, SqlParameters, CommandType.Text);
             return result;
         }
+
+        
+
         public async Task<IEnumerable<string>> PostOtStages(FormSections stages)
         {
             string Query = @"

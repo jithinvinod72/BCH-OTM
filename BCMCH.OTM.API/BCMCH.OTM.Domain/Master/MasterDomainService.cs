@@ -468,6 +468,7 @@ namespace BCMCH.OTM.Domain.Master
         public async Task<IEnumerable<PostQuestionsModel>> PostBulkQuestion(PostBulkQuestionsModel question)
         {
             var result = await _masterDataAccess.PostBulkQuestion(question);
+            await _masterDataAccess.ReArrangeQuestionOrder(question.stageId);
             return result;
         }
         // insert question section START
@@ -487,7 +488,11 @@ namespace BCMCH.OTM.Domain.Master
         public async Task<IEnumerable<string>> DisableQuestions(int id)
         {
             var result = await _masterDataAccess.DisableQuestions(id);
-            return result;
+            int firstItem = result.First();
+
+            Console.WriteLine(firstItem);
+            await _masterDataAccess.ReArrangeQuestionOrder(firstItem);
+            return (IEnumerable<string>)result;
         }
         public async Task<IEnumerable<string>> PostQuestionType(string name,string label)
         {
@@ -507,6 +512,7 @@ namespace BCMCH.OTM.Domain.Master
         public async Task<IEnumerable<int>> changeQuestionOrder(QuestionOrder qustionOrders )
         {
             var result = await _masterDataAccess.changeQuestionOrder(qustionOrders);
+            // await _masterDataAccess.ReArrangeQuestionOrder(qustionOrders.stageId);
             return result;
         }
         // insert question section END

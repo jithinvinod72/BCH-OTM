@@ -583,6 +583,9 @@ namespace BCMCH.OTM.API.Controllers
             try
             {
                 var result = await _masterService.DisableQuestions(id);
+                string firstItem = result.First();
+
+                Console.WriteLine(firstItem);
                 return Ok(new ResponseVM<IEnumerable<string>>(true, ResponseMessages.DATA_ACCESS_SUCCESS, result ));
             }
             catch (Exception ex)
