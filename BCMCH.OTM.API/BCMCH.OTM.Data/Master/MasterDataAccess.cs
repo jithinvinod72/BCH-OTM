@@ -506,11 +506,64 @@ namespace BCMCH.OTM.Data.Master
 
         public async Task<IEnumerable<GetAllocation>> GetAllocations(string startDate, string endDate)
         {
-            const string StoredProcedure = "[OTM].[SelectAllocation]";
+            // const string StoredProcedure = "[OTM].[SelectAllocation]";
+            // var SqlParameters = new DynamicParameters();
+    //         SELECT 
+    //         [OTM].[OperationTheatreAllocation].[Id]                    AS Id ,
+    //         [OTM].[OperationTheatreAllocation].[OperationTheatreId]    AS OperationTheatreId,
+    //         [OTM].[OperationTheatreAllocation].[AssignedDepartmentId]  AS AssignedDepartmentId,
+    //         [OTM].[OperationTheatreAllocation].[GroupId]               AS GroupId,
+    //         Departments.[Name]                                         AS AssignedDepartmentName,
+    //         OperationTheatre.Name                                      AS OperationTheatreName,
+    //         -- [OTM].[OperationTheatreAllocation].[StartDate]             AS startDate,
+    //         -- [OTM].[OperationTheatreAllocation].[EndDate]               AS endDate
+    //         REPLACE(CONVERT(varchar, StartDate, 120), '.500', '.000')  AS startDate,
+    //         REPLACE(CONVERT(varchar, EndDate, 120), '.500', '.000')    AS endDate
+    //     FROM
+    //         [OTM].[OperationTheatreAllocation]
+    //     LEFT JOIN 
+    //         [dbo].[Departments] AS Departments ON OTM.[OperationTheatreAllocation].AssignedDepartmentId = Departments.Id
+    //     LEFT JOIN 
+    //         [OTM].[OperationTheatreMaster] AS OperationTheatre ON OTM.[OperationTheatreAllocation].OperationTheatreId = OperationTheatre.Id
+
+    // WHERE
+    //     (
+    //         StartDate>@StartDate
+    //         AND
+    //         StartDate<@EndDate
+    //     )
+    // ORDER BY Id
+            
+            string Query = @"
+                                SELECT 
+                                    [OTM].[OperationTheatreAllocation].[Id]                    AS Id ,
+                                    [OTM].[OperationTheatreAllocation].[OperationTheatreId]    AS OperationTheatreId,
+                                    [OTM].[OperationTheatreAllocation].[AssignedDepartmentId]  AS AssignedDepartmentId,
+                                    [OTM].[OperationTheatreAllocation].[GroupId]               AS GroupId,
+                                    Departments.[Name]                                         AS AssignedDepartmentName,
+                                    OperationTheatre.Name                                      AS OperationTheatreName,
+                                    REPLACE(CONVERT(varchar, StartDate, 120), '.500', '.000')  AS startDate,
+                                    REPLACE(CONVERT(varchar, EndDate, 120), '.500', '.000')    AS endDate
+                                FROM
+                                    [OTM].[OperationTheatreAllocation]
+                                LEFT JOIN 
+                                    [dbo].[Departments] AS Departments ON OTM.[OperationTheatreAllocation].AssignedDepartmentId = Departments.Id
+                                LEFT JOIN 
+                                    [OTM].[OperationTheatreMaster] AS OperationTheatre ON OTM.[OperationTheatreAllocation].OperationTheatreId = OperationTheatre.Id
+
+                            WHERE
+                                (
+                                    StartDate>=@StartDate
+                                    AND
+                                    StartDate<= DATEADD(DAY, 1, @EndDate)
+                                )
+                            ORDER BY Id
+                            ";
             var SqlParameters = new DynamicParameters();
             SqlParameters.Add("@StartDate", startDate);
             SqlParameters.Add("@EndDate", endDate);
-            var result = await _sqlHelper.QueryAsync<GetAllocation>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            // var result = await _sqlHelper.QueryAsync<GetAllocation>(StoredProcedure, SqlParameters, CommandType.StoredProcedure);
+            var result = await _sqlHelper.QueryAsync<GetAllocation>(Query, SqlParameters, CommandType.Text);
             return result;
         }
         
